@@ -2,796 +2,510 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>M&A学習プログラム</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M&A Case Study | Broadleaf Learning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg:       #0b0b12;
-  --s1:       #13131e;
-  --s2:       #1a1a28;
-  --s3:       #22223a;
-  --border:   rgba(255,255,255,0.07);
-  --border2:  rgba(255,255,255,0.12);
-  --text:     #ddddf0;
-  --muted:    #6a6a88;
-  --muted2:   #9898b8;
-  --accent:   #7c6ff7;
-  --accent-l: #a89ff8;
-  --green:    #4fc88e;
-  --amber:    #f4c06a;
-  --coral:    #f4845f;
-  --r: 10px;
+  --bg:#0b0e16; --surface:#12161f; --surface2:#191e2b; --surface3:#1f2638;
+  --border:#252d40; --border2:#303d58;
+  --accent:#f0a500; --accent2:#3b82f6; --accent3:#10b981;
+  --text:#dde3f0; --text2:#8b95b0; --text3:#4a5470;
+  --danger:#ef4444; --warn:#f59e0b;
 }
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-html{scroll-behavior:smooth;}
-body{
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  font-family:'Noto Sans JP', sans-serif;
   background:var(--bg);
   color:var(--text);
-  font-family:'Noto Sans JP',sans-serif;
   min-height:100vh;
-  padding-bottom:80px;
-  font-size:14px;
-  line-height:1.7;
+  overflow-x:hidden;
+}
+
+/* ── BG texture ── */
+body::before {
+  content:'';
+  position:fixed; inset:0;
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 0%, rgba(59,130,246,.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 100%, rgba(240,165,0,.05) 0%, transparent 60%);
+  pointer-events:none; z-index:0;
 }
 
 /* ── HEADER ── */
-.hd {
-  background: linear-gradient(160deg,#16103a 0%,#0e1828 60%,#0b1820 100%);
-  padding: 32px 20px 24px;
-  position: relative;
-  overflow: hidden;
-}
-.hd::after {
-  content:'';
-  position:absolute;
-  inset:0;
-  background: radial-gradient(ellipse 60% 80% at 90% 20%, rgba(124,111,247,0.18) 0%, transparent 70%);
-  pointer-events:none;
-}
-.hd-eyebrow {
-  font-family:'DM Mono',monospace;
-  font-size:10px;
-  letter-spacing:0.12em;
-  color:var(--muted2);
-  text-transform:uppercase;
-  margin-bottom:10px;
-}
-.hd-badge {
-  display:inline-block;
-  background:rgba(124,111,247,0.15);
-  border:1px solid rgba(124,111,247,0.3);
-  color:var(--accent-l);
-  font-size:10px;
-  font-family:'DM Mono',monospace;
-  padding:3px 10px;
-  border-radius:20px;
-  margin-bottom:12px;
-}
-.hd-title {
-  font-size:24px;
-  font-weight:700;
-  line-height:1.25;
-  margin-bottom:6px;
-  position:relative;
-  z-index:1;
-}
-.hd-title span { color:var(--accent-l); }
-.hd-date {
-  font-size:12px;
-  color:var(--muted);
-  position:relative;
-  z-index:1;
-}
-
-/* ── PROGRESS STRIP ── */
-.prog-strip {
-  background:var(--s1);
+.header {
+  position:sticky; top:0; z-index:50;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:14px 24px;
+  background:rgba(18,22,31,.92);
+  backdrop-filter:blur(12px);
   border-bottom:1px solid var(--border);
-  padding:12px 20px;
-  display:flex;
-  align-items:center;
-  gap:12px;
 }
-.prog-label { font-family:'DM Mono',monospace; font-size:10px; color:var(--muted); white-space:nowrap; }
-.prog-bar { flex:1; height:3px; background:rgba(255,255,255,0.05); border-radius:2px; overflow:hidden; }
-.prog-fill { height:100%; background:linear-gradient(90deg,var(--accent),var(--green)); border-radius:2px; transition:width 1.2s cubic-bezier(.4,0,.2,1); }
-.prog-pct { font-family:'DM Mono',monospace; font-size:10px; color:var(--accent-l); white-space:nowrap; }
-
-/* ── SECTIONS ── */
-.sec { padding:20px; border-bottom:1px solid var(--border); }
-.sec:last-child { border-bottom:none; }
-.sec-label {
-  font-family:'DM Mono',monospace;
-  font-size:10px;
-  letter-spacing:0.1em;
-  text-transform:uppercase;
-  color:var(--muted);
-  margin-bottom:12px;
-  display:flex;
-  align-items:center;
-  gap:8px;
+.logo { display:flex; align-items:center; gap:12px; text-decoration:none; }
+.logo-badge {
+  font-family:'IBM Plex Mono', monospace;
+  font-size:10px; font-weight:500;
+  background:var(--accent); color:#000;
+  padding:4px 10px; border-radius:4px;
+  letter-spacing:.06em;
 }
-.sec-label::after { content:''; flex:1; height:1px; background:var(--border); }
-
-/* ── GOAL CARD ── */
-.goal-card {
-  background:var(--s2);
-  border:1px solid rgba(124,111,247,0.25);
-  border-left:3px solid var(--accent);
-  border-radius:var(--r);
-  padding:14px 16px;
-}
-.goal-text { font-size:15px; font-weight:500; line-height:1.6; }
-
-/* ── RESOURCE LINKS ── */
-.res-link {
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:10px 12px;
-  background:var(--s3);
-  border:1px solid var(--border2);
-  border-radius:8px;
-  text-decoration:none;
-  color:var(--text);
-  transition:border-color .15s, background .15s;
-}
-.res-link:active { border-color:var(--accent); background:rgba(124,111,247,0.1); }
-.res-link-icon { font-size:14px; flex-shrink:0; }
-.res-link-label { font-size:13px; line-height:1.4; flex:1; }
-.res-link-arr { color:var(--accent-l); font-size:16px; flex-shrink:0; }
-
-/* ── TASK HEADER ── */
-.task-card {
-  background:var(--s2);
-  border:1px solid var(--border);
-  border-radius:var(--r);
-  overflow:hidden;
-  margin-bottom:12px;
-}
-.task-card:last-of-type { margin-bottom:0; }
-.task-hd {
-  padding:11px 16px;
-  display:flex;
-  align-items:center;
-  gap:10px;
-  border-bottom:1px solid var(--border);
-  background:var(--s3);
-}
-.task-icon { font-size:14px; }
-.task-name { font-size:13px; font-weight:500; }
-.task-dur {
-  margin-left:auto;
-  font-family:'DM Mono',monospace;
-  font-size:10px;
-  color:var(--muted);
-  background:rgba(255,255,255,0.05);
-  padding:3px 8px;
-  border-radius:4px;
-}
-.task-body { padding:14px 16px; }
-.task-row { display:flex; gap:10px; margin-bottom:8px; }
-.task-row:last-child { margin-bottom:0; }
-.task-k { font-size:11px; color:var(--muted); white-space:nowrap; padding-top:2px; min-width:40px; }
-.task-v { font-size:13px; line-height:1.6; color:var(--text); }
-
-/* ── TIMER ── */
-.timer-wrap { padding:0 16px 14px; }
-.timer-num {
-  font-family:'DM Mono',monospace;
-  font-size:32px;
-  font-weight:500;
-  text-align:center;
-  padding:6px 0 8px;
-  color:var(--accent);
-  display:none;
-  letter-spacing:0.05em;
-}
-.timer-num.on { display:block; }
-.timer-num.done-c { color:var(--green); }
-.timer-btn {
-  width:100%;
-  padding:11px;
-  background:rgba(124,111,247,0.08);
-  border:1px solid rgba(124,111,247,0.2);
-  border-radius:8px;
-  color:var(--accent-l);
-  font-family:'DM Mono',monospace;
-  font-size:12px;
-  cursor:pointer;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
-  transition:background .15s, border-color .15s, transform .1s;
-}
-.timer-btn:active { transform:scale(0.97); }
-.timer-btn.running { background:rgba(79,200,142,0.08); border-color:rgba(79,200,142,0.25); color:var(--green); }
-.timer-btn.fin { background:rgba(79,200,142,0.05); border-color:rgba(79,200,142,0.15); color:var(--green); cursor:default; }
-
-/* ── TAGS ── */
-.tags { display:flex; flex-wrap:wrap; gap:8px; }
-.tag {
-  background:rgba(124,111,247,0.1);
-  border:1px solid rgba(124,111,247,0.18);
-  color:var(--accent-l);
-  font-size:11px;
-  padding:5px 12px;
-  border-radius:20px;
-  font-family:'DM Mono',monospace;
-}
-
-/* ── CHECKLIST ── */
-.check-item {
-  display:flex;
-  align-items:flex-start;
-  gap:12px;
-  padding:13px 0;
-  border-bottom:1px solid var(--border);
-  cursor:pointer;
-  user-select:none;
-  transition:opacity .15s;
-}
-.check-item:last-child { border-bottom:none; padding-bottom:0; }
-.check-item:active { opacity:.7; }
-.check-box {
-  width:22px; height:22px; flex-shrink:0;
-  border:1.5px solid var(--muted);
-  border-radius:6px;
-  margin-top:1px;
-  display:flex; align-items:center; justify-content:center;
+.logo-text { font-size:13px; color:var(--text2); }
+.header-nav { display:flex; gap:8px; }
+.nav-btn {
+  font-family:'IBM Plex Mono', monospace;
+  font-size:11px; color:var(--text2);
+  background:transparent; border:1px solid var(--border);
+  padding:6px 14px; border-radius:6px;
+  cursor:pointer; text-decoration:none;
   transition:all .2s;
-  font-size:12px;
-  color:transparent;
 }
-.check-item.done .check-box {
-  background:var(--green);
-  border-color:var(--green);
-  color:#0b1e14;
-}
-.check-item.done .check-text {
-  text-decoration:line-through;
-  color:var(--muted);
-}
-.check-text { font-size:13px; line-height:1.6; }
+.nav-btn:hover { border-color:var(--accent); color:var(--accent); }
 
-/* ── NOTION LINK ── */
-.notion-btn {
-  display:flex;
-  align-items:center;
-  gap:14px;
-  padding:14px 16px;
-  background:var(--s2);
-  border:1px solid var(--border2);
-  border-radius:var(--r);
-  text-decoration:none;
-  color:var(--text);
-  transition:border-color .15s, background .15s;
-}
-.notion-btn:active { border-color:var(--accent); background:var(--s3); }
-.notion-icon {
-  width:36px; height:36px; flex-shrink:0;
-  background:var(--s3);
-  border-radius:8px;
-  display:flex; align-items:center; justify-content:center;
-  font-size:17px; font-weight:700;
-  color:var(--text);
-}
-.notion-label { font-size:13px; font-weight:500; }
-.notion-sub { font-size:11px; color:var(--muted); margin-top:2px; }
-.notion-arr { margin-left:auto; color:var(--muted); font-size:18px; }
-
-/* ── COMPLETE BUTTON ── */
-.complete-wrap { padding:20px; }
-.complete-btn {
-  width:100%;
-  padding:16px;
-  background:linear-gradient(135deg,var(--accent) 0%,#5b54d4 100%);
-  border:none;
-  border-radius:12px;
-  color:#fff;
-  font-family:'Noto Sans JP',sans-serif;
-  font-size:15px;
-  font-weight:700;
-  cursor:pointer;
-  transition:opacity .2s, transform .1s;
-  letter-spacing:0.03em;
-}
-.complete-btn:active { transform:scale(0.98); opacity:.9; }
-.complete-btn.all-done { background:linear-gradient(135deg,var(--green) 0%,#29a36e 100%); }
-
-/* ── DONE MODAL ── */
-.modal-bg {
-  display:none;
-  position:fixed; inset:0;
-  background:rgba(8,8,14,0.92);
-  backdrop-filter:blur(4px);
-  z-index:200;
-  align-items:center;
-  justify-content:center;
-  padding:30px;
-}
-.modal-bg.open { display:flex; }
-.modal {
-  background:var(--s1);
-  border:1px solid var(--border2);
-  border-radius:16px;
-  padding:32px 24px;
+/* ── HERO ── */
+.hero {
+  position:relative; z-index:1;
+  padding:64px 24px 48px;
+  max-width:900px; margin:0 auto;
   text-align:center;
-  max-width:340px;
-  width:100%;
-  animation: pop .3s cubic-bezier(.34,1.56,.64,1);
 }
-@keyframes pop { from{transform:scale(.85);opacity:0;} to{transform:scale(1);opacity:1;} }
-.modal-emoji { font-size:52px; margin-bottom:16px; }
-.modal-title { font-size:20px; font-weight:700; margin-bottom:8px; }
-.modal-body { font-size:13px; color:var(--muted2); line-height:1.8; margin-bottom:24px; }
-.modal-body strong { color:var(--green); font-weight:500; }
-.modal-close {
-  width:100%;
-  padding:12px;
-  background:var(--accent);
-  border:none;
-  border-radius:8px;
-  color:#fff;
-  font-size:14px;
-  font-weight:700;
-  cursor:pointer;
-  font-family:'Noto Sans JP',sans-serif;
+.hero-eyebrow {
+  font-family:'IBM Plex Mono', monospace;
+  font-size:11px; letter-spacing:.2em;
+  color:var(--accent); margin-bottom:16px;
+  display:inline-block;
+  padding:4px 12px;
+  border:1px solid rgba(240,165,0,.25);
+  border-radius:20px;
+  background:rgba(240,165,0,.05);
+}
+.hero-title {
+  font-family:'Noto Serif JP', serif;
+  font-size:clamp(26px, 5vw, 40px);
+  font-weight:700; line-height:1.45;
+  margin-bottom:16px;
+  background:linear-gradient(135deg, var(--text) 0%, var(--text2) 100%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.hero-sub {
+  font-size:14px; color:var(--text2);
+  line-height:1.8; max-width:560px; margin:0 auto 32px;
+}
+.hero-stats {
+  display:flex; justify-content:center; gap:32px; flex-wrap:wrap;
+  margin-bottom:48px;
+}
+.stat-item { text-align:center; }
+.stat-num {
+  font-family:'IBM Plex Mono', monospace;
+  font-size:28px; color:var(--accent);
+  display:block; line-height:1;
+}
+.stat-label { font-size:11px; color:var(--text3); margin-top:4px; }
+
+/* ── OVERALL PROGRESS BAR ── */
+.overall-progress {
+  max-width:900px; margin:0 auto 48px;
+  padding:0 24px;
+  position:relative; z-index:1;
+}
+.op-header { display:flex; justify-content:space-between; font-size:12px; color:var(--text3); margin-bottom:8px; }
+.op-bar { height:6px; background:var(--border); border-radius:3px; overflow:hidden; }
+.op-fill { height:100%; background:linear-gradient(90deg, var(--accent2), var(--accent)); border-radius:3px; transition:width .8s ease; }
+
+/* ── PHASE GRID ── */
+.phase-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));
+  gap:16px;
+  max-width:900px; margin:0 auto;
+  padding:0 24px 80px;
+  position:relative; z-index:1;
 }
 
-/* ── PHASE BADGE ── */
-.phase-row {
-  display:flex; gap:8px; flex-wrap:wrap; margin-top:12px;
+.phase-card {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:14px; overflow:hidden;
+  transition:all .25s; position:relative;
+  display:flex; flex-direction:column;
 }
-.phase-chip {
-  font-family:'DM Mono',monospace;
-  font-size:10px;
-  padding:4px 10px;
-  border-radius:20px;
-  border:1px solid var(--border2);
-  color:var(--muted2);
+.phase-card.available { cursor:pointer; }
+.phase-card.available:hover {
+  border-color:var(--accent);
+  transform:translateY(-3px);
+  box-shadow:0 12px 40px rgba(0,0,0,.4), 0 0 0 1px rgba(240,165,0,.1);
 }
-.phase-chip.active { background:rgba(124,111,247,0.12); border-color:rgba(124,111,247,0.3); color:var(--accent-l); }
+.phase-card.coming { opacity:.5; cursor:not-allowed; }
+.phase-card.done { border-color:rgba(16,185,129,.3); }
+
+.phase-card-top {
+  padding:20px 20px 14px;
+  border-bottom:1px solid var(--border);
+  display:flex; align-items:flex-start; justify-content:space-between;
+}
+.phase-icon { font-size:24px; }
+.phase-status-badge {
+  font-family:'IBM Plex Mono', monospace;
+  font-size:9px; letter-spacing:.1em;
+  padding:3px 8px; border-radius:3px;
+}
+.phase-status-badge.available { background:rgba(16,185,129,.12); color:var(--accent3); border:1px solid rgba(16,185,129,.2); }
+.phase-status-badge.coming { background:var(--surface3); color:var(--text3); border:1px solid var(--border); }
+.phase-status-badge.done { background:rgba(16,185,129,.12); color:var(--accent3); border:1px solid rgba(16,185,129,.2); }
+
+.phase-card-body { padding:16px 20px; flex:1; }
+.phase-tag {
+  font-family:'IBM Plex Mono', monospace;
+  font-size:10px; color:var(--accent); letter-spacing:.12em;
+  margin-bottom:6px;
+}
+.phase-name {
+  font-family:'Noto Serif JP', serif;
+  font-size:15px; font-weight:700;
+  line-height:1.5; margin-bottom:8px;
+}
+.phase-desc { font-size:11px; color:var(--text3); line-height:1.7; }
+
+.phase-card-footer {
+  padding:12px 20px;
+  border-top:1px solid var(--border);
+  display:flex; align-items:center; justify-content:space-between;
+}
+.phase-scenes {
+  font-family:'IBM Plex Mono', monospace;
+  font-size:10px; color:var(--text3);
+}
+.phase-score-mini {
+  font-family:'IBM Plex Mono', monospace;
+  font-size:11px;
+}
+.phase-score-mini.good { color:var(--accent3); }
+.phase-score-mini.ok { color:var(--warn); }
+.phase-score-mini.na { color:var(--text3); }
+
+/* phase mini progress bar */
+.phase-prog {
+  height:3px; background:var(--border);
+  margin-top:10px; border-radius:2px; overflow:hidden;
+}
+.phase-prog-fill {
+  height:100%; border-radius:2px;
+  background:linear-gradient(90deg, var(--accent2), var(--accent));
+  transition:width .6s ease;
+}
+
+/* ── NOTION SETUP SECTION ── */
+.setup-section {
+  max-width:900px; margin:0 auto 48px;
+  padding:0 24px;
+  position:relative; z-index:1;
+}
+.setup-card {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:12px; padding:20px 24px;
+  display:flex; align-items:center; gap:16px;
+  flex-wrap:wrap;
+}
+.setup-icon { font-size:28px; flex-shrink:0; }
+.setup-info { flex:1; min-width:200px; }
+.setup-title { font-size:13px; font-weight:600; margin-bottom:4px; }
+.setup-desc { font-size:12px; color:var(--text3); line-height:1.6; }
+.setup-input-wrap { display:flex; gap:8px; flex:1; min-width:260px; }
+.setup-input {
+  flex:1;
+  background:var(--surface2); border:1px solid var(--border);
+  border-radius:6px; padding:9px 12px;
+  font-family:'IBM Plex Mono', monospace;
+  font-size:11px; color:var(--text);
+  outline:none; transition:border-color .2s;
+}
+.setup-input:focus { border-color:var(--accent2); }
+.setup-input::placeholder { color:var(--text3); }
+.setup-save {
+  background:var(--accent2); color:#fff;
+  border:none; border-radius:6px;
+  padding:9px 16px; font-size:12px;
+  font-family:'Noto Sans JP', sans-serif;
+  cursor:pointer; white-space:nowrap;
+  transition:background .2s;
+}
+.setup-save:hover { background:#2563eb; }
+.setup-saved { font-size:11px; color:var(--accent3); display:none; margin-top:4px; }
+
+/* ── FOOTER ── */
+.footer {
+  position:relative; z-index:1;
+  text-align:center; padding:24px;
+  font-size:11px; color:var(--text3);
+  border-top:1px solid var(--border);
+}
+
+/* ── MOBILE ── */
+@media(max-width:600px) {
+  .phase-grid { grid-template-columns:1fr; }
+  .hero { padding:40px 16px 32px; }
+  .hero-stats { gap:20px; }
+  .stat-num { font-size:22px; }
+  .setup-card { flex-direction:column; }
+  .header-nav { display:none; }
+}
 
 /* ── ANIMATIONS ── */
-.sec { animation: fadeUp .4s ease both; }
-.sec:nth-child(1){animation-delay:.05s;}
-.sec:nth-child(2){animation-delay:.1s;}
-.sec:nth-child(3){animation-delay:.15s;}
-.sec:nth-child(4){animation-delay:.2s;}
-.sec:nth-child(5){animation-delay:.25s;}
-.sec:nth-child(6){animation-delay:.3s;}
-@keyframes fadeUp {
-  from{opacity:0;transform:translateY(12px);}
-  to{opacity:1;transform:translateY(0);}
-}
+@keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:none} }
+.phase-card { animation:fadeUp .4s ease both; }
+.phase-card:nth-child(1){animation-delay:.05s}
+.phase-card:nth-child(2){animation-delay:.1s}
+.phase-card:nth-child(3){animation-delay:.15s}
+.phase-card:nth-child(4){animation-delay:.2s}
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<div class="hd">
-  <div class="hd-eyebrow">M&Aアライアンス カスタム学習プログラム</div>
-  <div class="hd-badge" id="phase-badge">Phase 0 – 基礎固め</div>
-  <div class="hd-title" id="hd-title">Week 1 Day 1<br><span id="hd-theme">M&A全体像</span></div>
-  <div class="hd-date" id="hd-date"></div>
-  <div class="phase-row">
-    <span class="phase-chip active">Finance</span>
-    <span class="phase-chip active">Legal</span>
-    <span class="phase-chip active">Strategy</span>
-    <span class="phase-chip active">PMI</span>
-  </div>
-</div>
-
-<!-- PROGRESS -->
-<div class="prog-strip">
-  <div class="prog-label" id="prog-label">Phase 0</div>
-  <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
-  <div class="prog-pct" id="prog-pct">1/20日</div>
-</div>
-
-<!-- GOAL -->
-<div class="sec">
-  <div class="sec-label">🎯 今日のゴール</div>
-  <div class="goal-card">
-    <div class="goal-text" id="goal-text">M&Aのプロセス全体像を説明できるようになる（5ステップ）</div>
-  </div>
-</div>
-
-<!-- MORNING TASK -->
-<div class="sec">
-  <div class="sec-label">☀️ 朝のインプット</div>
-  <div class="task-card">
-    <div class="task-hd">
-      <span class="task-icon">📖</span>
-      <span class="task-name">読書・インプット</span>
-      <span class="task-dur">15分</span>
-    </div>
-    <div class="task-body">
-      <div class="task-row">
-        <span class="task-k">注目点</span>
-        <span class="task-v" id="morning-focus">—</span>
-      </div>
-      <div class="task-row" style="margin-top:4px;">
-        <span class="task-k" style="padding-top:6px;">記事</span>
-        <div style="flex:1;display:flex;flex-direction:column;gap:8px;" id="morning-links"></div>
-      </div>
-    </div>
-    <div class="timer-wrap">
-      <div class="timer-num" id="m-num">15:00</div>
-      <button class="timer-btn" id="m-btn" onclick="toggleTimer('m', 15)">▶ &nbsp;15分タイマー開始</button>
-    </div>
-  </div>
-</div>
-
-<!-- KEY CONCEPTS -->
-<div class="sec">
-  <div class="sec-label">💡 重要概念</div>
-  <div class="tags" id="tags-wrap"></div>
-</div>
-
-<!-- EVENING CHECKLIST -->
-<div class="sec">
-  <div class="sec-label">🌙 夜のアウトプット</div>
-  <div class="task-card" style="padding:4px 16px 0;">
-    <div id="checklist"></div>
-  </div>
-</div>
-
-<!-- NOTION LINK -->
-<div class="sec">
-  <div class="sec-label">📓 Notionで記録</div>
-  <a class="notion-btn" id="notion-link" href="https://notion.so" target="_blank">
-    <div class="notion-icon">N</div>
-    <div>
-      <div class="notion-label">日次ログを開く</div>
-      <div class="notion-sub">M&A Learning Hub → Daily Log</div>
-    </div>
-    <div class="notion-arr">›</div>
+<header class="header">
+  <a class="logo" href="index.html">
+    <span class="logo-badge">M&A CASE STUDY</span>
+    <span class="logo-text">Broadleaf M&A スキル習得</span>
   </a>
-</div>
+  <nav class="header-nav">
+    <a class="nav-btn" href="glossary.html">📖 用語集</a>
+    <button class="nav-btn" onclick="resetAll()">↺ リセット</button>
+  </nav>
+</header>
 
-<!-- COMPLETE -->
-<div class="complete-wrap">
-  <button class="complete-btn" id="complete-btn" onclick="completeDay()">今日の学習を完了する</button>
-</div>
+<main>
+  <section class="hero">
+    <span class="hero-eyebrow">INTERACTIVE CASE STUDY</span>
+    <h1 class="hero-title">M&Aの一連の流れを<br>実践形式で体験する</h1>
+    <p class="hero-sub">Broadleafが自動車アフターマーケット領域で実施するM&Aを題材に、案件発掘から統合後管理まで全4フェーズを対話形式で学習します。</p>
+    <div class="hero-stats">
+      <div class="stat-item"><span class="stat-num">4</span><div class="stat-label">フェーズ</div></div>
+      <div class="stat-item"><span class="stat-num">40</span><div class="stat-label">シーン（予定）</div></div>
+      <div class="stat-item"><span class="stat-num" id="total-unlocked">0</span><div class="stat-label">解放済み用語</div></div>
+      <div class="stat-item"><span class="stat-num" id="total-score">0%</span><div class="stat-label">総合正答率</div></div>
+    </div>
+  </section>
 
-<!-- DONE MODAL -->
-<div class="modal-bg" id="modal">
-  <div class="modal">
-    <div class="modal-emoji">🎉</div>
-    <div class="modal-title" id="modal-title">お疲れさまでした！</div>
-    <div class="modal-body" id="modal-body"></div>
-    <button class="modal-close" onclick="closeModal()">閉じる</button>
+  <div class="overall-progress">
+    <div class="op-header">
+      <span>全体進捗</span>
+      <span id="op-label">0 / 40 シーン完了</span>
+    </div>
+    <div class="op-bar"><div class="op-fill" id="op-fill" style="width:0%"></div></div>
   </div>
-</div>
+
+  <section class="phase-grid" id="phase-grid">
+    <!-- filled by JS -->
+  </section>
+
+  <!-- Notion webhook setup -->
+  <div class="setup-section">
+    <div class="setup-card">
+      <span class="setup-icon">🔗</span>
+      <div class="setup-info">
+        <div class="setup-title">Notion連携（オプション）</div>
+        <div class="setup-desc">Google Apps ScriptのWebhook URLを設定すると、学習結果がNotionのDailyLogに自動記録されます。</div>
+      </div>
+      <div>
+        <div class="setup-input-wrap">
+          <input class="setup-input" id="webhook-input" type="url" placeholder="https://script.google.com/macros/s/..." />
+          <button class="setup-save" onclick="saveWebhook()">保存</button>
+        </div>
+        <div class="setup-saved" id="webhook-saved">✓ 保存しました</div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="footer">
+  M&A Case Study v1.0 | Broadleaf M&Aスキル習得プログラム | 進捗はブラウザに自動保存されます
+</footer>
 
 <script>
-// ═══════════════════════════════════════
-//  CURRICULUM DATA  (Phase 0 全20日)
-// ═══════════════════════════════════════
-const CURRICULUM = [
-  {day:1,week:1,phase:"Phase 0",theme:"M&A全体像",
-   goal:"M&Aのプロセス全体像を説明できるようになる（5ステップ）",
-   morning:{task:"M&Aの基礎知識：目的・種類・プロセスを読む",focus:"戦略的M&A vs 財務的M&A の違いを意識する",
-    links:[{label:"M&Aとは？意味・流れ・手法など基本をわかりやすく解説",url:"https://fundbook.co.jp/what-is-ma/"},
-           {label:"M&Aを学ぶ（日本M&Aセンター）",url:"https://www.nihon-ma.co.jp/magazine/learn/"}]},
-   checks:["M&Aの定義を自分の言葉でNotionに書く","気になった用語を1つ調べてメモする","M&Aプロセス5ステップを箇条書きで書く"],
-   tags:["M&Aの目的","プロセス5ステップ","戦略的M&A","財務的M&A"]},
+// ═══════════════════════════════════════════
+// SHARED DATA & UTILITIES
+// ═══════════════════════════════════════════
 
-  {day:2,week:1,phase:"Phase 0",theme:"財務諸表の基礎①",
-   goal:"BS・PL・CFの3表の連動関係を図で説明できる",
-   morning:{task:"財務3表（BS・PL・CF）の基本と連動関係を読む",focus:"PL→BS・CF→BSの連動箇所を追う",
-    links:[{label:"財務3表の読み方・つながりをわかりやすく解説（マネーフォワード）",url:"https://biz.moneyforward.com/accounting/basic/47/"},
-           {label:"財務諸表とは？種類と見方を解説（M&Aキャピタルパートナーズ）",url:"https://www.ma-cp.com/about-ma/financial-statements/"}]},
-   checks:["財務3表の関係図をノートに手書きしてNotionにアップ","当期純利益がどこに流れるか説明できるか確認する"],
-   tags:["貸借対照表","損益計算書","キャッシュフロー計算書","財務3表連動"]},
+const APP_VERSION = '1.0.0';
+const STORAGE_KEY = 'ma_case_study_v1';
 
-  {day:3,week:1,phase:"Phase 0",theme:"財務諸表の基礎②",
-   goal:"EBITDAを自分で計算できる",
-   morning:{task:"EBITDAの定義・計算方法・M&Aでの使われ方を読む",focus:"EBITDAとフリーCFの違い・なぜM&Aで使われるか",
-    links:[{label:"EBITDAとは？M&Aバリュエーションの重要指標（SOGOTCHA）",url:"https://sogotcha.com/ebitda/"},
-           {label:"EBITDAマルチプルとは？計算方法を解説（M&Aキャピタルパートナーズ）",url:"https://www.ma-cp.com/about-ma/ebitda-multiple/"}]},
-   checks:["仮想PLからEBITDAを計算してNotionに記録する","EBITDA・EBIT・NETの違いを表にまとめる"],
-   tags:["EBITDA","減価償却","事業価値","フリーCF"]},
+// ── Storage helpers ──
+const Store = {
+  get() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
+    catch { return {}; }
+  },
+  set(data) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
+    catch(e) { console.warn('Storage error', e); }
+  },
+  update(fn) {
+    const d = this.get();
+    fn(d);
+    this.set(d);
+  },
+  getPhase(phaseId) {
+    const d = this.get();
+    return d[phaseId] || { completed: [], score: 0, total: 0, lastScene: 0, glossaryUnlocked: [] };
+  },
+  savePhase(phaseId, data) {
+    this.update(d => { d[phaseId] = data; });
+  },
+  reset(phaseId) {
+    this.update(d => { delete d[phaseId]; });
+  },
+  getAllScores() {
+    const d = this.get();
+    return Object.entries(d).map(([k, v]) => ({ phase: k, score: v.score || 0, total: v.total || 0 }));
+  }
+};
 
-  {day:4,week:1,phase:"Phase 0",theme:"M&Aプロセス概観",
-   goal:"LOI〜クロージングまでの流れを説明できる",
-   morning:{task:"M&Aの各フェーズ（LOI・DD・SPA・クロージング）を読む",focus:"各フェーズの目的と主要成果物",
-    links:[{label:"M&Aの全手順を11ステップで徹底解説（M&A総合研究所）",url:"https://masouken.com/M&A%E3%81%AE%E3%83%95%E3%83%AD%E3%83%BC"},
-           {label:"M&Aの流れ・進め方とは？（日本M&Aセンター）",url:"https://www.nihon-ma.co.jp/columns/2023/x20230224-2/"}]},
-   checks:["プロセスフロー図をNotionに作成する（簡易版でOK）","DDフェーズで何を確認するか3つ挙げる"],
-   tags:["LOI","デューデリジェンス","SPA","クロージング","IM"]},
+// ── Glossary data ──
+const GLOSSARY_ALL = {
+  ma_overview:   { name:"M&Aとは", category:"基礎", body:"Mergers（合併）& Acquisitions（買収）の略。企業の合併・買収・提携を通じて事業拡大や経営効率化を図る手段。日本では年間4,000件超が実施される。" },
+  organic:       { name:"有機成長vs非有機成長", category:"基礎", body:"有機成長＝自社の既存事業を拡大する成長。非有機成長＝M&AやJV（合弁）など外部リソース活用による成長。M&Aは時間を『買う』手段とも言われる。" },
+  strategic_fit: { name:"戦略適合性", category:"戦略", body:"買収候補が自社の経営戦略・ビジョンとどれだけ合致するか。戦略適合性が低い買収は統合後に「何のために買ったか」が不明確になりやすい。" },
+  synergy:       { name:"シナジー", category:"戦略", body:"①コスト削減（重複機能統合）②収益増加（クロスセル・市場拡大）③ケイパビリティ獲得（技術・人材）の3種類がある。シナジーは楽観的に過大評価されやすいため、保守的試算が重要。" },
+  origination:   { name:"案件発掘チャネル", category:"プロセス", body:"①自己開拓（業界調査・DB検索）②M&A仲介・FA経由③既存ネットワーク④競合・業界カンファレンス。自己開拓は競合が少ない代わりに手間がかかる。" },
+  screening:     { name:"初期スクリーニング", category:"プロセス", body:"ロングリスト（30〜50社）を投資基準（業種・規模・財務・地域）で絞り込みショートリスト（3〜5社）にするプロセス。基準の明文化が重要。" },
+  nda:           { name:"NDA（秘密保持契約）", category:"法務", body:"Non-Disclosure Agreement。情報開示前に締結し、受領情報の目的外使用・第三者開示を禁止する。M&Aでは相互NDAが一般的。違反時の損害賠償条項が重要。" },
+  teaser:        { name:"ティーザー（匿名概要書）", category:"プロセス", body:"会社名を伏せた状態で事業概要・財務ハイライトを記載した1〜2枚の文書。NDA締結前に相手の関心を確認するために使われる。" },
+  im:            { name:"IM（インフォメーションメモランダム）", category:"プロセス", body:"NDA締結後に提供される詳細な会社情報資料。事業内容・財務・市場・組織・リスクなどを網羅する20〜100ページ程度の文書。" },
+  valuation:     { name:"企業価値評価（バリュエーション）", category:"財務", body:"主な手法：①DCF法（将来CFを現在価値に割引）②マルチプル法（EV/EBITDA等の類似企業比較）③純資産法（BS基準）。M&Aでは①②を併用するのが一般的。" },
+  ebitda:        { name:"EBITDA", category:"財務", body:"Earnings Before Interest, Taxes, Depreciation and Amortization。税引前利益＋支払利息＋減価償却費。企業の事業キャッシュ創出力を示す指標。M&Aバリュエーションで頻繁に使用。" },
+  ev:            { name:"EV（企業価値）", category:"財務", body:"Enterprise Value＝時価総額＋有利子負債－現金・現金同等物。EV/EBITDAマルチプルは業種によって異なる（SaaS系：10〜20倍、製造業：5〜8倍など）。" },
+  loi:           { name:"LOI（意向表明書）", category:"プロセス", body:"Letter of Intent。買収意思・価格レンジ・独占交渉期間・DD実施合意などを記載した非拘束文書。法的拘束力はないが、交渉の土台となる重要書類。" },
+  dd:            { name:"DD（デュー・デリジェンス）", category:"プロセス", body:"財務・法務・事業・IT・人事・環境などの観点から対象会社を詳細調査するプロセス。LOI締結後、独占交渉期間中に実施。通常4〜8週間。" },
+  dcf:           { name:"DCF法（割引キャッシュフロー法）", category:"財務", body:"将来のフリーキャッシュフロー（FCF）を加重平均資本コスト（WACC）で現在価値に割り引いて企業価値を算出する手法。M&Aの主要バリュエーション手法。" },
+  wacc:          { name:"WACC（加重平均資本コスト）", category:"財務", body:"Weighted Average Cost of Capital。負債コストと株主資本コストを資本構成比率で加重平均したもの。DCFのディスカウントレートとして使用。" },
+  pmi:           { name:"PMI（統合後管理）", category:"PMI", body:"Post Merger Integration。クロージング後の統合プロセス。組織・システム・文化の統合を管理し、計画したシナジーを実現するための取り組み。M&A成功の最大の鍵とされる。" },
+  spa:           { name:"SPA（株式譲渡契約）", category:"法務", body:"Share Purchase Agreement。最終的な買収契約書。価格・クロージング条件・表明保証・補償条項などを規定する法的拘束力のある文書。" },
+  exclusivity:   { name:"独占交渉期間（Exclusivity）", category:"プロセス", body:"LOI締結後に設定される期間（通常30〜90日）。この間、売り手は他の買い手との交渉を禁止される。買い手はこの期間にDDを実施する。" },
+};
 
-  {day:5,week:1,phase:"Phase 0",theme:"Week 1 復習",
-   goal:"Week1の内容を口頭で説明できる",
-   morning:{task:"Week1の復習：M&A概要・財務諸表・プロセスの総まとめ",focus:"曖昧だった点・もう一度確認したい箇所を探す",
-    links:[{label:"M&A用語集（M&Aキャピタルパートナーズ）",url:"https://www.ma-cp.com/about-ma/"},
-           {label:"M&Aを学ぶ 解説記事＆用語集（M&Aキャピタルパートナーズ）",url:"https://www.ma-cp.com/about-ma/articles/"}]},
-   checks:["Phase 0 KPIチェックリストの進捗を確認する","疑問点リストをNotionに記録する","週次振り返りを日次ログに書く"],
-   tags:["復習","KPI確認","定着確認","疑問点整理"]},
-
-  {day:6,week:2,phase:"Phase 0",theme:"バリュエーション①",
-   goal:"DCF法の基本構造を説明できる",
-   morning:{task:"DCF法（割引キャッシュフロー法）の基礎を読む",focus:"WACCの構成要素（Kd・Ke・税効果）",
-    links:[{label:"DCF法とは？基礎と限界（シェルパ・キャピタル・アドバイザリー）",url:"https://www.sherpa-capital-advisory.com/knowledge/3707/"},
-           {label:"DCF法の基礎（インカムアプローチ）山田コンサルティング",url:"https://www.ycg-advisory.jp/learning/valuation/income/"}]},
-   checks:["DCFの計算フローをNotionに図示する","WACCの計算式を書いて説明できるか確認する"],
-   tags:["DCF","WACC","ターミナルバリュー","FCF","割引率"]},
-
-  {day:7,week:2,phase:"Phase 0",theme:"バリュエーション②",
-   goal:"EV/EBITDAマルチプルを使った評価ができる",
-   morning:{task:"マルチプル法（類似企業比較法）の基礎を読む",focus:"EV・株式価値・純有利子負債の関係",
-    links:[{label:"マルチプル法とは？計算方法やメリット・デメリット（M&A総合研究所）",url:"https://masouken.com/%E3%83%9E%E3%83%AB%E3%83%81%E3%83%97%E3%83%AB%E6%B3%95"},
-           {label:"マルチプル法（グロービス経営大学院 用語解説）",url:"https://mba.globis.ac.jp/about_mba/glossary/detail-20610.html"}]},
-   checks:["日本の上場企業1社のEV/EBITDAを計算してNotionに記録する","EV算出のための調整項目リストを作る"],
-   tags:["マルチプル法","EV","EV/EBITDA","類似企業","株式価値"]},
-
-  {day:8,week:2,phase:"Phase 0",theme:"法務基礎①",
-   goal:"M&Aにおける主要契約書の種類と役割を列挙できる",
-   morning:{task:"NDA・MOU・LOI・SPAの概要と役割を読む",focus:"各契約書の締結タイミングと目的",
-    links:[{label:"M&Aの契約書の種類と役割まとめ",url:"https://www.ma-cp.com/about-ma/articles/"},
-           {label:"秘密保持契約（NDA）の基本と注意点",url:"https://batonz.jp/learn/14911/"}]},
-   checks:["4つの契約書の締結タイミング表をNotionに作る","NDAで必ず入れるべき条項3つをメモする"],
-   tags:["NDA","MOU","LOI","SPA","契約書"]},
-
-  {day:9,week:2,phase:"Phase 0",theme:"法務基礎②",
-   goal:"表明保証とインデムニティの違いを説明できる",
-   morning:{task:"表明保証・誓約事項・補償条項（インデムニティ）を読む",focus:"買主保護の観点で重要な条項",
-    links:[{label:"表明保証とは？M&Aでの役割と注意点",url:"https://www.nihon-ma.co.jp/magazine/learn/"},
-           {label:"補償条項（インデムニティ）の基礎知識",url:"https://www.ma-cp.com/about-ma/articles/"}]},
-   checks:["重要条項リストをNotionの法務ノートに追加する","表明保証違反が起きた場合の流れを書いてみる"],
-   tags:["表明保証","インデムニティ","誓約事項","クロージング条件"]},
-
-  {day:10,week:2,phase:"Phase 0",theme:"Week 2 復習",
-   goal:"Week2の内容を口頭で説明できる",
-   morning:{task:"Week2の復習：バリュエーション・法務の総まとめ",focus:"バリュエーションと法務の基礎の定着確認",
-    links:[{label:"M&Aバリュエーション手法まとめ",url:"https://masouken.com/%E3%83%9E%E3%83%AB%E3%83%81%E3%83%97%E3%83%AB%E6%B3%95"},
-           {label:"M&A法務の基礎知識",url:"https://www.ma-cp.com/about-ma/articles/"}]},
-   checks:["疑問点リストを更新する","週次振り返りをNotionに記録する","DCFとマルチプルの違いを3行で書く"],
-   tags:["復習","疑問点整理","定着確認"]},
-
-  {day:11,week:3,phase:"Phase 0",theme:"戦略・DD準備①",
-   goal:"M&Aの戦略的動機を4類型で説明できる",
-   morning:{task:"M&A戦略の動機（水平統合・垂直統合・多角化・機能補完）を読む",focus:"各タイプでのシナジー仮説の立て方",
-    links:[{label:"M&Aの目的・動機・戦略的意義をわかりやすく解説",url:"https://fundbook.co.jp/what-is-ma/"},
-           {label:"シナジー効果とは？M&Aで期待できる効果の種類",url:"https://www.nihon-ma.co.jp/magazine/learn/"}]},
-   checks:["4類型の定義と事例をNotionにまとめる","自社（または仮想企業）でM&Aが有効なケースを考えてみる"],
-   tags:["水平統合","垂直統合","多角化","シナジー","戦略DD"]},
-
-  {day:12,week:3,phase:"Phase 0",theme:"戦略・DD準備②",
-   goal:"ビジネスDDの主要チェック項目を説明できる",
-   morning:{task:"ビジネスデューデリジェンスの概要とチェック項目を読む",focus:"市場・競合・顧客・ビジネスモデルの4軸",
-    links:[{label:"ビジネスデューデリジェンスとは？調査内容と進め方",url:"https://www.ma-cp.com/about-ma/articles/"},
-           {label:"デューデリジェンスの種類と目的まとめ",url:"https://www.nihon-ma.co.jp/magazine/learn/"}]},
-   checks:["ビジネスDDチェックリストを作成してNotionに保存する","業界分析で使えるフレームワークを2つメモする"],
-   tags:["ビジネスDD","市場調査","競合分析","ビジネスモデル"]},
-
-  {day:13,week:3,phase:"Phase 0",theme:"財務DD入門",
-   goal:"財務DDで確認する主要項目を説明できる",
-   morning:{task:"財務デューデリジェンスの概要・QoE・正常化EBITDAを読む",focus:"なぜQuality of Earningsが重要か",
-    links:[{label:"財務デューデリジェンスとは？調査内容と進め方",url:"https://www.ycg-advisory.jp/learning/valuation/income/"},
-           {label:"QoE（Quality of Earnings）とは？",url:"https://sogotcha.com/ebitda/"}]},
-   checks:["QoEの概念をNotionにまとめる","正常化EBITDAの調整項目リストを作る"],
-   tags:["財務DD","QoE","正常化EBITDA","運転資本","NWC"]},
-
-  {day:14,week:3,phase:"Phase 0",theme:"交渉基礎",
-   goal:"M&A交渉における主要論点を説明できる",
-   morning:{task:"M&A交渉の基本構造・主要論点・価格調整メカニズムを読む",focus:"買主vs売主の利害対立ポイント",
-    links:[{label:"M&A交渉のポイントと進め方",url:"https://www.nihon-ma.co.jp/magazine/learn/"},
-           {label:"アーンアウト条項とは？仕組みと注意点",url:"https://www.ma-cp.com/about-ma/articles/"}]},
-   checks:["交渉論点マップをNotionに作成する","エスクロー・アーンアウトの概念をメモする"],
-   tags:["交渉","エスクロー","アーンアウト","価格調整","クロージング条件"]},
-
-  {day:15,week:3,phase:"Phase 0",theme:"Week 3 復習",
-   goal:"Week3の内容を口頭で説明できる",
-   morning:{task:"Week3の復習：戦略・DD・交渉の総まとめ",focus:"3週間の全体像を俯瞰して整理する",
-    links:[{label:"M&Aデューデリジェンス総まとめ",url:"https://www.nihon-ma.co.jp/magazine/learn/"},
-           {label:"M&A用語集",url:"https://www.ma-cp.com/about-ma/"}]},
-   checks:["疑問点リストを更新する","週次振り返りをNotionに記録する","Phase 0 KPI中間確認を行う"],
-   tags:["復習","疑問点整理","KPI中間確認"]},
-
-  {day:16,week:4,phase:"Phase 0",theme:"PMI概要",
-   goal:"PMIの3領域（経営・業務・文化）を説明できる",
-   morning:{task:"PMI（統合後マネジメント）の概要と3領域を読む",focus:"Day 1プランとは何か・なぜ重要か",
-    links:[{label:"PMIとは？M&A後の統合プロセスをわかりやすく解説",url:"https://fundbook.co.jp/what-is-ma/"},
-           {label:"M&A後の統合（PMI）の進め方と成功のポイント",url:"https://www.nihon-ma.co.jp/magazine/learn/"}]},
-   checks:["PMI 3領域の定義をNotionにまとめる","Day 1プランで最初に手を打つべき5項目を書く"],
-   tags:["PMI","Day 1プラン","経営統合","業務統合","文化統合"]},
-
-  {day:17,week:4,phase:"Phase 0",theme:"PMI計画立案",
-   goal:"統合計画のフレームワークを説明できる",
-   morning:{task:"PMI計画の立て方（IMO・ワークストリーム・KPI）を読む",focus:"IMO（Integration Management Office）の役割",
-    links:[{label:"PMI計画の立て方・統合ロードマップの作り方",url:"https://www.ma-cp.com/about-ma/articles/"},
-           {label:"シナジー実現のためのPMI実務ポイント",url:"https://www.nihon-ma.co.jp/magazine/learn/"}]},
-   checks:["統合計画テンプレートの骨子をNotionに作成する","シナジー計算の方法を整理してメモする"],
-   tags:["IMO","統合計画","ワークストリーム","シナジー計算","KPI"]},
-
-  {day:18,week:4,phase:"Phase 0",theme:"ケーススタディ",
-   goal:"実在のM&A事例を財務・法務・戦略の視点で分析できる",
-   morning:{task:"日本企業の代表的M&A事例を読んで分析する",focus:"価格根拠・シナジー仮説・統合プロセスの3点",
-    links:[{label:"日本M&A事例まとめ（MARR Online）",url:"https://maonline.jp/articles"},
-           {label:"M&A失敗事例から学ぶ教訓",url:"https://masouken.com/M&A%E3%81%AE%E3%83%95%E3%83%AD%E3%83%BC"}]},
-   checks:["事例分析をNotionに記録（財務・法務・戦略それぞれ3行）する","学んだ教訓を自分なりにまとめる"],
-   tags:["ケーススタディ","事例分析","シナジー検証","教訓"]},
-
-  {day:19,week:4,phase:"Phase 0",theme:"Phase 0 総復習",
-   goal:"Phase 0全体の内容を体系的にまとめられる",
-   morning:{task:"Phase 0全体（4ドメイン）の総まとめ記事を読む",focus:"4ドメインの繋がりと全体像",
-    links:[{label:"M&Aの基礎知識 総まとめ",url:"https://fundbook.co.jp/what-is-ma/"},
-           {label:"M&A実務の全体像（財務・法務・戦略・PMI）",url:"https://www.nihon-ma.co.jp/magazine/learn/"}]},
-   checks:["Phase 0 サマリーページをNotionに作成する","Phase 1への準備：不安な分野トップ2をメモする"],
-   tags:["総復習","Phase 0完了","Phase 1準備","体系化"]},
-
-  {day:20,week:4,phase:"Phase 0",theme:"Phase 0 KPI達成確認",
-   goal:"Phase 0の全KPIをチェックし、Phase 1へ移行する",
-   morning:{task:"Phase 1（財務DD深化）の概要を予習する",focus:"未達項目があれば今日中に補完する",
-    links:[{label:"財務DDの実務詳細（Phase 1予習）",url:"https://www.ycg-advisory.jp/learning/valuation/income/"},
-           {label:"M&Aバリュエーション実務（Phase 1予習）",url:"https://masouken.com/%E3%83%9E%E3%83%AB%E3%83%81%E3%83%97%E3%83%AB%E6%B3%95"}]},
-   checks:["全KPIチェックリストを完了させる","Phase 1のカリキュラム概要を読んでおく","Phase 0完了をNotionに記録する"],
-   tags:["KPI達成","Phase 0完了","Phase 1移行","マイルストーン"]},
+// ── Phase metadata ──
+const PHASES = [
+  { id:'phase1', name:'Phase 1', title:'案件発掘〜初期検討', scenes:10, icon:'🔍', status:'available', desc:'戦略テーマ設定・候補企業発掘・スクリーニング・NDA・初期バリュエーション・LOI' },
+  { id:'phase2', name:'Phase 2', title:'DD〜バリュエーション深掘り', scenes:10, icon:'🔬', status:'coming', desc:'財務DD・法務DD・DCF法・リスク識別・価格再交渉' },
+  { id:'phase3', name:'Phase 3', title:'交渉〜契約締結', scenes:10, icon:'🤝', status:'coming', desc:'SPA交渉・表明保証・クロージング条件・最終合意' },
+  { id:'phase4', name:'Phase 4', title:'PMI（統合後管理）', scenes:10, icon:'🏗', status:'coming', desc:'100日プラン・組織統合・システム統合・シナジー実現管理' },
 ];
 
-const TOTAL = CURRICULUM.length;
-
-// ═══════════════════════════════════
-//  DAY ROUTING
-//  URLパラメータ ?d=1 でも、日付自動でも動く
-// ═══════════════════════════════════
-function getDayIndex() {
-  const params = new URLSearchParams(location.search);
-  const d = parseInt(params.get('d'));
-  if (!isNaN(d) && d >= 1 && d <= TOTAL) return d - 1;
-
-  // 開始日からの日数で自動計算
-  const startStr = localStorage.getItem('ma_start');
-  if (!startStr) {
-    localStorage.setItem('ma_start', new Date().toISOString().split('T')[0]);
-    return 0;
-  }
-  const start = new Date(startStr);
-  const today = new Date();
-  today.setHours(0,0,0,0);
-  start.setHours(0,0,0,0);
-  const diff = Math.floor((today - start) / 86400000);
-  return Math.max(0, Math.min(diff, TOTAL - 1));
+// ── Notion logging (passive – best-effort) ──
+async function logToNotion(phaseId, score, total, completedAt) {
+  // Uses Notion API via a proxy if available; otherwise silently skips
+  // In GitHub Pages static deployment, this requires a serverless function or n8n webhook
+  // Placeholder: can be connected to n8n / Google Apps Script webhook
+  const WEBHOOK_URL = localStorage.getItem('ma_notion_webhook');
+  if (!WEBHOOK_URL) return;
+  try {
+    await fetch(WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        phase: phaseId,
+        score,
+        total,
+        pct: Math.round((score/total)*100),
+        completedAt,
+        type: 'case_study_result'
+      })
+    });
+  } catch(e) { /* silent */ }
 }
 
-// ═══════════════════════════════════
-//  RENDER
-// ═══════════════════════════════════
-const idx = getDayIndex();
-const c = CURRICULUM[idx];
+</script>
+<script>
+function renderPhaseGrid() {
+  const grid = document.getElementById('phase-grid');
+  grid.innerHTML = '';
 
-// Header
-document.getElementById('hd-title').innerHTML =
-  `Week ${c.week} Day ${((c.day-1)%5)+1}<br><span>${c.theme}</span>`;
-document.getElementById('phase-badge').textContent = c.phase + ' – 基礎固め';
-const today = new Date();
-document.getElementById('hd-date').textContent =
-  today.getFullYear() + '年' + (today.getMonth()+1) + '月' + today.getDate() + '日（' +
-  ['日','月','火','水','木','金','土'][today.getDay()] + '）';
+  let totalCompleted = 0;
+  let totalScore = 0;
+  let totalAnswered = 0;
+  let totalUnlocked = new Set();
 
-// Progress
-const pct = Math.round(((idx) / TOTAL) * 100);
-document.getElementById('prog-pct').textContent = (idx+1) + '/' + TOTAL + '日';
-setTimeout(() => {
-  document.getElementById('prog-fill').style.width = Math.max(pct, 2) + '%';
-}, 300);
+  PHASES.forEach((ph, i) => {
+    const saved = Store.getPhase(ph.id);
+    const completedScenes = saved.completed?.length || 0;
+    const pct = ph.scenes > 0 ? Math.round((completedScenes / ph.scenes) * 100) : 0;
+    const isDone = completedScenes >= ph.scenes;
+    const hasProgress = completedScenes > 0;
 
-// Goal
-document.getElementById('goal-text').textContent = c.goal;
+    totalCompleted += completedScenes;
+    totalScore += saved.score || 0;
+    totalAnswered += saved.total || 0;
+    (saved.glossaryUnlocked || []).forEach(k => totalUnlocked.add(k));
 
-// Morning task
-document.getElementById('morning-focus').textContent = c.morning.focus;
+    const statusLabel = isDone ? 'DONE' : (ph.status === 'available' ? 'START' : 'COMING SOON');
+    const statusClass = isDone ? 'done' : ph.status;
 
-// Morning links
-const linksWrap = document.getElementById('morning-links');
-(c.morning.links || []).forEach(lnk => {
-  const a = document.createElement('a');
-  a.className = 'res-link';
-  a.href = lnk.url;
-  a.target = '_blank';
-  a.innerHTML = `<span class="res-link-icon">📄</span><span class="res-link-label">${lnk.label}</span><span class="res-link-arr">›</span>`;
-  linksWrap.appendChild(a);
-});
+    const scoreDisplay = saved.total > 0
+      ? `${saved.score}/${saved.total} 正解`
+      : '未挑戦';
+    const scoreClass = saved.total > 0
+      ? (saved.score / saved.total >= 0.7 ? 'good' : 'ok')
+      : 'na';
 
-// Tags
-document.getElementById('tags-wrap').innerHTML = c.tags
-  .map(t => `<span class="tag">${t}</span>`).join('');
+    const card = document.createElement('div');
+    card.className = `phase-card ${isDone ? 'done' : ph.status}`;
+    card.style.animationDelay = `${i * 0.05 + 0.05}s`;
+    card.innerHTML = `
+      <div class="phase-card-top">
+        <span class="phase-icon">${ph.icon}</span>
+        <span class="phase-status-badge ${statusClass}">${statusLabel}</span>
+      </div>
+      <div class="phase-card-body">
+        <div class="phase-tag">${ph.name}</div>
+        <div class="phase-name">${ph.title}</div>
+        <div class="phase-desc">${ph.desc}</div>
+        <div class="phase-prog"><div class="phase-prog-fill" style="width:${pct}%"></div></div>
+      </div>
+      <div class="phase-card-footer">
+        <span class="phase-scenes">${completedScenes}/${ph.scenes} シーン</span>
+        <span class="phase-score-mini ${scoreClass}">${scoreDisplay}</span>
+      </div>`;
 
-// Checklist
-const cl = document.getElementById('checklist');
-c.checks.forEach((txt, i) => {
-  const div = document.createElement('div');
-  div.className = 'check-item';
-  div.innerHTML = `<div class="check-box">✓</div><div class="check-text">${txt}</div>`;
-  div.addEventListener('click', () => { div.classList.toggle('done'); updateBtn(); });
-  cl.appendChild(div);
-});
-
-// Notion link
-document.getElementById('notion-link').href = 'https://www.notion.so';
-
-function updateBtn() {
-  const total = document.querySelectorAll('.check-item').length;
-  const done  = document.querySelectorAll('.check-item.done').length;
-  const btn = document.getElementById('complete-btn');
-  if (done === total) {
-    btn.textContent = '今日の学習を完了する ✓';
-    btn.classList.add('all-done');
-  } else {
-    btn.textContent = `今日の学習を完了する（${done}/${total}完了）`;
-    btn.classList.remove('all-done');
-  }
-}
-
-// ═══════════════════════════════════
-//  TIMER
-// ═══════════════════════════════════
-const timers = {};
-function toggleTimer(id, minutes) {
-  const btn = document.getElementById(id + '-btn');
-  const num = document.getElementById(id + '-num');
-  const secs = minutes * 60;
-
-  if (timers[id]) {
-    clearInterval(timers[id].iv);
-    delete timers[id];
-    btn.className = 'timer-btn';
-    btn.textContent = '▶  ' + minutes + '分タイマー開始';
-    num.className = 'timer-num';
-    return;
-  }
-
-  let elapsed = 0;
-  num.className = 'timer-num on';
-  btn.className = 'timer-btn running';
-  btn.textContent = '⏹  タイマーを停止';
-
-  function fmt(s) {
-    const m2 = String(Math.floor(s/60)).padStart(2,'0');
-    const s2 = String(s%60).padStart(2,'0');
-    return m2 + ':' + s2;
-  }
-  num.textContent = fmt(secs);
-
-  timers[id] = { iv: setInterval(() => {
-    elapsed++;
-    const rem = secs - elapsed;
-    if (rem <= 0) {
-      clearInterval(timers[id].iv);
-      delete timers[id];
-      num.textContent = '完了!';
-      num.className = 'timer-num on done-c';
-      btn.className = 'timer-btn fin';
-      btn.textContent = '✓  完了';
-      return;
+    if (ph.status === 'available') {
+      card.onclick = () => {
+        window.location.href = `phase1.html${hasProgress && !isDone ? '#resume' : ''}`;
+      };
     }
-    num.textContent = fmt(rem);
-  }, 1000) };
+    grid.appendChild(card);
+  });
+
+  // overall stats
+  document.getElementById('total-unlocked').textContent = totalUnlocked.size;
+  const overallPct = totalAnswered > 0 ? Math.round((totalScore / totalAnswered) * 100) : 0;
+  document.getElementById('total-score').textContent = totalAnswered > 0 ? `${overallPct}%` : '—';
+  document.getElementById('op-label').textContent = `${totalCompleted} / 40 シーン完了`;
+  document.getElementById('op-fill').style.width = `${(totalCompleted / 40) * 100}%`;
 }
 
-// ═══════════════════════════════════
-//  COMPLETE
-// ═══════════════════════════════════
-function completeDay() {
-  const done = document.querySelectorAll('.check-item.done').length;
-  const total = document.querySelectorAll('.check-item').length;
-  const modal = document.getElementById('modal');
-  document.getElementById('modal-title').textContent = 'お疲れさまでした！';
-  document.getElementById('modal-body').innerHTML =
-    `<strong>Week ${c.week} Day ${((c.day-1)%5)+1}「${c.theme}」完了</strong><br><br>` +
-    `チェックリスト: ${done}/${total}<br>` +
-    `Phase 0 進捗: ${idx+1}/${TOTAL}日<br><br>` +
-    '明日もメールをチェックしてください。';
-  modal.classList.add('open');
+function saveWebhook() {
+  const url = document.getElementById('webhook-input').value.trim();
+  if (url) {
+    localStorage.setItem('ma_notion_webhook', url);
+    const saved = document.getElementById('webhook-saved');
+    saved.style.display = 'block';
+    setTimeout(() => { saved.style.display = 'none'; }, 3000);
+  }
 }
-function closeModal() {
-  document.getElementById('modal').classList.remove('open');
+
+function resetAll() {
+  if (confirm('全フェーズの進捗をリセットしますか？')) {
+    localStorage.removeItem(STORAGE_KEY);
+    renderPhaseGrid();
+  }
 }
+
+// Init
+const saved = localStorage.getItem('ma_notion_webhook');
+if (saved) document.getElementById('webhook-input').value = saved;
+renderPhaseGrid();
 </script>
 </body>
 </html>

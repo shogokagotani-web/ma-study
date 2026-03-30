@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>用語集 | M&A Case Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0e16;--surface:#12161f;--surface2:#191e2b;--surface3:#1f2638;
+  --border:#252d40;--border2:#303d58;
+  --accent:#f0a500;--accent2:#3b82f6;--accent3:#10b981;
+  --text:#dde3f0;--text2:#8b95b0;--text3:#4a5470;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 60% 40% at 80% 0%,rgba(59,130,246,.05) 0%,transparent 60%);pointer-events:none;}
+
+/* header */
+.hdr{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:12px 24px;background:rgba(18,22,31,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);}
+.hdr-l{display:flex;align-items:center;gap:10px;}
+.back-btn{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text2);background:transparent;border:1px solid var(--border);padding:5px 12px;border-radius:6px;cursor:pointer;text-decoration:none;transition:all .2s;}
+.back-btn:hover{border-color:var(--text2);color:var(--text);}
+.hdr-badge{font-family:'IBM Plex Mono',monospace;font-size:10px;background:var(--accent2);color:#fff;padding:3px 8px;border-radius:3px;font-weight:500;}
+.hdr-unlock{font-size:11px;color:var(--accent3);}
+
+/* hero */
+.hero{padding:40px 24px 32px;max-width:860px;margin:0 auto;position:relative;z-index:1;}
+.hero-title{font-family:'Noto Serif JP',serif;font-size:clamp(22px,5vw,32px);font-weight:700;margin-bottom:10px;}
+.hero-sub{font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:24px;}
+
+/* search + filter */
+.search-wrap{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px;}
+.search-input{flex:1;min-width:200px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-family:'Noto Sans JP',sans-serif;font-size:13px;color:var(--text);outline:none;transition:border-color .2s;}
+.search-input:focus{border-color:var(--accent2);}
+.search-input::placeholder{color:var(--text3);}
+.filter-wrap{display:flex;gap:6px;flex-wrap:wrap;}
+.filter-btn{font-family:'IBM Plex Mono',monospace;font-size:11px;background:var(--surface);border:1px solid var(--border);color:var(--text2);padding:6px 12px;border-radius:20px;cursor:pointer;transition:all .2s;white-space:nowrap;}
+.filter-btn:hover{border-color:var(--border2);color:var(--text);}
+.filter-btn.active{background:rgba(240,165,0,.1);border-color:var(--accent);color:var(--accent);}
+
+/* stats */
+.stats-row{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:32px;}
+.stat-box{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 18px;display:flex;align-items:center;gap:12px;}
+.stat-num{font-family:'IBM Plex Mono',monospace;font-size:24px;color:var(--accent);}
+.stat-info{font-size:11px;color:var(--text3);line-height:1.5;}
+
+/* term grid */
+.term-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;max-width:860px;margin:0 auto;padding:0 24px 60px;position:relative;z-index:1;}
+
+.term-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;transition:all .2s;cursor:pointer;}
+.term-card:hover{border-color:var(--border2);transform:translateY(-2px);}
+.term-card.locked{opacity:.55;}
+.term-card.unlocked{border-color:rgba(59,130,246,.2);}
+.term-card.hidden{display:none;}
+
+.tc-head{display:flex;align-items:flex-start;justify-content:space-between;padding:14px 16px 10px;}
+.tc-left{}
+.tc-cat{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.12em;margin-bottom:5px;}
+.tc-cat.基礎{color:#a78bfa;}
+.tc-cat.戦略{color:var(--accent);}
+.tc-cat.財務{color:var(--accent3);}
+.tc-cat.プロセス{color:var(--accent2);}
+.tc-cat.法務{color:#f87171;}
+.tc-cat.PMI{color:#fb923c;}
+.tc-name{font-size:13px;font-weight:600;color:var(--text);line-height:1.4;}
+.tc-lock{font-size:16px;flex-shrink:0;margin-top:2px;}
+
+.tc-body{padding:0 16px 14px;font-size:12px;line-height:1.8;color:var(--text2);border-top:1px solid var(--border);padding-top:10px;margin-top:0;display:none;}
+.tc-body.show{display:block;}
+.tc-body.locked-body{color:var(--text3);font-style:italic;}
+
+/* no results */
+.no-results{text-align:center;padding:60px 20px;color:var(--text3);font-size:14px;display:none;grid-column:1/-1;}
+.no-results.show{display:block;}
+
+@media(max-width:600px){
+  .term-grid{grid-template-columns:1fr;padding:0 16px 60px;}
+  .hero{padding:28px 16px 20px;}
+  .stats-row{gap:10px;}
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.term-card{animation:fadeUp .35s ease both;}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-l">
+    <a class="back-btn" href="index.html">← ホーム</a>
+    <span class="hdr-badge">GLOSSARY</span>
+  </div>
+  <span class="hdr-unlock" id="hdr-unlock">🔓 0 / 0 解放済み</span>
+</header>
+
+<div class="hero">
+  <h1 class="hero-title">M&A 用語集</h1>
+  <p class="hero-sub">ケーススタディで登場するM&A専門用語を体系的に整理しました。学習を進めるたびに🔒が📖に解放されていきます。</p>
+
+  <div class="search-wrap">
+    <input class="search-input" id="search" type="text" placeholder="🔍 用語を検索..." oninput="filterTerms()">
+  </div>
+  <div class="filter-wrap" id="filter-wrap">
+    <button class="filter-btn active" data-cat="all" onclick="setFilter('all',this)">すべて</button>
+    <button class="filter-btn" data-cat="基礎" onclick="setFilter('基礎',this)">基礎</button>
+    <button class="filter-btn" data-cat="戦略" onclick="setFilter('戦略',this)">戦略</button>
+    <button class="filter-btn" data-cat="財務" onclick="setFilter('財務',this)">財務</button>
+    <button class="filter-btn" data-cat="プロセス" onclick="setFilter('プロセス',this)">プロセス</button>
+    <button class="filter-btn" data-cat="法務" onclick="setFilter('法務',this)">法務</button>
+    <button class="filter-btn" data-cat="PMI" onclick="setFilter('PMI',this)">PMI</button>
+    <button class="filter-btn" data-cat="unlocked" onclick="setFilter('unlocked',this)">🔓 解放済み</button>
+  </div>
+</div>
+
+<div class="stats-row" style="max-width:860px;margin:0 auto;padding:0 24px;position:relative;z-index:1;">
+  <div class="stat-box">
+    <div class="stat-num" id="stat-unlocked">0</div>
+    <div class="stat-info">解放済み用語<br><span style="color:var(--accent3)">学習で解放</span></div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-num" id="stat-total">0</div>
+    <div class="stat-info">全用語数<br><span style="color:var(--text3)">M&A全域をカバー</span></div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-num" id="stat-pct">0%</div>
+    <div class="stat-info">習得率<br><span style="color:var(--text3)">Phase 1〜4</span></div>
+  </div>
+</div>
+
+<div class="term-grid" id="term-grid">
+  <!-- filled by JS -->
+  <div class="no-results" id="no-results">該当する用語が見つかりません</div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════
+// SHARED DATA & UTILITIES
+// ═══════════════════════════════════════════
+
+const APP_VERSION = '1.0.0';
+const STORAGE_KEY = 'ma_case_study_v1';
+
+// ── Storage helpers ──
+const Store = {
+  get() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
+    catch { return {}; }
+  },
+  set(data) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
+    catch(e) { console.warn('Storage error', e); }
+  },
+  update(fn) {
+    const d = this.get();
+    fn(d);
+    this.set(d);
+  },
+  getPhase(phaseId) {
+    const d = this.get();
+    return d[phaseId] || { completed: [], score: 0, total: 0, lastScene: 0, glossaryUnlocked: [] };
+  },
+  savePhase(phaseId, data) {
+    this.update(d => { d[phaseId] = data; });
+  },
+  reset(phaseId) {
+    this.update(d => { delete d[phaseId]; });
+  },
+  getAllScores() {
+    const d = this.get();
+    return Object.entries(d).map(([k, v]) => ({ phase: k, score: v.score || 0, total: v.total || 0 }));
+  }
+};
+
+// ── Glossary data ──
+const GLOSSARY_ALL = {
+  ma_overview:   { name:"M&Aとは", category:"基礎", body:"Mergers（合併）& Acquisitions（買収）の略。企業の合併・買収・提携を通じて事業拡大や経営効率化を図る手段。日本では年間4,000件超が実施される。" },
+  organic:       { name:"有機成長vs非有機成長", category:"基礎", body:"有機成長＝自社の既存事業を拡大する成長。非有機成長＝M&AやJV（合弁）など外部リソース活用による成長。M&Aは時間を『買う』手段とも言われる。" },
+  strategic_fit: { name:"戦略適合性", category:"戦略", body:"買収候補が自社の経営戦略・ビジョンとどれだけ合致するか。戦略適合性が低い買収は統合後に「何のために買ったか」が不明確になりやすい。" },
+  synergy:       { name:"シナジー", category:"戦略", body:"①コスト削減（重複機能統合）②収益増加（クロスセル・市場拡大）③ケイパビリティ獲得（技術・人材）の3種類がある。シナジーは楽観的に過大評価されやすいため、保守的試算が重要。" },
+  origination:   { name:"案件発掘チャネル", category:"プロセス", body:"①自己開拓（業界調査・DB検索）②M&A仲介・FA経由③既存ネットワーク④競合・業界カンファレンス。自己開拓は競合が少ない代わりに手間がかかる。" },
+  screening:     { name:"初期スクリーニング", category:"プロセス", body:"ロングリスト（30〜50社）を投資基準（業種・規模・財務・地域）で絞り込みショートリスト（3〜5社）にするプロセス。基準の明文化が重要。" },
+  nda:           { name:"NDA（秘密保持契約）", category:"法務", body:"Non-Disclosure Agreement。情報開示前に締結し、受領情報の目的外使用・第三者開示を禁止する。M&Aでは相互NDAが一般的。違反時の損害賠償条項が重要。" },
+  teaser:        { name:"ティーザー（匿名概要書）", category:"プロセス", body:"会社名を伏せた状態で事業概要・財務ハイライトを記載した1〜2枚の文書。NDA締結前に相手の関心を確認するために使われる。" },
+  im:            { name:"IM（インフォメーションメモランダム）", category:"プロセス", body:"NDA締結後に提供される詳細な会社情報資料。事業内容・財務・市場・組織・リスクなどを網羅する20〜100ページ程度の文書。" },
+  valuation:     { name:"企業価値評価（バリュエーション）", category:"財務", body:"主な手法：①DCF法（将来CFを現在価値に割引）②マルチプル法（EV/EBITDA等の類似企業比較）③純資産法（BS基準）。M&Aでは①②を併用するのが一般的。" },
+  ebitda:        { name:"EBITDA", category:"財務", body:"Earnings Before Interest, Taxes, Depreciation and Amortization。税引前利益＋支払利息＋減価償却費。企業の事業キャッシュ創出力を示す指標。M&Aバリュエーションで頻繁に使用。" },
+  ev:            { name:"EV（企業価値）", category:"財務", body:"Enterprise Value＝時価総額＋有利子負債－現金・現金同等物。EV/EBITDAマルチプルは業種によって異なる（SaaS系：10〜20倍、製造業：5〜8倍など）。" },
+  loi:           { name:"LOI（意向表明書）", category:"プロセス", body:"Letter of Intent。買収意思・価格レンジ・独占交渉期間・DD実施合意などを記載した非拘束文書。法的拘束力はないが、交渉の土台となる重要書類。" },
+  dd:            { name:"DD（デュー・デリジェンス）", category:"プロセス", body:"財務・法務・事業・IT・人事・環境などの観点から対象会社を詳細調査するプロセス。LOI締結後、独占交渉期間中に実施。通常4〜8週間。" },
+  dcf:           { name:"DCF法（割引キャッシュフロー法）", category:"財務", body:"将来のフリーキャッシュフロー（FCF）を加重平均資本コスト（WACC）で現在価値に割り引いて企業価値を算出する手法。M&Aの主要バリュエーション手法。" },
+  wacc:          { name:"WACC（加重平均資本コスト）", category:"財務", body:"Weighted Average Cost of Capital。負債コストと株主資本コストを資本構成比率で加重平均したもの。DCFのディスカウントレートとして使用。" },
+  pmi:           { name:"PMI（統合後管理）", category:"PMI", body:"Post Merger Integration。クロージング後の統合プロセス。組織・システム・文化の統合を管理し、計画したシナジーを実現するための取り組み。M&A成功の最大の鍵とされる。" },
+  spa:           { name:"SPA（株式譲渡契約）", category:"法務", body:"Share Purchase Agreement。最終的な買収契約書。価格・クロージング条件・表明保証・補償条項などを規定する法的拘束力のある文書。" },
+  exclusivity:   { name:"独占交渉期間（Exclusivity）", category:"プロセス", body:"LOI締結後に設定される期間（通常30〜90日）。この間、売り手は他の買い手との交渉を禁止される。買い手はこの期間にDDを実施する。" },
+};
+
+// ── Phase metadata ──
+const PHASES = [
+  { id:'phase1', name:'Phase 1', title:'案件発掘〜初期検討', scenes:10, icon:'🔍', status:'available', desc:'戦略テーマ設定・候補企業発掘・スクリーニング・NDA・初期バリュエーション・LOI' },
+  { id:'phase2', name:'Phase 2', title:'DD〜バリュエーション深掘り', scenes:10, icon:'🔬', status:'coming', desc:'財務DD・法務DD・DCF法・リスク識別・価格再交渉' },
+  { id:'phase3', name:'Phase 3', title:'交渉〜契約締結', scenes:10, icon:'🤝', status:'coming', desc:'SPA交渉・表明保証・クロージング条件・最終合意' },
+  { id:'phase4', name:'Phase 4', title:'PMI（統合後管理）', scenes:10, icon:'🏗', status:'coming', desc:'100日プラン・組織統合・システム統合・シナジー実現管理' },
+];
+
+// ── Notion logging (passive – best-effort) ──
+async function logToNotion(phaseId, score, total, completedAt) {
+  // Uses Notion API via a proxy if available; otherwise silently skips
+  // In GitHub Pages static deployment, this requires a serverless function or n8n webhook
+  // Placeholder: can be connected to n8n / Google Apps Script webhook
+  const WEBHOOK_URL = localStorage.getItem('ma_notion_webhook');
+  if (!WEBHOOK_URL) return;
+  try {
+    await fetch(WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        phase: phaseId,
+        score,
+        total,
+        pct: Math.round((score/total)*100),
+        completedAt,
+        type: 'case_study_result'
+      })
+    });
+  } catch(e) { /* silent */ }
+}
+
+</script>
+<script>
+let currentFilter = 'all';
+let unlockedKeys = [];
+
+function loadUnlocked() {
+  const all = {};
+  ['phase1','phase2','phase3','phase4'].forEach(ph => {
+    const d = Store.getPhase(ph);
+    (d.glossaryUnlocked || []).forEach(k => { all[k] = true; });
+  });
+  unlockedKeys = Object.keys(all);
+}
+
+function renderGrid() {
+  const grid = document.getElementById('term-grid');
+  // clear except no-results
+  [...grid.querySelectorAll('.term-card')].forEach(el => el.remove());
+
+  const terms = Object.entries(GLOSSARY_ALL);
+  const total = terms.length;
+  const unlocked = unlockedKeys.length;
+
+  document.getElementById('stat-unlocked').textContent = unlocked;
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-pct').textContent = total > 0 ? Math.round((unlocked/total)*100) + '%' : '0%';
+  document.getElementById('hdr-unlock').textContent = `🔓 ${unlocked} / ${total} 解放済み`;
+
+  terms.forEach(([k, v], i) => {
+    const isUnlocked = unlockedKeys.includes(k);
+    const card = document.createElement('div');
+    card.className = `term-card ${isUnlocked ? 'unlocked' : 'locked'}`;
+    card.dataset.key = k;
+    card.dataset.cat = v.category;
+    card.dataset.name = v.name;
+    card.style.animationDelay = `${Math.min(i,20) * 0.025}s`;
+
+    card.innerHTML = `
+      <div class="tc-head">
+        <div class="tc-left">
+          <div class="tc-cat ${v.category}">${v.category}</div>
+          <div class="tc-name">${v.name}</div>
+        </div>
+        <div class="tc-lock">${isUnlocked ? '📖' : '🔒'}</div>
+      </div>
+      <div class="tc-body ${isUnlocked ? '' : 'locked-body'}" id="tb-${k}">
+        ${isUnlocked ? v.body : 'このフェーズを学習すると解放されます。'}
+      </div>`;
+
+    card.onclick = () => {
+      const body = document.getElementById(`tb-${k}`);
+      if (body) body.classList.toggle('show');
+    };
+
+    grid.insertBefore(card, document.getElementById('no-results'));
+  });
+
+  filterTerms();
+}
+
+function setFilter(cat, btn) {
+  currentFilter = cat;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  filterTerms();
+}
+
+function filterTerms() {
+  const q = document.getElementById('search').value.toLowerCase();
+  let visible = 0;
+
+  document.querySelectorAll('.term-card').forEach(card => {
+    const name = card.dataset.name.toLowerCase();
+    const cat = card.dataset.cat;
+    const isUnlocked = card.classList.contains('unlocked');
+
+    const matchSearch = !q || name.includes(q);
+    const matchFilter =
+      currentFilter === 'all' ||
+      (currentFilter === 'unlocked' && isUnlocked) ||
+      cat === currentFilter;
+
+    const show = matchSearch && matchFilter;
+    card.classList.toggle('hidden', !show);
+    if (show) visible++;
+  });
+
+  document.getElementById('no-results').classList.toggle('show', visible === 0);
+}
+
+// Init
+loadUnlocked();
+renderGrid();
+</script>
+</body>
+</html>

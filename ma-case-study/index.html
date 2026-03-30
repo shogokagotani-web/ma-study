@@ -1,0 +1,1902 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>用語集 | M&A Case Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0e16;--surface:#12161f;--surface2:#191e2b;--surface3:#1f2638;
+  --border:#252d40;--border2:#303d58;
+  --accent:#f0a500;--accent2:#3b82f6;--accent3:#10b981;
+  --text:#dde3f0;--text2:#8b95b0;--text3:#4a5470;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 60% 40% at 80% 0%,rgba(59,130,246,.05) 0%,transparent 60%);pointer-events:none;}
+
+/* header */
+.hdr{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:12px 24px;background:rgba(18,22,31,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);}
+.hdr-l{display:flex;align-items:center;gap:10px;}
+.back-btn{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text2);background:transparent;border:1px solid var(--border);padding:5px 12px;border-radius:6px;cursor:pointer;text-decoration:none;transition:all .2s;}
+.back-btn:hover{border-color:var(--text2);color:var(--text);}
+.hdr-badge{font-family:'IBM Plex Mono',monospace;font-size:10px;background:var(--accent2);color:#fff;padding:3px 8px;border-radius:3px;font-weight:500;}
+.hdr-unlock{font-size:11px;color:var(--accent3);}
+
+/* hero */
+.hero{padding:40px 24px 32px;max-width:860px;margin:0 auto;position:relative;z-index:1;}
+.hero-title{font-family:'Noto Serif JP',serif;font-size:clamp(22px,5vw,32px);font-weight:700;margin-bottom:10px;}
+.hero-sub{font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:24px;}
+
+/* search + filter */
+.search-wrap{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px;}
+.search-input{flex:1;min-width:200px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-family:'Noto Sans JP',sans-serif;font-size:13px;color:var(--text);outline:none;transition:border-color .2s;}
+.search-input:focus{border-color:var(--accent2);}
+.search-input::placeholder{color:var(--text3);}
+.filter-wrap{display:flex;gap:6px;flex-wrap:wrap;}
+.filter-btn{font-family:'IBM Plex Mono',monospace;font-size:11px;background:var(--surface);border:1px solid var(--border);color:var(--text2);padding:6px 12px;border-radius:20px;cursor:pointer;transition:all .2s;white-space:nowrap;}
+.filter-btn:hover{border-color:var(--border2);color:var(--text);}
+.filter-btn.active{background:rgba(240,165,0,.1);border-color:var(--accent);color:var(--accent);}
+
+/* stats */
+.stats-row{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:32px;}
+.stat-box{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 18px;display:flex;align-items:center;gap:12px;}
+.stat-num{font-family:'IBM Plex Mono',monospace;font-size:24px;color:var(--accent);}
+.stat-info{font-size:11px;color:var(--text3);line-height:1.5;}
+
+/* term grid */
+.term-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;max-width:860px;margin:0 auto;padding:0 24px 60px;position:relative;z-index:1;}
+
+.term-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;transition:all .2s;cursor:pointer;}
+.term-card:hover{border-color:var(--border2);transform:translateY(-2px);}
+.term-card.locked{opacity:.55;}
+.term-card.unlocked{border-color:rgba(59,130,246,.2);}
+.term-card.hidden{display:none;}
+
+.tc-head{display:flex;align-items:flex-start;justify-content:space-between;padding:14px 16px 10px;}
+.tc-left{}
+.tc-cat{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.12em;margin-bottom:5px;}
+.tc-cat.基礎{color:#a78bfa;}
+.tc-cat.戦略{color:var(--accent);}
+.tc-cat.財務{color:var(--accent3);}
+.tc-cat.プロセス{color:var(--accent2);}
+.tc-cat.法務{color:#f87171;}
+.tc-cat.PMI{color:#fb923c;}
+.tc-name{font-size:13px;font-weight:600;color:var(--text);line-height:1.4;}
+.tc-lock{font-size:16px;flex-shrink:0;margin-top:2px;}
+
+.tc-body{padding:0 16px 14px;font-size:12px;line-height:1.8;color:var(--text2);border-top:1px solid var(--border);padding-top:10px;margin-top:0;display:none;}
+.tc-body.show{display:block;}
+.tc-body.locked-body{color:var(--text3);font-style:italic;}
+
+/* no results */
+.no-results{text-align:center;padding:60px 20px;color:var(--text3);font-size:14px;display:none;grid-column:1/-1;}
+.no-results.show{display:block;}
+
+@media(max-width:600px){
+  .term-grid{grid-template-columns:1fr;padding:0 16px 60px;}
+  .hero{padding:28px 16px 20px;}
+  .stats-row{gap:10px;}
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.term-card{animation:fadeUp .35s ease both;}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-l">
+    <a class="back-btn" href="index.html">← ホーム</a>
+    <span class="hdr-badge">GLOSSARY</span>
+  </div>
+  <span class="hdr-unlock" id="hdr-unlock">🔓 0 / 0 解放済み</span>
+</header>
+
+<div class="hero">
+  <h1 class="hero-title">M&A 用語集</h1>
+  <p class="hero-sub">ケーススタディで登場するM&A専門用語を体系的に整理しました。学習を進めるたびに🔒が📖に解放されていきます。</p>
+
+  <div class="search-wrap">
+    <input class="search-input" id="search" type="text" placeholder="🔍 用語を検索..." oninput="filterTerms()">
+  </div>
+  <div class="filter-wrap" id="filter-wrap">
+    <button class="filter-btn active" data-cat="all" onclick="setFilter('all',this)">すべて</button>
+    <button class="filter-btn" data-cat="基礎" onclick="setFilter('基礎',this)">基礎</button>
+    <button class="filter-btn" data-cat="戦略" onclick="setFilter('戦略',this)">戦略</button>
+    <button class="filter-btn" data-cat="財務" onclick="setFilter('財務',this)">財務</button>
+    <button class="filter-btn" data-cat="プロセス" onclick="setFilter('プロセス',this)">プロセス</button>
+    <button class="filter-btn" data-cat="法務" onclick="setFilter('法務',this)">法務</button>
+    <button class="filter-btn" data-cat="PMI" onclick="setFilter('PMI',this)">PMI</button>
+    <button class="filter-btn" data-cat="unlocked" onclick="setFilter('unlocked',this)">🔓 解放済み</button>
+  </div>
+</div>
+
+<div class="stats-row" style="max-width:860px;margin:0 auto;padding:0 24px;position:relative;z-index:1;">
+  <div class="stat-box">
+    <div class="stat-num" id="stat-unlocked">0</div>
+    <div class="stat-info">解放済み用語<br><span style="color:var(--accent3)">学習で解放</span></div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-num" id="stat-total">0</div>
+    <div class="stat-info">全用語数<br><span style="color:var(--text3)">M&A全域をカバー</span></div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-num" id="stat-pct">0%</div>
+    <div class="stat-info">習得率<br><span style="color:var(--text3)">Phase 1〜4</span></div>
+  </div>
+</div>
+
+<div class="term-grid" id="term-grid">
+  <!-- filled by JS -->
+  <div class="no-results" id="no-results">該当する用語が見つかりません</div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════
+// SHARED DATA & UTILITIES
+// ═══════════════════════════════════════════
+
+const APP_VERSION = '1.0.0';
+const STORAGE_KEY = 'ma_case_study_v1';
+
+// ── Storage helpers ──
+const Store = {
+  get() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
+    catch { return {}; }
+  },
+  set(data) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
+    catch(e) { console.warn('Storage error', e); }
+  },
+  update(fn) {
+    const d = this.get();
+    fn(d);
+    this.set(d);
+  },
+  getPhase(phaseId) {
+    const d = this.get();
+    return d[phaseId] || { completed: [], score: 0, total: 0, lastScene: 0, glossaryUnlocked: [] };
+  },
+  savePhase(phaseId, data) {
+    this.update(d => { d[phaseId] = data; });
+  },
+  reset(phaseId) {
+    this.update(d => { delete d[phaseId]; });
+  },
+  getAllScores() {
+    const d = this.get();
+    return Object.entries(d).map(([k, v]) => ({ phase: k, score: v.score || 0, total: v.total || 0 }));
+  }
+};
+
+// ── Glossary data ──
+const GLOSSARY_ALL = {
+  ma_overview:   { name:"M&Aとは", category:"基礎", body:"Mergers（合併）& Acquisitions（買収）の略。企業の合併・買収・提携を通じて事業拡大や経営効率化を図る手段。日本では年間4,000件超が実施される。" },
+  organic:       { name:"有機成長vs非有機成長", category:"基礎", body:"有機成長＝自社の既存事業を拡大する成長。非有機成長＝M&AやJV（合弁）など外部リソース活用による成長。M&Aは時間を『買う』手段とも言われる。" },
+  strategic_fit: { name:"戦略適合性", category:"戦略", body:"買収候補が自社の経営戦略・ビジョンとどれだけ合致するか。戦略適合性が低い買収は統合後に「何のために買ったか」が不明確になりやすい。" },
+  synergy:       { name:"シナジー", category:"戦略", body:"①コスト削減（重複機能統合）②収益増加（クロスセル・市場拡大）③ケイパビリティ獲得（技術・人材）の3種類がある。シナジーは楽観的に過大評価されやすいため、保守的試算が重要。" },
+  origination:   { name:"案件発掘チャネル", category:"プロセス", body:"①自己開拓（業界調査・DB検索）②M&A仲介・FA経由③既存ネットワーク④競合・業界カンファレンス。自己開拓は競合が少ない代わりに手間がかかる。" },
+  screening:     { name:"初期スクリーニング", category:"プロセス", body:"ロングリスト（30〜50社）を投資基準（業種・規模・財務・地域）で絞り込みショートリスト（3〜5社）にするプロセス。基準の明文化が重要。" },
+  nda:           { name:"NDA（秘密保持契約）", category:"法務", body:"Non-Disclosure Agreement。情報開示前に締結し、受領情報の目的外使用・第三者開示を禁止する。M&Aでは相互NDAが一般的。違反時の損害賠償条項が重要。" },
+  teaser:        { name:"ティーザー（匿名概要書）", category:"プロセス", body:"会社名を伏せた状態で事業概要・財務ハイライトを記載した1〜2枚の文書。NDA締結前に相手の関心を確認するために使われる。" },
+  im:            { name:"IM（インフォメーションメモランダム）", category:"プロセス", body:"NDA締結後に提供される詳細な会社情報資料。事業内容・財務・市場・組織・リスクなどを網羅する20〜100ページ程度の文書。" },
+  valuation:     { name:"企業価値評価（バリュエーション）", category:"財務", body:"主な手法：①DCF法（将来CFを現在価値に割引）②マルチプル法（EV/EBITDA等の類似企業比較）③純資産法（BS基準）。M&Aでは①②を併用するのが一般的。" },
+  ebitda:        { name:"EBITDA", category:"財務", body:"Earnings Before Interest, Taxes, Depreciation and Amortization。税引前利益＋支払利息＋減価償却費。企業の事業キャッシュ創出力を示す指標。M&Aバリュエーションで頻繁に使用。" },
+  ev:            { name:"EV（企業価値）", category:"財務", body:"Enterprise Value＝時価総額＋有利子負債－現金・現金同等物。EV/EBITDAマルチプルは業種によって異なる（SaaS系：10〜20倍、製造業：5〜8倍など）。" },
+  loi:           { name:"LOI（意向表明書）", category:"プロセス", body:"Letter of Intent。買収意思・価格レンジ・独占交渉期間・DD実施合意などを記載した非拘束文書。法的拘束力はないが、交渉の土台となる重要書類。" },
+  dd:            { name:"DD（デュー・デリジェンス）", category:"プロセス", body:"財務・法務・事業・IT・人事・環境などの観点から対象会社を詳細調査するプロセス。LOI締結後、独占交渉期間中に実施。通常4〜8週間。" },
+  dcf:           { name:"DCF法（割引キャッシュフロー法）", category:"財務", body:"将来のフリーキャッシュフロー（FCF）を加重平均資本コスト（WACC）で現在価値に割り引いて企業価値を算出する手法。M&Aの主要バリュエーション手法。" },
+  wacc:          { name:"WACC（加重平均資本コスト）", category:"財務", body:"Weighted Average Cost of Capital。負債コストと株主資本コストを資本構成比率で加重平均したもの。DCFのディスカウントレートとして使用。" },
+  pmi:           { name:"PMI（統合後管理）", category:"PMI", body:"Post Merger Integration。クロージング後の統合プロセス。組織・システム・文化の統合を管理し、計画したシナジーを実現するための取り組み。M&A成功の最大の鍵とされる。" },
+  spa:           { name:"SPA（株式譲渡契約）", category:"法務", body:"Share Purchase Agreement。最終的な買収契約書。価格・クロージング条件・表明保証・補償条項などを規定する法的拘束力のある文書。" },
+  exclusivity:   { name:"独占交渉期間（Exclusivity）", category:"プロセス", body:"LOI締結後に設定される期間（通常30〜90日）。この間、売り手は他の買い手との交渉を禁止される。買い手はこの期間にDDを実施する。" },
+};
+
+// ── Phase metadata ──
+const PHASES = [
+  { id:'phase1', name:'Phase 1', title:'案件発掘〜初期検討', scenes:10, icon:'🔍', status:'available', desc:'戦略テーマ設定・候補企業発掘・スクリーニング・NDA・初期バリュエーション・LOI' },
+  { id:'phase2', name:'Phase 2', title:'DD〜バリュエーション深掘り', scenes:10, icon:'🔬', status:'coming', desc:'財務DD・法務DD・DCF法・リスク識別・価格再交渉' },
+  { id:'phase3', name:'Phase 3', title:'交渉〜契約締結', scenes:10, icon:'🤝', status:'coming', desc:'SPA交渉・表明保証・クロージング条件・最終合意' },
+  { id:'phase4', name:'Phase 4', title:'PMI（統合後管理）', scenes:10, icon:'🏗', status:'coming', desc:'100日プラン・組織統合・システム統合・シナジー実現管理' },
+];
+
+// ── Notion logging (passive – best-effort) ──
+async function logToNotion(phaseId, score, total, completedAt) {
+  // Uses Notion API via a proxy if available; otherwise silently skips
+  // In GitHub Pages static deployment, this requires a serverless function or n8n webhook
+  // Placeholder: can be connected to n8n / Google Apps Script webhook
+  const WEBHOOK_URL = localStorage.getItem('ma_notion_webhook');
+  if (!WEBHOOK_URL) return;
+  try {
+    await fetch(WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        phase: phaseId,
+        score,
+        total,
+        pct: Math.round((score/total)*100),
+        completedAt,
+        type: 'case_study_result'
+      })
+    });
+  } catch(e) { /* silent */ }
+}
+
+</script>
+<script>
+let currentFilter = 'all';
+let unlockedKeys = [];
+
+function loadUnlocked() {
+  const all = {};
+  ['phase1','phase2','phase3','phase4'].forEach(ph => {
+    const d = Store.getPhase(ph);
+    (d.glossaryUnlocked || []).forEach(k => { all[k] = true; });
+  });
+  unlockedKeys = Object.keys(all);
+}
+
+function renderGrid() {
+  const grid = document.getElementById('term-grid');
+  // clear except no-results
+  [...grid.querySelectorAll('.term-card')].forEach(el => el.remove());
+
+  const terms = Object.entries(GLOSSARY_ALL);
+  const total = terms.length;
+  const unlocked = unlockedKeys.length;
+
+  document.getElementById('stat-unlocked').textContent = unlocked;
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-pct').textContent = total > 0 ? Math.round((unlocked/total)*100) + '%' : '0%';
+  document.getElementById('hdr-unlock').textContent = `🔓 ${unlocked} / ${total} 解放済み`;
+
+  terms.forEach(([k, v], i) => {
+    const isUnlocked = unlockedKeys.includes(k);
+    const card = document.createElement('div');
+    card.className = `term-card ${isUnlocked ? 'unlocked' : 'locked'}`;
+    card.dataset.key = k;
+    card.dataset.cat = v.category;
+    card.dataset.name = v.name;
+    card.style.animationDelay = `${Math.min(i,20) * 0.025}s`;
+
+    card.innerHTML = `
+      <div class="tc-head">
+        <div class="tc-left">
+          <div class="tc-cat ${v.category}">${v.category}</div>
+          <div class="tc-name">${v.name}</div>
+        </div>
+        <div class="tc-lock">${isUnlocked ? '📖' : '🔒'}</div>
+      </div>
+      <div class="tc-body ${isUnlocked ? '' : 'locked-body'}" id="tb-${k}">
+        ${isUnlocked ? v.body : 'このフェーズを学習すると解放されます。'}
+      </div>`;
+
+    card.onclick = () => {
+      const body = document.getElementById(`tb-${k}`);
+      if (body) body.classList.toggle('show');
+    };
+
+    grid.insertBefore(card, document.getElementById('no-results'));
+  });
+
+  filterTerms();
+}
+
+function setFilter(cat, btn) {
+  currentFilter = cat;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  filterTerms();
+}
+
+function filterTerms() {
+  const q = document.getElementById('search').value.toLowerCase();
+  let visible = 0;
+
+  document.querySelectorAll('.term-card').forEach(card => {
+    const name = card.dataset.name.toLowerCase();
+    const cat = card.dataset.cat;
+    const isUnlocked = card.classList.contains('unlocked');
+
+    const matchSearch = !q || name.includes(q);
+    const matchFilter =
+      currentFilter === 'all' ||
+      (currentFilter === 'unlocked' && isUnlocked) ||
+      cat === currentFilter;
+
+    const show = matchSearch && matchFilter;
+    card.classList.toggle('hidden', !show);
+    if (show) visible++;
+  });
+
+  document.getElementById('no-results').classList.toggle('show', visible === 0);
+}
+
+// Init
+loadUnlocked();
+renderGrid();
+</script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M&A Case Study | Broadleaf Learning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0b0e16; --surface:#12161f; --surface2:#191e2b; --surface3:#1f2638;
+  --border:#252d40; --border2:#303d58;
+  --accent:#f0a500; --accent2:#3b82f6; --accent3:#10b981;
+  --text:#dde3f0; --text2:#8b95b0; --text3:#4a5470;
+  --danger:#ef4444; --warn:#f59e0b;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  font-family:'Noto Sans JP', sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* ── BG texture ── */
+body::before {
+  content:'';
+  position:fixed; inset:0;
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 0%, rgba(59,130,246,.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 100%, rgba(240,165,0,.05) 0%, transparent 60%);
+  pointer-events:none; z-index:0;
+}
+
+/* ── HEADER ── */
+.header {
+  position:sticky; top:0; z-index:50;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:14px 24px;
+  background:rgba(18,22,31,.92);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+}
+.logo { display:flex; align-items:center; gap:12px; text-decoration:none; }
+.logo-badge {
+  font-family:'IBM Plex Mono', monospace;
+  font-size:10px; font-weight:500;
+  background:var(--accent); color:#000;
+  padding:4px 10px; border-radius:4px;
+  letter-spacing:.06em;
+}
+.logo-text { font-size:13px; color:var(--text2); }
+.header-nav { display:flex; gap:8px; }
+.nav-btn {
+  font-family:'IBM Plex Mono', monospace;
+  font-size:11px; color:var(--text2);
+  background:transparent; border:1px solid var(--border);
+  padding:6px 14px; border-radius:6px;
+  cursor:pointer; text-decoration:none;
+  transition:all .2s;
+}
+.nav-btn:hover { border-color:var(--accent); color:var(--accent); }
+
+/* ── HERO ── */
+.hero {
+  position:relative; z-index:1;
+  padding:64px 24px 48px;
+  max-width:900px; margin:0 auto;
+  text-align:center;
+}
+.hero-eyebrow {
+  font-family:'IBM Plex Mono', monospace;
+  font-size:11px; letter-spacing:.2em;
+  color:var(--accent); margin-bottom:16px;
+  display:inline-block;
+  padding:4px 12px;
+  border:1px solid rgba(240,165,0,.25);
+  border-radius:20px;
+  background:rgba(240,165,0,.05);
+}
+.hero-title {
+  font-family:'Noto Serif JP', serif;
+  font-size:clamp(26px, 5vw, 40px);
+  font-weight:700; line-height:1.45;
+  margin-bottom:16px;
+  background:linear-gradient(135deg, var(--text) 0%, var(--text2) 100%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.hero-sub {
+  font-size:14px; color:var(--text2);
+  line-height:1.8; max-width:560px; margin:0 auto 32px;
+}
+.hero-stats {
+  display:flex; justify-content:center; gap:32px; flex-wrap:wrap;
+  margin-bottom:48px;
+}
+.stat-item { text-align:center; }
+.stat-num {
+  font-family:'IBM Plex Mono', monospace;
+  font-size:28px; color:var(--accent);
+  display:block; line-height:1;
+}
+.stat-label { font-size:11px; color:var(--text3); margin-top:4px; }
+
+/* ── OVERALL PROGRESS BAR ── */
+.overall-progress {
+  max-width:900px; margin:0 auto 48px;
+  padding:0 24px;
+  position:relative; z-index:1;
+}
+.op-header { display:flex; justify-content:space-between; font-size:12px; color:var(--text3); margin-bottom:8px; }
+.op-bar { height:6px; background:var(--border); border-radius:3px; overflow:hidden; }
+.op-fill { height:100%; background:linear-gradient(90deg, var(--accent2), var(--accent)); border-radius:3px; transition:width .8s ease; }
+
+/* ── PHASE GRID ── */
+.phase-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));
+  gap:16px;
+  max-width:900px; margin:0 auto;
+  padding:0 24px 80px;
+  position:relative; z-index:1;
+}
+
+.phase-card {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:14px; overflow:hidden;
+  transition:all .25s; position:relative;
+  display:flex; flex-direction:column;
+}
+.phase-card.available { cursor:pointer; }
+.phase-card.available:hover {
+  border-color:var(--accent);
+  transform:translateY(-3px);
+  box-shadow:0 12px 40px rgba(0,0,0,.4), 0 0 0 1px rgba(240,165,0,.1);
+}
+.phase-card.coming { opacity:.5; cursor:not-allowed; }
+.phase-card.done { border-color:rgba(16,185,129,.3); }
+
+.phase-card-top {
+  padding:20px 20px 14px;
+  border-bottom:1px solid var(--border);
+  display:flex; align-items:flex-start; justify-content:space-between;
+}
+.phase-icon { font-size:24px; }
+.phase-status-badge {
+  font-family:'IBM Plex Mono', monospace;
+  font-size:9px; letter-spacing:.1em;
+  padding:3px 8px; border-radius:3px;
+}
+.phase-status-badge.available { background:rgba(16,185,129,.12); color:var(--accent3); border:1px solid rgba(16,185,129,.2); }
+.phase-status-badge.coming { background:var(--surface3); color:var(--text3); border:1px solid var(--border); }
+.phase-status-badge.done { background:rgba(16,185,129,.12); color:var(--accent3); border:1px solid rgba(16,185,129,.2); }
+
+.phase-card-body { padding:16px 20px; flex:1; }
+.phase-tag {
+  font-family:'IBM Plex Mono', monospace;
+  font-size:10px; color:var(--accent); letter-spacing:.12em;
+  margin-bottom:6px;
+}
+.phase-name {
+  font-family:'Noto Serif JP', serif;
+  font-size:15px; font-weight:700;
+  line-height:1.5; margin-bottom:8px;
+}
+.phase-desc { font-size:11px; color:var(--text3); line-height:1.7; }
+
+.phase-card-footer {
+  padding:12px 20px;
+  border-top:1px solid var(--border);
+  display:flex; align-items:center; justify-content:space-between;
+}
+.phase-scenes {
+  font-family:'IBM Plex Mono', monospace;
+  font-size:10px; color:var(--text3);
+}
+.phase-score-mini {
+  font-family:'IBM Plex Mono', monospace;
+  font-size:11px;
+}
+.phase-score-mini.good { color:var(--accent3); }
+.phase-score-mini.ok { color:var(--warn); }
+.phase-score-mini.na { color:var(--text3); }
+
+/* phase mini progress bar */
+.phase-prog {
+  height:3px; background:var(--border);
+  margin-top:10px; border-radius:2px; overflow:hidden;
+}
+.phase-prog-fill {
+  height:100%; border-radius:2px;
+  background:linear-gradient(90deg, var(--accent2), var(--accent));
+  transition:width .6s ease;
+}
+
+/* ── NOTION SETUP SECTION ── */
+.setup-section {
+  max-width:900px; margin:0 auto 48px;
+  padding:0 24px;
+  position:relative; z-index:1;
+}
+.setup-card {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:12px; padding:20px 24px;
+  display:flex; align-items:center; gap:16px;
+  flex-wrap:wrap;
+}
+.setup-icon { font-size:28px; flex-shrink:0; }
+.setup-info { flex:1; min-width:200px; }
+.setup-title { font-size:13px; font-weight:600; margin-bottom:4px; }
+.setup-desc { font-size:12px; color:var(--text3); line-height:1.6; }
+.setup-input-wrap { display:flex; gap:8px; flex:1; min-width:260px; }
+.setup-input {
+  flex:1;
+  background:var(--surface2); border:1px solid var(--border);
+  border-radius:6px; padding:9px 12px;
+  font-family:'IBM Plex Mono', monospace;
+  font-size:11px; color:var(--text);
+  outline:none; transition:border-color .2s;
+}
+.setup-input:focus { border-color:var(--accent2); }
+.setup-input::placeholder { color:var(--text3); }
+.setup-save {
+  background:var(--accent2); color:#fff;
+  border:none; border-radius:6px;
+  padding:9px 16px; font-size:12px;
+  font-family:'Noto Sans JP', sans-serif;
+  cursor:pointer; white-space:nowrap;
+  transition:background .2s;
+}
+.setup-save:hover { background:#2563eb; }
+.setup-saved { font-size:11px; color:var(--accent3); display:none; margin-top:4px; }
+
+/* ── FOOTER ── */
+.footer {
+  position:relative; z-index:1;
+  text-align:center; padding:24px;
+  font-size:11px; color:var(--text3);
+  border-top:1px solid var(--border);
+}
+
+/* ── MOBILE ── */
+@media(max-width:600px) {
+  .phase-grid { grid-template-columns:1fr; }
+  .hero { padding:40px 16px 32px; }
+  .hero-stats { gap:20px; }
+  .stat-num { font-size:22px; }
+  .setup-card { flex-direction:column; }
+  .header-nav { display:none; }
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:none} }
+.phase-card { animation:fadeUp .4s ease both; }
+.phase-card:nth-child(1){animation-delay:.05s}
+.phase-card:nth-child(2){animation-delay:.1s}
+.phase-card:nth-child(3){animation-delay:.15s}
+.phase-card:nth-child(4){animation-delay:.2s}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <a class="logo" href="index.html">
+    <span class="logo-badge">M&A CASE STUDY</span>
+    <span class="logo-text">Broadleaf M&A スキル習得</span>
+  </a>
+  <nav class="header-nav">
+    <a class="nav-btn" href="glossary.html">📖 用語集</a>
+    <button class="nav-btn" onclick="resetAll()">↺ リセット</button>
+  </nav>
+</header>
+
+<main>
+  <section class="hero">
+    <span class="hero-eyebrow">INTERACTIVE CASE STUDY</span>
+    <h1 class="hero-title">M&Aの一連の流れを<br>実践形式で体験する</h1>
+    <p class="hero-sub">Broadleafが自動車アフターマーケット領域で実施するM&Aを題材に、案件発掘から統合後管理まで全4フェーズを対話形式で学習します。</p>
+    <div class="hero-stats">
+      <div class="stat-item"><span class="stat-num">4</span><div class="stat-label">フェーズ</div></div>
+      <div class="stat-item"><span class="stat-num">40</span><div class="stat-label">シーン（予定）</div></div>
+      <div class="stat-item"><span class="stat-num" id="total-unlocked">0</span><div class="stat-label">解放済み用語</div></div>
+      <div class="stat-item"><span class="stat-num" id="total-score">0%</span><div class="stat-label">総合正答率</div></div>
+    </div>
+  </section>
+
+  <div class="overall-progress">
+    <div class="op-header">
+      <span>全体進捗</span>
+      <span id="op-label">0 / 40 シーン完了</span>
+    </div>
+    <div class="op-bar"><div class="op-fill" id="op-fill" style="width:0%"></div></div>
+  </div>
+
+  <section class="phase-grid" id="phase-grid">
+    <!-- filled by JS -->
+  </section>
+
+  <!-- Notion webhook setup -->
+  <div class="setup-section">
+    <div class="setup-card">
+      <span class="setup-icon">🔗</span>
+      <div class="setup-info">
+        <div class="setup-title">Notion連携（オプション）</div>
+        <div class="setup-desc">Google Apps ScriptのWebhook URLを設定すると、学習結果がNotionのDailyLogに自動記録されます。</div>
+      </div>
+      <div>
+        <div class="setup-input-wrap">
+          <input class="setup-input" id="webhook-input" type="url" placeholder="https://script.google.com/macros/s/..." />
+          <button class="setup-save" onclick="saveWebhook()">保存</button>
+        </div>
+        <div class="setup-saved" id="webhook-saved">✓ 保存しました</div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="footer">
+  M&A Case Study v1.0 | Broadleaf M&Aスキル習得プログラム | 進捗はブラウザに自動保存されます
+</footer>
+
+<script>
+// ═══════════════════════════════════════════
+// SHARED DATA & UTILITIES
+// ═══════════════════════════════════════════
+
+const APP_VERSION = '1.0.0';
+const STORAGE_KEY = 'ma_case_study_v1';
+
+// ── Storage helpers ──
+const Store = {
+  get() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
+    catch { return {}; }
+  },
+  set(data) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
+    catch(e) { console.warn('Storage error', e); }
+  },
+  update(fn) {
+    const d = this.get();
+    fn(d);
+    this.set(d);
+  },
+  getPhase(phaseId) {
+    const d = this.get();
+    return d[phaseId] || { completed: [], score: 0, total: 0, lastScene: 0, glossaryUnlocked: [] };
+  },
+  savePhase(phaseId, data) {
+    this.update(d => { d[phaseId] = data; });
+  },
+  reset(phaseId) {
+    this.update(d => { delete d[phaseId]; });
+  },
+  getAllScores() {
+    const d = this.get();
+    return Object.entries(d).map(([k, v]) => ({ phase: k, score: v.score || 0, total: v.total || 0 }));
+  }
+};
+
+// ── Glossary data ──
+const GLOSSARY_ALL = {
+  ma_overview:   { name:"M&Aとは", category:"基礎", body:"Mergers（合併）& Acquisitions（買収）の略。企業の合併・買収・提携を通じて事業拡大や経営効率化を図る手段。日本では年間4,000件超が実施される。" },
+  organic:       { name:"有機成長vs非有機成長", category:"基礎", body:"有機成長＝自社の既存事業を拡大する成長。非有機成長＝M&AやJV（合弁）など外部リソース活用による成長。M&Aは時間を『買う』手段とも言われる。" },
+  strategic_fit: { name:"戦略適合性", category:"戦略", body:"買収候補が自社の経営戦略・ビジョンとどれだけ合致するか。戦略適合性が低い買収は統合後に「何のために買ったか」が不明確になりやすい。" },
+  synergy:       { name:"シナジー", category:"戦略", body:"①コスト削減（重複機能統合）②収益増加（クロスセル・市場拡大）③ケイパビリティ獲得（技術・人材）の3種類がある。シナジーは楽観的に過大評価されやすいため、保守的試算が重要。" },
+  origination:   { name:"案件発掘チャネル", category:"プロセス", body:"①自己開拓（業界調査・DB検索）②M&A仲介・FA経由③既存ネットワーク④競合・業界カンファレンス。自己開拓は競合が少ない代わりに手間がかかる。" },
+  screening:     { name:"初期スクリーニング", category:"プロセス", body:"ロングリスト（30〜50社）を投資基準（業種・規模・財務・地域）で絞り込みショートリスト（3〜5社）にするプロセス。基準の明文化が重要。" },
+  nda:           { name:"NDA（秘密保持契約）", category:"法務", body:"Non-Disclosure Agreement。情報開示前に締結し、受領情報の目的外使用・第三者開示を禁止する。M&Aでは相互NDAが一般的。違反時の損害賠償条項が重要。" },
+  teaser:        { name:"ティーザー（匿名概要書）", category:"プロセス", body:"会社名を伏せた状態で事業概要・財務ハイライトを記載した1〜2枚の文書。NDA締結前に相手の関心を確認するために使われる。" },
+  im:            { name:"IM（インフォメーションメモランダム）", category:"プロセス", body:"NDA締結後に提供される詳細な会社情報資料。事業内容・財務・市場・組織・リスクなどを網羅する20〜100ページ程度の文書。" },
+  valuation:     { name:"企業価値評価（バリュエーション）", category:"財務", body:"主な手法：①DCF法（将来CFを現在価値に割引）②マルチプル法（EV/EBITDA等の類似企業比較）③純資産法（BS基準）。M&Aでは①②を併用するのが一般的。" },
+  ebitda:        { name:"EBITDA", category:"財務", body:"Earnings Before Interest, Taxes, Depreciation and Amortization。税引前利益＋支払利息＋減価償却費。企業の事業キャッシュ創出力を示す指標。M&Aバリュエーションで頻繁に使用。" },
+  ev:            { name:"EV（企業価値）", category:"財務", body:"Enterprise Value＝時価総額＋有利子負債－現金・現金同等物。EV/EBITDAマルチプルは業種によって異なる（SaaS系：10〜20倍、製造業：5〜8倍など）。" },
+  loi:           { name:"LOI（意向表明書）", category:"プロセス", body:"Letter of Intent。買収意思・価格レンジ・独占交渉期間・DD実施合意などを記載した非拘束文書。法的拘束力はないが、交渉の土台となる重要書類。" },
+  dd:            { name:"DD（デュー・デリジェンス）", category:"プロセス", body:"財務・法務・事業・IT・人事・環境などの観点から対象会社を詳細調査するプロセス。LOI締結後、独占交渉期間中に実施。通常4〜8週間。" },
+  dcf:           { name:"DCF法（割引キャッシュフロー法）", category:"財務", body:"将来のフリーキャッシュフロー（FCF）を加重平均資本コスト（WACC）で現在価値に割り引いて企業価値を算出する手法。M&Aの主要バリュエーション手法。" },
+  wacc:          { name:"WACC（加重平均資本コスト）", category:"財務", body:"Weighted Average Cost of Capital。負債コストと株主資本コストを資本構成比率で加重平均したもの。DCFのディスカウントレートとして使用。" },
+  pmi:           { name:"PMI（統合後管理）", category:"PMI", body:"Post Merger Integration。クロージング後の統合プロセス。組織・システム・文化の統合を管理し、計画したシナジーを実現するための取り組み。M&A成功の最大の鍵とされる。" },
+  spa:           { name:"SPA（株式譲渡契約）", category:"法務", body:"Share Purchase Agreement。最終的な買収契約書。価格・クロージング条件・表明保証・補償条項などを規定する法的拘束力のある文書。" },
+  exclusivity:   { name:"独占交渉期間（Exclusivity）", category:"プロセス", body:"LOI締結後に設定される期間（通常30〜90日）。この間、売り手は他の買い手との交渉を禁止される。買い手はこの期間にDDを実施する。" },
+};
+
+// ── Phase metadata ──
+const PHASES = [
+  { id:'phase1', name:'Phase 1', title:'案件発掘〜初期検討', scenes:10, icon:'🔍', status:'available', desc:'戦略テーマ設定・候補企業発掘・スクリーニング・NDA・初期バリュエーション・LOI' },
+  { id:'phase2', name:'Phase 2', title:'DD〜バリュエーション深掘り', scenes:10, icon:'🔬', status:'coming', desc:'財務DD・法務DD・DCF法・リスク識別・価格再交渉' },
+  { id:'phase3', name:'Phase 3', title:'交渉〜契約締結', scenes:10, icon:'🤝', status:'coming', desc:'SPA交渉・表明保証・クロージング条件・最終合意' },
+  { id:'phase4', name:'Phase 4', title:'PMI（統合後管理）', scenes:10, icon:'🏗', status:'coming', desc:'100日プラン・組織統合・システム統合・シナジー実現管理' },
+];
+
+// ── Notion logging (passive – best-effort) ──
+async function logToNotion(phaseId, score, total, completedAt) {
+  // Uses Notion API via a proxy if available; otherwise silently skips
+  // In GitHub Pages static deployment, this requires a serverless function or n8n webhook
+  // Placeholder: can be connected to n8n / Google Apps Script webhook
+  const WEBHOOK_URL = localStorage.getItem('ma_notion_webhook');
+  if (!WEBHOOK_URL) return;
+  try {
+    await fetch(WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        phase: phaseId,
+        score,
+        total,
+        pct: Math.round((score/total)*100),
+        completedAt,
+        type: 'case_study_result'
+      })
+    });
+  } catch(e) { /* silent */ }
+}
+
+</script>
+<script>
+function renderPhaseGrid() {
+  const grid = document.getElementById('phase-grid');
+  grid.innerHTML = '';
+
+  let totalCompleted = 0;
+  let totalScore = 0;
+  let totalAnswered = 0;
+  let totalUnlocked = new Set();
+
+  PHASES.forEach((ph, i) => {
+    const saved = Store.getPhase(ph.id);
+    const completedScenes = saved.completed?.length || 0;
+    const pct = ph.scenes > 0 ? Math.round((completedScenes / ph.scenes) * 100) : 0;
+    const isDone = completedScenes >= ph.scenes;
+    const hasProgress = completedScenes > 0;
+
+    totalCompleted += completedScenes;
+    totalScore += saved.score || 0;
+    totalAnswered += saved.total || 0;
+    (saved.glossaryUnlocked || []).forEach(k => totalUnlocked.add(k));
+
+    const statusLabel = isDone ? 'DONE' : (ph.status === 'available' ? 'START' : 'COMING SOON');
+    const statusClass = isDone ? 'done' : ph.status;
+
+    const scoreDisplay = saved.total > 0
+      ? `${saved.score}/${saved.total} 正解`
+      : '未挑戦';
+    const scoreClass = saved.total > 0
+      ? (saved.score / saved.total >= 0.7 ? 'good' : 'ok')
+      : 'na';
+
+    const card = document.createElement('div');
+    card.className = `phase-card ${isDone ? 'done' : ph.status}`;
+    card.style.animationDelay = `${i * 0.05 + 0.05}s`;
+    card.innerHTML = `
+      <div class="phase-card-top">
+        <span class="phase-icon">${ph.icon}</span>
+        <span class="phase-status-badge ${statusClass}">${statusLabel}</span>
+      </div>
+      <div class="phase-card-body">
+        <div class="phase-tag">${ph.name}</div>
+        <div class="phase-name">${ph.title}</div>
+        <div class="phase-desc">${ph.desc}</div>
+        <div class="phase-prog"><div class="phase-prog-fill" style="width:${pct}%"></div></div>
+      </div>
+      <div class="phase-card-footer">
+        <span class="phase-scenes">${completedScenes}/${ph.scenes} シーン</span>
+        <span class="phase-score-mini ${scoreClass}">${scoreDisplay}</span>
+      </div>`;
+
+    if (ph.status === 'available') {
+      card.onclick = () => {
+        window.location.href = `phase1.html${hasProgress && !isDone ? '#resume' : ''}`;
+      };
+    }
+    grid.appendChild(card);
+  });
+
+  // overall stats
+  document.getElementById('total-unlocked').textContent = totalUnlocked.size;
+  const overallPct = totalAnswered > 0 ? Math.round((totalScore / totalAnswered) * 100) : 0;
+  document.getElementById('total-score').textContent = totalAnswered > 0 ? `${overallPct}%` : '—';
+  document.getElementById('op-label').textContent = `${totalCompleted} / 40 シーン完了`;
+  document.getElementById('op-fill').style.width = `${(totalCompleted / 40) * 100}%`;
+}
+
+function saveWebhook() {
+  const url = document.getElementById('webhook-input').value.trim();
+  if (url) {
+    localStorage.setItem('ma_notion_webhook', url);
+    const saved = document.getElementById('webhook-saved');
+    saved.style.display = 'block';
+    setTimeout(() => { saved.style.display = 'none'; }, 3000);
+  }
+}
+
+function resetAll() {
+  if (confirm('全フェーズの進捗をリセットしますか？')) {
+    localStorage.removeItem(STORAGE_KEY);
+    renderPhaseGrid();
+  }
+}
+
+// Init
+const saved = localStorage.getItem('ma_notion_webhook');
+if (saved) document.getElementById('webhook-input').value = saved;
+renderPhaseGrid();
+</script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phase 1 — 案件発掘〜初期検討 | M&A Case Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0e16;--surface:#12161f;--surface2:#191e2b;--surface3:#1f2638;
+  --border:#252d40;--border2:#303d58;
+  --accent:#f0a500;--accent2:#3b82f6;--accent3:#10b981;
+  --text:#dde3f0;--text2:#8b95b0;--text3:#4a5470;
+  --danger:#ef4444;--warn:#f59e0b;--success:#10b981;
+  --hint:#7c3aed;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;font-size:14px;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 70% 40% at 10% 0%,rgba(59,130,246,.05) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 90% 100%,rgba(240,165,0,.04) 0%,transparent 60%);pointer-events:none;z-index:0;}
+
+/* ── HEADER ── */
+.hdr{position:sticky;top:0;z-index:60;display:flex;align-items:center;justify-content:space-between;padding:10px 20px;background:rgba(18,22,31,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);}
+.hdr-l{display:flex;align-items:center;gap:10px;}
+.back-btn{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text2);background:transparent;border:1px solid var(--border);padding:5px 12px;border-radius:6px;cursor:pointer;text-decoration:none;transition:all .2s;}
+.back-btn:hover{border-color:var(--text2);color:var(--text);}
+.hdr-badge{font-family:'IBM Plex Mono',monospace;font-size:10px;background:var(--accent);color:#000;padding:3px 8px;border-radius:3px;font-weight:500;letter-spacing:.05em;}
+.hdr-title{font-size:12px;color:var(--text2);display:none;}
+@media(min-width:500px){.hdr-title{display:block;}}
+.hdr-r{display:flex;align-items:center;gap:12px;}
+.prog-wrap{display:flex;align-items:center;gap:8px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);}
+.prog-bar{width:80px;height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
+@media(min-width:400px){.prog-bar{width:100px;}}
+.prog-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .5s;}
+.score-badge{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent3);}
+
+/* ── LAYOUT ── */
+.layout{display:grid;grid-template-columns:1fr;min-height:calc(100vh - 45px);position:relative;z-index:1;}
+@media(min-width:900px){.layout{grid-template-columns:1fr 280px;}}
+
+/* ── MAIN ── */
+.main{display:flex;flex-direction:column;border-right:0 solid var(--border);}
+@media(min-width:900px){.main{border-right:1px solid var(--border);}}
+
+/* scene header */
+.scene-hdr{padding:16px 20px 14px;background:var(--surface);border-bottom:1px solid var(--border);}
+@media(min-width:600px){.scene-hdr{padding:18px 24px 14px;}}
+.scene-meta{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
+.scene-num{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--accent);letter-spacing:.15em;}
+.scene-phase-tag{font-size:10px;background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.25);color:var(--accent2);padding:2px 8px;border-radius:3px;}
+.scene-title{font-family:'Noto Serif JP',serif;font-size:clamp(15px,4vw,18px);font-weight:700;line-height:1.5;}
+.learn-box{margin-top:10px;background:rgba(124,58,237,.07);border:1px solid rgba(124,58,237,.22);border-radius:6px;padding:10px 14px;}
+.learn-box-title{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.15em;color:var(--hint);margin-bottom:6px;}
+.learn-items{display:flex;flex-wrap:wrap;gap:5px;}
+.learn-tag{font-size:11px;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.18);color:#a78bfa;padding:3px 9px;border-radius:12px;}
+
+/* narrative */
+.narrative{padding:16px 20px;flex:1;overflow-y:auto;max-height:45vh;}
+@media(min-width:600px){.narrative{padding:20px 24px;max-height:380px;}}
+.narr{background:linear-gradient(135deg,var(--surface2),rgba(25,30,43,.4));border-left:3px solid var(--border);padding:11px 14px;margin-bottom:10px;border-radius:0 8px 8px 0;font-size:13px;line-height:1.9;color:var(--text2);}
+.narr.hl{border-left-color:var(--accent);color:var(--text);background:linear-gradient(135deg,rgba(240,165,0,.05),var(--surface2));}
+.dlg{display:flex;gap:10px;margin-bottom:10px;animation:fadeUp .3s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;margin-top:2px;}
+.av.boss{background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.25);}
+.av.player{background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.25);}
+.av.partner{background:rgba(240,165,0,.12);border:1px solid rgba(240,165,0,.25);}
+.av.target{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);}
+.dlg-inner{flex:1;}
+.spk{font-size:10px;font-family:'IBM Plex Mono',monospace;color:var(--text3);margin-bottom:3px;}
+.bbl{background:var(--surface2);border:1px solid var(--border);border-radius:4px 10px 10px 10px;padding:9px 12px;font-size:13px;line-height:1.8;}
+.bbl.pb{background:rgba(16,185,129,.05);border-color:rgba(16,185,129,.18);border-radius:10px 4px 10px 10px;}
+
+/* hint panel */
+.hint-panel{margin:0 20px 14px;background:rgba(124,58,237,.05);border:1px solid rgba(124,58,237,.18);border-radius:10px;overflow:hidden;}
+@media(min-width:600px){.hint-panel{margin:0 24px 14px;}}
+.hint-toggle{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;cursor:pointer;user-select:none;}
+.hint-toggle-l{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:500;color:#a78bfa;}
+.hint-arrow{font-size:10px;color:var(--text3);transition:transform .2s;}
+.hint-arrow.open{transform:rotate(180deg);}
+.hint-body{display:none;padding:0 14px 12px;}
+.hint-body.open{display:block;}
+.hint-sec{margin-bottom:12px;}
+.hint-sec:last-child{margin-bottom:0;}
+.hint-sec-title{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--hint);margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid rgba(124,58,237,.12);}
+.hint-text{font-size:12px;line-height:1.85;color:var(--text2);}
+.hint-text strong{color:var(--text);}
+.diag{background:var(--surface3);border:1px solid var(--border);border-radius:7px;padding:11px;margin-top:8px;}
+.diag-flow{display:flex;align-items:center;flex-wrap:wrap;gap:4px;margin-bottom:5px;}
+.d-box{background:var(--surface);border:1px solid var(--border2);padding:3px 9px;border-radius:4px;font-size:11px;}
+.d-box.cur{border-color:var(--accent);color:var(--accent);}
+.d-arr{color:var(--text3);font-size:12px;}
+.diag-note{font-size:10px;color:var(--text3);}
+
+/* decision */
+.decision{padding:14px 20px 18px;border-top:1px solid var(--border);background:var(--surface);}
+@media(min-width:600px){.decision{padding:16px 24px 20px;}}
+.dec-label{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--accent);letter-spacing:.15em;margin-bottom:9px;display:flex;align-items:center;gap:8px;}
+.dec-label::after{content:'';flex:1;height:1px;background:var(--border);}
+.dec-q{font-size:13px;font-weight:500;line-height:1.7;margin-bottom:10px;}
+.choices{display:flex;flex-direction:column;gap:6px;}
+.choice{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 13px;text-align:left;cursor:pointer;transition:all .2s;color:var(--text);font-family:'Noto Sans JP',sans-serif;font-size:13px;line-height:1.6;display:flex;align-items:flex-start;gap:9px;width:100%;}
+.choice:hover{border-color:var(--accent);background:rgba(240,165,0,.04);transform:translateX(2px);}
+.choice.sel{border-color:var(--success);background:rgba(16,185,129,.05);}
+.choice:disabled{opacity:.6;cursor:default;transform:none;}
+.ckey{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent);background:rgba(240,165,0,.1);border:1px solid rgba(240,165,0,.18);border-radius:3px;padding:2px 6px;flex-shrink:0;margin-top:1px;}
+
+/* ── SIDE PANEL ── */
+.side{display:none;overflow-y:auto;max-height:calc(100vh - 45px);position:sticky;top:45px;}
+@media(min-width:900px){.side{display:flex;flex-direction:column;}}
+.side-sec{padding:14px 16px;border-bottom:1px solid var(--border);}
+.side-title{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.15em;color:var(--text3);margin-bottom:10px;display:flex;align-items:center;gap:5px;}
+.side-title span{color:var(--accent);}
+
+/* steps */
+.step-list{display:flex;flex-direction:column;gap:5px;}
+.step-row{display:flex;align-items:center;gap:8px;font-size:11px;}
+.step-dot{width:20px;height:20px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0;font-family:'IBM Plex Mono',monospace;}
+.step-dot.done{background:var(--success);border-color:var(--success);color:#000;}
+.step-dot.active{background:rgba(240,165,0,.12);border-color:var(--accent);color:var(--accent);animation:pulse 2s infinite;}
+.step-dot.todo{color:var(--text3);}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.step-lbl{color:var(--text2);}
+.step-lbl.active{color:var(--text);font-weight:500;}
+.step-lbl.done{color:var(--text3);text-decoration:line-through;}
+
+/* score */
+.score-area{text-align:center;padding:8px 0;}
+.score-big{font-family:'IBM Plex Mono',monospace;font-size:30px;color:var(--accent);}
+.score-sub{font-size:11px;color:var(--text3);margin-top:2px;}
+
+/* data room */
+.data-card{background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:10px;margin-bottom:7px;}
+.dc-title{font-size:11px;font-weight:600;color:var(--accent);margin-bottom:6px;}
+.dr{display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px;}
+.dl{color:var(--text2);}
+.dv{color:var(--text);font-family:'IBM Plex Mono',monospace;font-size:10px;}
+.dv.g{color:var(--success);}
+.dv.y{color:var(--warn);}
+
+/* glossary (side) */
+.g-list{display:flex;flex-direction:column;gap:5px;}
+.g-item{background:var(--surface2);border:1px solid transparent;border-radius:5px;padding:7px 10px;cursor:pointer;transition:all .2s;}
+.g-item:hover{border-color:var(--border2);}
+.g-item.unlocked{border-color:rgba(59,130,246,.18);}
+.g-head{display:flex;align-items:center;justify-content:space-between;}
+.g-name{font-size:11px;font-weight:500;color:var(--text);}
+.g-lock{font-size:11px;color:var(--text3);}
+.g-body{font-size:11px;line-height:1.7;color:var(--text3);margin-top:4px;display:none;}
+.g-body.show{display:block;color:var(--text2);}
+
+/* ── FEEDBACK MODAL ── */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.78);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;z-index:200;opacity:0;pointer-events:none;transition:opacity .3s;padding:16px;}
+.overlay.show{opacity:1;pointer-events:all;}
+.fb-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:0;width:100%;max-width:560px;max-height:88vh;overflow-y:auto;transform:translateY(16px);transition:transform .3s;}
+.overlay.show .fb-card{transform:none;}
+.fb-top{padding:20px 22px 16px;}
+.fb-type{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.15em;margin-bottom:7px;}
+.fb-type.good{color:var(--success);}
+.fb-type.warn{color:var(--warn);}
+.fb-type.bad{color:var(--danger);}
+.fb-title{font-family:'Noto Serif JP',serif;font-size:15px;font-weight:700;line-height:1.55;margin-bottom:12px;}
+.fb-sec{padding:14px 22px;border-top:1px solid var(--border);}
+.fb-sec-title{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--accent2);margin-bottom:8px;}
+.fb-body{font-size:13px;line-height:1.95;color:var(--text2);}
+.fb-body strong{color:var(--text);}
+.fb-body em{color:var(--warn);font-style:normal;}
+.know-box{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:13px 15px;margin-top:10px;}
+.know-box-title{font-size:11px;font-weight:700;color:var(--text);margin-bottom:7px;display:flex;align-items:center;gap:5px;}
+.know-box-body{font-size:12px;line-height:1.9;color:var(--text2);}
+.know-box-body strong{color:var(--text);}
+.fb-diag{background:var(--surface3);border:1px solid var(--border);border-radius:7px;padding:12px;margin-top:10px;}
+.fb-diag-title{font-size:10px;font-family:'IBM Plex Mono',monospace;color:var(--text3);letter-spacing:.08em;margin-bottom:8px;}
+.flow-row{display:flex;align-items:center;flex-wrap:wrap;gap:4px;margin-bottom:6px;}
+.f-box{background:var(--surface);border:1px solid var(--border2);border-radius:4px;padding:4px 10px;font-size:11px;}
+.f-box.cur{border-color:var(--accent);color:var(--accent);}
+.f-arrow{color:var(--text3);font-size:13px;}
+.ex-box{background:rgba(16,185,129,.05);border:1px solid rgba(16,185,129,.16);border-radius:7px;padding:12px 14px;margin-top:10px;}
+.ex-box-title{font-size:10px;font-family:'IBM Plex Mono',monospace;color:var(--success);letter-spacing:.08em;margin-bottom:6px;}
+.ex-box-body{font-size:12px;line-height:1.85;color:var(--text2);}
+.unlock-banner{display:flex;align-items:center;gap:8px;background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.18);border-radius:6px;padding:8px 12px;margin-top:10px;font-size:12px;color:var(--success);}
+.fb-bottom{padding:14px 22px 18px;border-top:1px solid var(--border);}
+.next-btn{background:var(--accent);color:#000;border:none;border-radius:8px;padding:12px 0;font-family:'Noto Sans JP',sans-serif;font-size:13px;font-weight:700;cursor:pointer;width:100%;transition:all .2s;}
+.next-btn:hover{background:#f8b820;transform:translateY(-1px);}
+
+/* ── MOBILE GLOSSARY DRAWER ── */
+.mob-gloss-btn{position:fixed;bottom:20px;right:20px;z-index:100;background:var(--surface);border:1px solid var(--border2);border-radius:50%;width:44px;height:44px;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,.4);}
+@media(min-width:900px){.mob-gloss-btn{display:none;}}
+.mob-gloss-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:150;opacity:0;pointer-events:none;transition:opacity .3s;}
+.mob-gloss-overlay.show{opacity:1;pointer-events:all;}
+.mob-gloss-drawer{position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);border-radius:14px 14px 0 0;max-height:70vh;overflow-y:auto;transform:translateY(100%);transition:transform .35s cubic-bezier(.32,0,.67,0);z-index:151;padding:16px 20px 32px;}
+.mob-gloss-overlay.show .mob-gloss-drawer{transform:none;}
+.mob-gloss-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.mob-gloss-title{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--text2);}
+.mob-gloss-close{background:transparent;border:none;color:var(--text2);font-size:18px;cursor:pointer;}
+
+/* summary */
+.summary-box{padding:20px 24px;}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-l">
+    <a class="back-btn" href="index.html">← ホーム</a>
+    <span class="hdr-badge">PHASE 1</span>
+    <span class="hdr-title">案件発掘〜初期検討</span>
+  </div>
+  <div class="hdr-r">
+    <div class="prog-wrap">
+      <span id="prog-txt">1/10</span>
+      <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:10%"></div></div>
+    </div>
+    <span class="score-badge" id="hdr-score">0/0</span>
+  </div>
+</header>
+
+<div class="layout">
+  <!-- MAIN -->
+  <div class="main">
+    <div class="scene-hdr">
+      <div class="scene-meta">
+        <span class="scene-num" id="s-num">SCENE 01</span>
+        <span class="scene-phase-tag" id="s-phase">戦略テーマ設定</span>
+      </div>
+      <div class="scene-title" id="s-title">—</div>
+      <div class="learn-box">
+        <div class="learn-box-title">📚 このシーンで学ぶこと</div>
+        <div class="learn-items" id="learn-tags"></div>
+      </div>
+    </div>
+
+    <div class="narrative" id="narrative"></div>
+
+    <div class="hint-panel" id="hint-panel">
+      <div class="hint-toggle" onclick="toggleHint()">
+        <div class="hint-toggle-l"><span>💡</span>この問題に必要な知識（選択前に確認）</div>
+        <span class="hint-arrow" id="hint-arrow">▼</span>
+      </div>
+      <div class="hint-body" id="hint-body"></div>
+    </div>
+
+    <div class="decision" id="decision">
+      <div class="dec-label">YOUR DECISION</div>
+      <div class="dec-q" id="dec-q"></div>
+      <div class="choices" id="choices"></div>
+    </div>
+  </div>
+
+  <!-- SIDE -->
+  <div class="side">
+    <div class="side-sec">
+      <div class="side-title"><span>◈</span>PROGRESS</div>
+      <div class="step-list" id="step-list"></div>
+    </div>
+    <div class="side-sec">
+      <div class="side-title"><span>◈</span>SCORE</div>
+      <div class="score-area">
+        <div class="score-big" id="score-num">0</div>
+        <div class="score-sub">正解 / <span id="score-den">0</span> 問</div>
+      </div>
+    </div>
+    <div class="side-sec">
+      <div class="side-title"><span>◈</span>DATA ROOM</div>
+      <div class="data-card">
+        <div class="dc-title">🏢 Broadleaf（買収側）</div>
+        <div class="dr"><span class="dl">売上高</span><span class="dv">¥20.8B</span></div>
+        <div class="dr"><span class="dl">営業利益</span><span class="dv g">¥6.1B</span></div>
+        <div class="dr"><span class="dl">顧客数</span><span class="dv">約15,000店舗</span></div>
+        <div class="dr"><span class="dl">2028目標売上</span><span class="dv y">¥31.5B</span></div>
+        <div class="dr"><span class="dl">2028目標利益</span><span class="dv y">¥13.0B</span></div>
+      </div>
+      <div class="data-card">
+        <div class="dc-title">🎯 A社（主要検討先）</div>
+        <div class="dr"><span class="dl">事業</span><span class="dv">中古部品流通PF</span></div>
+        <div class="dr"><span class="dl">売上高</span><span class="dv">¥4.2B</span></div>
+        <div class="dr"><span class="dl">EBITDA</span><span class="dv">¥0.8B</span></div>
+        <div class="dr"><span class="dl">成長率</span><span class="dv g">+12%/年</span></div>
+        <div class="dr"><span class="dl">自己資本比率</span><span class="dv">60%</span></div>
+      </div>
+    </div>
+    <div class="side-sec">
+      <div class="side-title"><span>◈</span>用語集</div>
+      <div class="g-list" id="gloss-side"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Mobile glossary button -->
+<button class="mob-gloss-btn" onclick="openMobGloss()" title="用語集">📖</button>
+<div class="mob-gloss-overlay" id="mob-gloss-ov" onclick="closeMobGloss()">
+  <div class="mob-gloss-drawer" onclick="e=>e.stopPropagation()">
+    <div class="mob-gloss-hdr">
+      <span class="mob-gloss-title">📖 用語集</span>
+      <button class="mob-gloss-close" onclick="closeMobGloss()">✕</button>
+    </div>
+    <div class="g-list" id="gloss-mob"></div>
+  </div>
+</div>
+
+<!-- Feedback Modal -->
+<div class="overlay" id="overlay">
+  <div class="fb-card">
+    <div class="fb-top">
+      <div class="fb-type" id="fb-type"></div>
+      <div class="fb-title" id="fb-title"></div>
+    </div>
+    <div class="fb-sec">
+      <div class="fb-sec-title">📝 解説</div>
+      <div class="fb-body" id="fb-body"></div>
+    </div>
+    <div id="fb-know-w" class="fb-sec" style="display:none">
+      <div class="fb-sec-title">📖 知識詳解</div>
+      <div id="fb-know"></div>
+    </div>
+    <div id="fb-diag-w" class="fb-sec" style="display:none">
+      <div class="fb-sec-title">🗂 図解・プロセス</div>
+      <div id="fb-diag"></div>
+    </div>
+    <div id="fb-ex-w" class="fb-sec" style="display:none">
+      <div class="fb-sec-title">💼 実務例・Tips</div>
+      <div id="fb-ex"></div>
+    </div>
+    <div id="fb-unlock-w" class="fb-sec" style="display:none">
+      <div id="fb-unlock"></div>
+    </div>
+    <div class="fb-bottom">
+      <button class="next-btn" id="next-btn" onclick="nextScene()">次のシーンへ →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════
+// SHARED DATA & UTILITIES
+// ═══════════════════════════════════════════
+
+const APP_VERSION = '1.0.0';
+const STORAGE_KEY = 'ma_case_study_v1';
+
+// ── Storage helpers ──
+const Store = {
+  get() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
+    catch { return {}; }
+  },
+  set(data) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
+    catch(e) { console.warn('Storage error', e); }
+  },
+  update(fn) {
+    const d = this.get();
+    fn(d);
+    this.set(d);
+  },
+  getPhase(phaseId) {
+    const d = this.get();
+    return d[phaseId] || { completed: [], score: 0, total: 0, lastScene: 0, glossaryUnlocked: [] };
+  },
+  savePhase(phaseId, data) {
+    this.update(d => { d[phaseId] = data; });
+  },
+  reset(phaseId) {
+    this.update(d => { delete d[phaseId]; });
+  },
+  getAllScores() {
+    const d = this.get();
+    return Object.entries(d).map(([k, v]) => ({ phase: k, score: v.score || 0, total: v.total || 0 }));
+  }
+};
+
+// ── Glossary data ──
+const GLOSSARY_ALL = {
+  ma_overview:   { name:"M&Aとは", category:"基礎", body:"Mergers（合併）& Acquisitions（買収）の略。企業の合併・買収・提携を通じて事業拡大や経営効率化を図る手段。日本では年間4,000件超が実施される。" },
+  organic:       { name:"有機成長vs非有機成長", category:"基礎", body:"有機成長＝自社の既存事業を拡大する成長。非有機成長＝M&AやJV（合弁）など外部リソース活用による成長。M&Aは時間を『買う』手段とも言われる。" },
+  strategic_fit: { name:"戦略適合性", category:"戦略", body:"買収候補が自社の経営戦略・ビジョンとどれだけ合致するか。戦略適合性が低い買収は統合後に「何のために買ったか」が不明確になりやすい。" },
+  synergy:       { name:"シナジー", category:"戦略", body:"①コスト削減（重複機能統合）②収益増加（クロスセル・市場拡大）③ケイパビリティ獲得（技術・人材）の3種類がある。シナジーは楽観的に過大評価されやすいため、保守的試算が重要。" },
+  origination:   { name:"案件発掘チャネル", category:"プロセス", body:"①自己開拓（業界調査・DB検索）②M&A仲介・FA経由③既存ネットワーク④競合・業界カンファレンス。自己開拓は競合が少ない代わりに手間がかかる。" },
+  screening:     { name:"初期スクリーニング", category:"プロセス", body:"ロングリスト（30〜50社）を投資基準（業種・規模・財務・地域）で絞り込みショートリスト（3〜5社）にするプロセス。基準の明文化が重要。" },
+  nda:           { name:"NDA（秘密保持契約）", category:"法務", body:"Non-Disclosure Agreement。情報開示前に締結し、受領情報の目的外使用・第三者開示を禁止する。M&Aでは相互NDAが一般的。違反時の損害賠償条項が重要。" },
+  teaser:        { name:"ティーザー（匿名概要書）", category:"プロセス", body:"会社名を伏せた状態で事業概要・財務ハイライトを記載した1〜2枚の文書。NDA締結前に相手の関心を確認するために使われる。" },
+  im:            { name:"IM（インフォメーションメモランダム）", category:"プロセス", body:"NDA締結後に提供される詳細な会社情報資料。事業内容・財務・市場・組織・リスクなどを網羅する20〜100ページ程度の文書。" },
+  valuation:     { name:"企業価値評価（バリュエーション）", category:"財務", body:"主な手法：①DCF法（将来CFを現在価値に割引）②マルチプル法（EV/EBITDA等の類似企業比較）③純資産法（BS基準）。M&Aでは①②を併用するのが一般的。" },
+  ebitda:        { name:"EBITDA", category:"財務", body:"Earnings Before Interest, Taxes, Depreciation and Amortization。税引前利益＋支払利息＋減価償却費。企業の事業キャッシュ創出力を示す指標。M&Aバリュエーションで頻繁に使用。" },
+  ev:            { name:"EV（企業価値）", category:"財務", body:"Enterprise Value＝時価総額＋有利子負債－現金・現金同等物。EV/EBITDAマルチプルは業種によって異なる（SaaS系：10〜20倍、製造業：5〜8倍など）。" },
+  loi:           { name:"LOI（意向表明書）", category:"プロセス", body:"Letter of Intent。買収意思・価格レンジ・独占交渉期間・DD実施合意などを記載した非拘束文書。法的拘束力はないが、交渉の土台となる重要書類。" },
+  dd:            { name:"DD（デュー・デリジェンス）", category:"プロセス", body:"財務・法務・事業・IT・人事・環境などの観点から対象会社を詳細調査するプロセス。LOI締結後、独占交渉期間中に実施。通常4〜8週間。" },
+  dcf:           { name:"DCF法（割引キャッシュフロー法）", category:"財務", body:"将来のフリーキャッシュフロー（FCF）を加重平均資本コスト（WACC）で現在価値に割り引いて企業価値を算出する手法。M&Aの主要バリュエーション手法。" },
+  wacc:          { name:"WACC（加重平均資本コスト）", category:"財務", body:"Weighted Average Cost of Capital。負債コストと株主資本コストを資本構成比率で加重平均したもの。DCFのディスカウントレートとして使用。" },
+  pmi:           { name:"PMI（統合後管理）", category:"PMI", body:"Post Merger Integration。クロージング後の統合プロセス。組織・システム・文化の統合を管理し、計画したシナジーを実現するための取り組み。M&A成功の最大の鍵とされる。" },
+  spa:           { name:"SPA（株式譲渡契約）", category:"法務", body:"Share Purchase Agreement。最終的な買収契約書。価格・クロージング条件・表明保証・補償条項などを規定する法的拘束力のある文書。" },
+  exclusivity:   { name:"独占交渉期間（Exclusivity）", category:"プロセス", body:"LOI締結後に設定される期間（通常30〜90日）。この間、売り手は他の買い手との交渉を禁止される。買い手はこの期間にDDを実施する。" },
+};
+
+// ── Phase metadata ──
+const PHASES = [
+  { id:'phase1', name:'Phase 1', title:'案件発掘〜初期検討', scenes:10, icon:'🔍', status:'available', desc:'戦略テーマ設定・候補企業発掘・スクリーニング・NDA・初期バリュエーション・LOI' },
+  { id:'phase2', name:'Phase 2', title:'DD〜バリュエーション深掘り', scenes:10, icon:'🔬', status:'coming', desc:'財務DD・法務DD・DCF法・リスク識別・価格再交渉' },
+  { id:'phase3', name:'Phase 3', title:'交渉〜契約締結', scenes:10, icon:'🤝', status:'coming', desc:'SPA交渉・表明保証・クロージング条件・最終合意' },
+  { id:'phase4', name:'Phase 4', title:'PMI（統合後管理）', scenes:10, icon:'🏗', status:'coming', desc:'100日プラン・組織統合・システム統合・シナジー実現管理' },
+];
+
+// ── Notion logging (passive – best-effort) ──
+async function logToNotion(phaseId, score, total, completedAt) {
+  // Uses Notion API via a proxy if available; otherwise silently skips
+  // In GitHub Pages static deployment, this requires a serverless function or n8n webhook
+  // Placeholder: can be connected to n8n / Google Apps Script webhook
+  const WEBHOOK_URL = localStorage.getItem('ma_notion_webhook');
+  if (!WEBHOOK_URL) return;
+  try {
+    await fetch(WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        phase: phaseId,
+        score,
+        total,
+        pct: Math.round((score/total)*100),
+        completedAt,
+        type: 'case_study_result'
+      })
+    });
+  } catch(e) { /* silent */ }
+}
+
+</script>
+<script>
+// ═══════════════════════════════
+// PHASE 1 SCENES DATA
+// ═══════════════════════════════
+const PHASE_ID = 'phase1';
+const STEPS = [
+  {id:'st1',label:'戦略テーマ設定'},
+  {id:'st2',label:'候補企業発掘'},
+  {id:'st3',label:'初期スクリーニング'},
+  {id:'st4',label:'接触・NDA締結'},
+  {id:'st5',label:'初期情報収集'},
+  {id:'st6',label:'初期バリュエーション'},
+  {id:'st7',label:'LOI提出判断'},
+];
+
+const SCENES=[
+{num:'SCENE 01',phase:'戦略テーマ設定',stepId:'st1',
+title:'経営会議翌日 ── なぜM&Aをするのか',
+learns:['M&Aとは','有機成長vs非有機成長','戦略適合性'],
+narrative:[
+{t:'narr',hl:false,txt:'2026年4月。Broadleaf 事業開発部。朝9時。'},
+{t:'narr',hl:true,txt:'先週の経営会議で「中期計画達成に向けたM&A戦略の推進」が承認された。あなたは事業開発担当として、M&A案件の発掘から統合まで一気通貫で担当することになった。'},
+{t:'dlg',av:'boss',name:'部長（事業開発）',txt:'篭谷さん、よろしく頼む。まず考えてほしいのは「なぜ今、M&Aなのか」という問いだ。社内への説明責任もある。'},
+{t:'dlg',av:'player',name:'あなた',txt:'中計目標の達成が難しいからでしょうか？現状の有機成長だと不足するという理解です。'},
+{t:'dlg',av:'boss',name:'部長',txt:'そうだ。売上¥31.5B・営業利益¥13Bが2028年の目標だが、今の成長率を延長すると届かない。M&Aで時間を買う必要がある。ただし、それが唯一の理由では弱い。'},
+{t:'narr',hl:false,txt:'あなたは改めてM&A実施の根拠を整理しなければならない。'},
+],
+q:'M&Aを推進する理由として、社内説明に最も適切な根拠はどれですか？',
+choices:[
+{k:'A',txt:'①有機成長ギャップの補完（中計未達リスク）②競合優位性の獲得③時間の節約（ケイパビリティを一から構築するより速い）の3点を根拠とする',correct:true},
+{k:'B',txt:'「他社もM&Aをやっているから」という業界トレンドを主な根拠とする'},
+{k:'C',txt:'「面白い会社があったから買ってみたい」という事業機会ベースで説明する'},
+],
+hint:{sections:[
+{title:'M&Aの目的分類',body:'M&Aには大きく3つの目的があります。<br><br><strong>①成長加速</strong>：有機成長より速く隣接領域へ参入。<br><strong>②ケイパビリティ獲得</strong>：技術・人材・ブランドなど自社にない経営資源を取り込む。<br><strong>③守り（防衛）</strong>：競合に買われる前に押さえる。<br><br>Broadleafの場合は主に<strong>①と②</strong>に該当します。'},
+{title:'有機成長ギャップの試算',body:'現在売上¥20.8B × (1+8%)³ ≈ ¥26.2B → 目標¥31.5Bとのギャップ ≈ <strong>¥5.3B</strong><br><br>このギャップをM&Aで埋める必要がある、と定量的に説明できます。',diag:{title:'有機成長とM&A目標のギャップ',flow:['有機成長のみ','¥26.2B（2028予測）','vs','M&A込み目標','¥31.5B'],note:'差額¥5.3B分の会社を買収・統合する必要がある'}},
+]},
+feedback:{
+A:{type:'good',title:'✓ 正しい：多角的な根拠でM&Aの戦略的必然性を示す',
+body:'<strong>①ギャップ補完②競合優位③時間節約</strong>の3点は、M&Aを推進する際の教科書的な根拠セットです。有機成長のみでは2028年に目標対比¥5.3B不足という定量的根拠が説得力を生みます。',
+know:{title:'M&A根拠の定量化が重要な理由',body:'取締役会・投資委員会では「なぜM&Aか」に対する数値的根拠が必須です。<br><br><strong>必要な3要素：</strong><br>①<strong>必然性</strong>：なぜ有機成長ではダメか<br>②<strong>方向性</strong>：どの領域・どんな会社を対象とするか<br>③<strong>タイミング</strong>：なぜ今なのか'},
+ex:{title:'実務Tips',body:'大手企業では「戦略計画（SP）」と「M&Aパイプライン」を連動させ毎年更新します。M&A案件は突然生まれるのではなく、<strong>戦略ギャップを埋める手段として計画的に発掘</strong>されます。'},
+unlocks:['ma_overview','organic','strategic_fit']},
+B:{type:'warn',title:'△ 不十分：トレンド追随は根拠として脆弱',
+body:'業界トレンドは参考情報にはなりますが、それ自体は「うちがやる理由」になりません。<strong>「他社もやっているから」では①どの規模で②どの領域で③なぜ今やるべきかが説明できません。</strong>取締役会で即却下されるレベルです。',
+know:{title:'根拠として何が弱いか',body:'「業界トレンド」単体の問題点：<br>①なぜBroadleafがやる必要があるか不明<br>②どの領域・規模かが不明<br>③失敗した場合の説明責任が果たせない<br><br>トレンドは「環境要因」として補足的に使うのが適切です。'},
+unlocks:['ma_overview','organic']},
+C:{type:'bad',title:'✗ 案件先行型M&A：最もやってはいけないパターン',
+body:'<strong>「面白い会社があったから」というアプローチはM&A失敗の最大原因のひとつ</strong>です。案件ありきで動くと自社戦略との整合性検証が後回しになり、統合後に「何のために買ったか」が迷走します。',
+know:{title:'案件先行型M&Aの失敗パターン',body:'①仲介会社の持ち込み案件を感情的に評価 → 高値掴み<br>②「良い会社だから」でDDを甘くする → 隠れリスクを見落とす<br>③統合後に目的が迷走<br><br><strong>常に「戦略起点」で考えることが鉄則。</strong>'},
+unlocks:['ma_overview','strategic_fit']},
+}},
+{num:'SCENE 02',phase:'戦略テーマ設定',stepId:'st1',
+title:'自社分析 ── バリューチェーンで空白を見つける',
+learns:['戦略適合性','シナジー'],
+narrative:[
+{t:'narr',hl:true,txt:'M&Aの根拠を整理した次のステップは、「何を買うか」のテーマ設定だ。そのためにはまず自社の強みと弱みを明確にする必要がある。'},
+{t:'dlg',av:'partner',name:'外部コンサルタント',txt:'Broadleafの現状を整理しましょう。強みは：整備工場向けSaaS・約15,000店舗の顧客基盤・車両整備データ。この資産を起点に考えるべきです。'},
+{t:'dlg',av:'player',name:'あなた',txt:'弱みや空白領域はどこでしょうか？'},
+{t:'dlg',av:'partner',name:'コンサルタント',txt:'大きく3点。①部品調達・流通領域②EV対応技術③顧客の後継者問題（工場の廃業リスク）。これらはBroadleafのビジネスに直接影響する脆弱点です。'},
+],
+q:'買収テーマを設定するための自社分析として最も効果的なアプローチはどれですか？',
+choices:[
+{k:'A',txt:'バリューチェーン分析で「自社が担う工程」と「担えていない工程」を可視化し、M&Aで補完すべき領域を特定する',correct:true},
+{k:'B',txt:'SWOT分析だけで強み・弱み・機会・脅威を整理し、そこから買収テーマを決める'},
+{k:'C',txt:'競合他社が最近買収した会社を調べ、同じ領域を狙う'},
+],
+hint:{sections:[
+{title:'バリューチェーン分析とは',body:'マイケル・ポーターが提唱。事業を「購買→製造→物流→販売→サービス」などの連鎖に分解し、どの工程で価値が生まれているかを可視化します。<br><br><strong>M&A文脈では：</strong>自社が担う工程と空白工程を可視化し、「どこを垂直統合するか・水平展開するか」を判断するために使います。'},
+{title:'Broadleafのバリューチェーン',body:'車両ライフサイクル視点での整理：<br>部品調達 → 整備・修理（★Broadleaf主戦場）→ 点検記録 → 保険/金融 → 廃車/EV<br><br><strong>M&Aで補完できる工程：</strong>①部品調達（上流）②保険・金融（下流）③廃車・EV対応（将来）',diag:{title:'バリューチェーン上でのBroadleafの位置',flow:['部品調達','→','整備・修理★','→','点検記録','→','保険/金融','→','廃車/EV'],note:'★が現在の主戦場。矢印の両側がM&A候補領域'}},
+]},
+feedback:{
+A:{type:'good',title:'✓ バリューチェーン分析が最も有効',
+body:'バリューチェーン分析を使うことで<strong>「自社が担う工程」と「まだ担えていない工程」</strong>が視覚的に明確になります。Broadleafの場合、上流の「部品調達・流通」が即時シナジーを生みやすいM&A候補として浮かび上がります。',
+know:{title:'垂直統合型vs水平展開型M&A',body:'<strong>垂直統合型</strong>：バリューチェーンの上流（部品調達）・下流（保険）を取り込む。既存顧客との即日シナジーが生まれやすい。<br><br><strong>水平展開型</strong>：同じ工程で地域・顧客層を広げる。<br><br>Broadleafには垂直統合＋水平展開の両方の可能性があります。'},
+ex:{title:'隣接性の原則（Bain & Company調査）',body:'M&Aの成功率は「既存事業との距離」に反比例します。自社のバリューチェーンから1〜2工程以内の隣接領域を狙うと統合リスクが低く、シナジーが実現しやすい。'},
+unlocks:['strategic_fit','synergy']},
+B:{type:'warn',title:'△ SWOT分析は出発点として有効だが単体では不十分',
+body:'SWOTは状況整理に有効ですが、<strong>「どこを買うか」という具体的な領域特定には解像度が低い</strong>です。SWOT→バリューチェーン分析→候補企業特定、という順序で使うと効果的です。',
+know:{title:'SWOT分析の位置づけ',body:'M&A文脈では：<br>W（弱み）→ M&Aで補完する候補領域<br>O（機会）→ 市場として参入すべき領域<br>T（脅威）→ 防衛的に先手を打つべき領域<br><br>…を特定するための<strong>入口として使う</strong>ものです。'},
+unlocks:['strategic_fit']},
+C:{type:'warn',title:'△ 競合追随は遅れた戦略になりやすい',
+body:'競合が既に買収した領域は①良い会社が残っていない②価格が高騰している可能性があります。<strong>競合分析は市場の方向性確認に留め、自社起点でテーマを設定</strong>するのが原則です。',
+know:{title:'競合分析の正しい使い方',body:'競合のM&A動向から読み取るべきは：<br>①どの領域が今後重要になるか（市場シグナル）<br>②自社がまだ空けている隣接領域はどこか<br>③買い負けるリスクのある候補をどう早期に押さえるか<br><br>競合追随ではなく、<strong>競合分析→自社テーマ設定</strong>の順序が重要です。'},
+unlocks:['strategic_fit','synergy']},
+}},
+{num:'SCENE 03',phase:'戦略テーマ設定',stepId:'st1',
+title:'テーマ選定 ── 3候補をスコアリングで絞る',
+learns:['戦略適合性','シナジー'],
+narrative:[
+{t:'narr',hl:true,txt:'分析の結果、3つの買収テーマ候補が浮上した。全てを同時に追うのは現実的でない。どれを優先するか決断が必要だ。'},
+{t:'dlg',av:'partner',name:'コンサルタント',txt:'テーマA【部品流通DX】：中古部品流通PF企業。御社の15,000店舗顧客への即日クロスセルが可能。テーマB【データAI高度化】：車検・点検データ解析AI。テーマC【EV整備対応】：EV整備ノウハウ企業。'},
+{t:'dlg',av:'boss',name:'部長',txt:'リソースは限られる。1テーマに集中してくれ。何を基準に選ぶか考えてみて。'},
+],
+q:'最優先テーマを選ぶ判断基準として最も適切なものはどれですか？',
+choices:[
+{k:'A',txt:'①既存資産とのシナジー実現スピード ②市場成熟度（今すぐ取れる候補がいるか）③投資対効果（ROI）の3軸でスコアリングし、最も高スコアのテーマを選ぶ',correct:true},
+{k:'B',txt:'将来性が最も高いテーマ（EV）を選ぶ。先行者優位が重要だから'},
+{k:'C',txt:'最も説明しやすいテーマ（部品流通）を選ぶ。社内承認が取りやすいから'},
+],
+hint:{sections:[
+{title:'テーマ優先順位づけの3軸',body:'<strong>①シナジー実現スピード</strong>：既存顧客・資産とどれだけ早くシナジーが生まれるか。部品流通は15,000店舗にすぐ売れる。EVは市場自体がまだ小さい。<br><br><strong>②市場成熟度</strong>：買える候補企業が今存在するか。<br><br><strong>③投資対効果（ROI）</strong>：投資額に対しての価値増加見込み。'},
+{title:'スコアリングマトリクス例',body:'<table style="font-size:11px;border-collapse:collapse;width:100%;color:var(--text2)"><tr style="border-bottom:1px solid var(--border)"><td style="padding:4px">テーマ</td><td style="padding:4px">シナジー</td><td style="padding:4px">成熟度</td><td style="padding:4px">ROI</td><td style="padding:4px">合計</td></tr><tr><td style="padding:4px;color:var(--success)">部品流通DX</td><td style="padding:4px;color:var(--success)">◎3</td><td style="padding:4px;color:var(--success)">◎3</td><td style="padding:4px;color:var(--success)">○2</td><td style="padding:4px;font-weight:700;color:var(--success)">8</td></tr><tr><td style="padding:4px">データAI</td><td style="padding:4px">○2</td><td style="padding:4px">△1</td><td style="padding:4px">◎3</td><td style="padding:4px;font-weight:700">6</td></tr><tr><td style="padding:4px">EV整備</td><td style="padding:4px">△1</td><td style="padding:4px">△1</td><td style="padding:4px">○2</td><td style="padding:4px;font-weight:700">4</td></tr></table>'},
+]},
+feedback:{
+A:{type:'good',title:'✓ 多軸評価で感情・バイアスを排除する',
+body:'スコアリングにより評価の透明性を確保し、後から「なぜこのテーマを選んだか」が説明できる状態を作ることが重要です。この評価では<strong>部品流通DXが最高スコア</strong>（シナジー速い・市場成熟・ROI試算可能）になります。',
+know:{title:'テーマごとの最適な関与形態',body:'<strong>成熟領域（部品流通）</strong> → フルバイアウト（100%取得）<br><strong>成長途上（データAI）</strong> → マジョリティ取得（50%超）<br><strong>黎明期（EV）</strong> → マイノリティ出資（20〜30%）でオプション確保<br><br>関与形態を投資先の成熟度に合わせることが重要です。'},
+unlocks:['strategic_fit','synergy']},
+B:{type:'warn',title:'△ 将来性はあるが現時点では動けない',
+body:'EV対応は長期トレンドとして正しいですが、<strong>現時点ではEV整備市場自体がまだ小さく、Broadleafの既存顧客（ガソリン車中心）との即時シナジーが限定的</strong>です。フルバイアウトより「マイノリティ出資でオプション確保」が現実的です。',
+know:{title:'「隣接性の罠」に注意',body:'将来性があっても現在の自社から遠い領域を狙うと、①PMIコストが跳ね上がる②シナジー実現が遅れる③経営資源が分散するという三重苦になります。'},
+unlocks:['strategic_fit']},
+C:{type:'warn',title:'△ 承認容易性だけで選ぶと戦略がブレる',
+body:'「説明しやすいから」という理由は結果論として付いてくるものであり、それを理由に選ぶべきではありません。<strong>正しい戦略的判断をした上で、それを分かりやすく説明する能力が求められます。</strong>',
+know:{title:'社内承認プロセスに必要な資料',body:'取締役会への提案で必要なもの：<br>①戦略的根拠（なぜこのテーマか）<br>②市場サイズと成長率<br>③候補企業の概要と想定バリュエーション<br>④期待シナジーの定量試算<br>⑤リスクと対応策'},
+unlocks:['strategic_fit','synergy']},
+}},
+{num:'SCENE 04',phase:'案件発掘',stepId:'st2',
+title:'候補企業の探し方 ── 情報源の選択',
+learns:['案件発掘チャネル'],
+narrative:[
+{t:'narr',hl:true,txt:'テーマが「部品流通DX」に決定した。次は具体的な候補企業を30〜50社洗い出すロングリストを作る段階だ。'},
+{t:'dlg',av:'boss',name:'部長',txt:'情報収集のアプローチをどうするか、方針を決めてから動いてくれ。仲介経由は楽だが競合が多い。自己開拓は手間だが独自パイプラインになる。'},
+],
+q:'候補企業のロングリスト作成において、最も戦略的なアプローチはどれですか？',
+choices:[
+{k:'A',txt:'①業界レポート・帝国データバンク・有報で自己調査してロングリストを内製し、並行してM&A仲介2〜3社を補助的に活用する',correct:true},
+{k:'B',txt:'大手M&A仲介会社3社に「部品流通系の案件を紹介してほしい」とメールし、持ち込みを待つ'},
+{k:'C',txt:'既存顧客（整備工場）や取引先に「良い部品商はないか」とヒアリングしてまわる'},
+],
+hint:{sections:[
+{title:'案件発掘チャネルの比較',body:'<strong>①自己開拓</strong>　競合：少ない / 価格：相場水準 / 手間：大<br><strong>②M&A仲介・FA経由</strong>　競合：多い（複数バイヤーに同時提示）/ 価格：競争入札で高騰しやすい / 手間：少<br><strong>③ネットワーク経由</strong>　競合：少ない / 守秘リスク：高 / 手間：関係構築に時間'},
+{title:'ロングリスト作成の基本ステップ',body:'<strong>Step 1</strong>：業界分類（日本標準産業分類）で候補業種を特定<br><strong>Step 2</strong>：帝国データバンク・東商リサーチで売上規模・エリア絞り込み<br><strong>Step 3</strong>：有価証券報告書（EDINET）で上場企業の財務概況確認<br><strong>Step 4</strong>：業界紙・専門メディアで注目企業チェック'},
+]},
+feedback:{
+A:{type:'good',title:'✓ ハイブリッドアプローチ：自己開拓メイン＋仲介補完',
+body:'<strong>自己開拓でロングリストを内製することで「自社が戦略的に選んだ候補」という立場を保てます。</strong>仲介経由の案件と異なり、競合入札になりにくく自社のペースで交渉できます。',
+know:{title:'自己開拓で使える主な情報源',body:'<strong>企業DB</strong>：帝国データバンク（TDB）・東京商工リサーチ（TSR）・SPEEDA<br><strong>公開情報</strong>：有価証券報告書（EDINET）・特許情報（J-PlatPat）・業界紙<br><strong>人的NW</strong>：業界カンファレンス・展示会・取引銀行'},
+ex:{title:'M&Aパイプライン管理のコツ',body:'Excelで「企業名・事業概要・売上規模・接触ステータス・メモ」を管理します。案件発掘→接触→NDA→DD→LOIの各ステージを可視化することで複数案件を同時管理できます。'},
+unlocks:['origination']},
+B:{type:'warn',title:'△ 仲介依存の3大リスク',
+body:'①競争入札になりやすく価格が高騰②仲介会社の利益と買い手の利益が必ずしも一致しない③「良い案件」は競合が多く自社が取れるとは限らない、という三重の問題があります。',
+know:{title:'M&A仲介とFAの違い',body:'<strong>M&A仲介会社</strong>：買い手・売り手の双方から手数料を受け取る（双方代理）。中小企業M&Aに多い。<br><br><strong>FA（フィナンシャルアドバイザー）</strong>：買い手または売り手のどちらか一方の利益を最大化。大型M&Aに多い。'},
+unlocks:['origination']},
+C:{type:'warn',title:'△ ネットワーク活用は補助的に、守秘リスクに注意',
+body:'既存顧客への相談は有益な情報源になり得ますが、<strong>「Broadleafが部品商を買収しようとしている」という情報が業界内に漏れるリスク</strong>があります。情報漏洩は株価影響・競合の先手など多くの問題を引き起こします。',
+know:{title:'M&A情報管理の基本（クリーンチーム）',body:'M&Aプロセスは「クリーンチーム（知っている人を最小限に絞る）」で運営します。<br><br>情報を知る必要がある人：経営幹部・事業開発担当・法務・CFO<br>知らせるべきでない人：一般社員・取引先・競合・メディア'},
+unlocks:['origination','nda']},
+}},
+{num:'SCENE 05',phase:'初期スクリーニング',stepId:'st3',
+title:'ロングリスト絞り込み ── 評価基準の設計',
+learns:['初期スクリーニング'],
+narrative:[
+{t:'narr',hl:true,txt:'2週間の調査で32社のロングリストが完成した。これを3〜5社のショートリストに絞り込む。'},
+{t:'narr',hl:false,txt:'候補（抜粋）：A社（中古部品流通PF・¥4.2B・黒字）/ B社（タイヤEC・¥8B・黒字）/ C社（部品検索AI・¥0.9B・赤字）/ D社（自動車保険・¥3B・黒字）/ E社（整備記録SaaS・¥2B・黒字・競合近）/ F社（中古車オークション・¥12B・黒字）'},
+{t:'dlg',av:'boss',name:'部長',txt:'32社全部を詳しく調べるリソースはない。明確な基準で絞ってくれ。'},
+],
+q:'スクリーニング基準として最も適切な組み合わせはどれですか？',
+choices:[
+{k:'A',txt:'①戦略適合性（バリューチェーン上の補完性）②財務健全性（黒字・安定収益・一定規模以上）③統合可能性（オペレーション互換性・サイズ感）の3軸でスコアリングする',correct:true},
+{k:'B',txt:'売上規模が大きい順にTop3を選ぶ（F社・B社・A社）'},
+{k:'C',txt:'将来性が高そうな順に選ぶ（AI・テック系を優先：C社）'},
+],
+hint:{sections:[
+{title:'スクリーニング基準の3層構造',body:'<strong>Layer 1（必須要件）</strong>：これを満たさない候補は即除外。例：特定業種・最低売上規模・黒字<br><br><strong>Layer 2（戦略適合性）</strong>：自社のバリューチェーンとの接続性。<br><br><strong>Layer 3（財務・実行可能性）</strong>：買収可能サイズか、オーナーの売却意向はあるか。',diag:{title:'絞り込みイメージ',flow:['32社','→','Layer1除外','→','約15社','→','Layer2評価','→','約7社','→','Layer3評価','→','3〜5社'],note:'各Layerで約半分に絞り込む'}},
+{title:'買収サイズの経験則',body:'ファーストM&A（初めての買収）に適切なサイズ目安：<strong>自社売上の10〜20%</strong><br><br>Broadleaf（売上¥20.8B）の場合：適切サイズ ≒ ¥2〜4B規模<br>A社（¥4.2B）はギリギリ許容範囲内。F社（¥12B）は大きすぎる。'},
+]},
+feedback:{
+A:{type:'good',title:'✓ 3軸スコアリングで客観的・再現可能な評価を実現',
+body:'基準を先に明文化することで①評価の主観バイアスを排除②後から「なぜこの会社を選んだか」が説明できる③複数人でのレビューが可能になります。A社〜F社に当てはめると<strong>A社が最高スコア</strong>になります。',
+know:{title:'スコアリングマトリクス（各社評価）',body:'<table style="font-size:11px;border-collapse:collapse;width:100%;color:var(--text2)"><tr style="border-bottom:1px solid var(--border)"><td style="padding:4px">会社</td><td style="padding:4px">戦略</td><td style="padding:4px">財務</td><td style="padding:4px">統合性</td><td style="padding:4px">合計</td></tr><tr><td style="padding:4px;color:var(--success)">A社</td><td style="padding:4px;color:var(--success)">◎3</td><td style="padding:4px;color:var(--success)">◎3</td><td style="padding:4px;color:var(--success)">○2</td><td style="padding:4px;font-weight:700;color:var(--success)">8</td></tr><tr><td style="padding:4px">B社</td><td style="padding:4px">△1</td><td style="padding:4px">◎3</td><td style="padding:4px">△1</td><td style="padding:4px;font-weight:700">5</td></tr><tr><td style="padding:4px">C社</td><td style="padding:4px">○2</td><td style="padding:4px">✕0</td><td style="padding:4px">○2</td><td style="padding:4px;font-weight:700">4</td></tr><tr><td style="padding:4px">F社</td><td style="padding:4px">△1</td><td style="padding:4px">◎3</td><td style="padding:4px">✕0</td><td style="padding:4px;font-weight:700">4</td></tr></table>'},
+unlocks:['screening']},
+B:{type:'warn',title:'✗ 規模最大化基準の落とし穴',
+body:'F社（¥12B）を買収すると①Broadleafの現在売上¥20.8Bに対して規模が大きすぎ②ビジネスモデルが異なりPMIが複雑③シナジー実現に時間がかかる。<strong>大きければ良いわけではありません。</strong>',
+know:{title:'ファーストM&Aのサイズ原則',body:'M&A経験の浅い段階では「自社規模の10〜20%以内の会社」でPMIノウハウを蓄積してから、より大型の案件に挑戦するのが安全です。'},
+unlocks:['screening']},
+C:{type:'warn',title:'✗ 赤字スタートアップは初期M&Aに不向き',
+body:'C社（AI・赤字）は①のれん減損リスク②バリュエーションが難しく価格交渉が難航しやすい③統合後に黒字化させる負担がBroadleafに発生します。<strong>スタートアップへの関与は「マイノリティ投資」から始めるのが現実的です。</strong>',
+know:{title:'赤字スタートアップへの適切な関与形態',body:'マイノリティ出資（10〜30%）：リスクを限定しながらオプションを持つ → 事業進捗を見ながら追加出資や買収を検討<br><br>M&A経験が少ない段階では、まず「黒字・安定キャッシュフロー」の会社で実績を作ることを推奨します。'},
+unlocks:['screening','valuation']},
+}},
+{num:'SCENE 06',phase:'接触・NDA',stepId:'st4',
+title:'初回接触 ── アプローチ方法の設計',
+learns:['ティーザー（匿名概要書）','NDA（秘密保持契約）'],
+narrative:[
+{t:'narr',hl:true,txt:'スクリーニングの結果、A社（中古部品流通PF）が最優先候補に決定した。いよいよ接触フェーズだ。'},
+{t:'dlg',av:'boss',name:'部長',txt:'A社のオーナー社長に打診するが、いきなり「買収したい」と言うのはまずい。どういうアプローチをとる？'},
+{t:'dlg',av:'player',name:'あなた',txt:'相手の関心を確認しながら、段階的に情報開示の深度を上げていく必要がありますよね。'},
+],
+q:'A社オーナーへの初回アプローチとして最も適切な手順はどれですか？',
+choices:[
+{k:'A',txt:'①Broadleafの事業・戦略方向性を簡潔にまとめた資料を持参②提携・協業の可能性を話し合う場として面談をセット③関心が確認できればNDA締結を提案する',correct:true},
+{k:'B',txt:'初回面談でいきなり「御社を買収したい。希望価格はいくらか」と直接聞く'},
+{k:'C',txt:'NDAを締結してから面談の場を設定し、その場で詳細財務を全て開示してもらう'},
+],
+hint:{sections:[
+{title:'接触フェーズの段階的プロセス',body:'<strong>Step 1：ファーストコンタクト</strong>：書面または電話で「協業・パートナーシップについて話したい」とアプローチ<br><br><strong>Step 2：初回面談</strong>：双方の事業・戦略を共有。「検討の余地あり」の意向確認<br><br><strong>Step 3：NDA締結</strong>：詳細情報開示の前に秘密保持の枠組みを整える<br><br><strong>Step 4：ティーザー・IM提供</strong>：NDA後に詳細情報を段階的に共有',diag:{title:'接触フェーズの標準的な流れ',flow:['ファーストコンタクト','→','初回面談','→','NDA締結★','→','ティーザー/IM','→','詳細協議'],note:'★ここが今のステップ。初回面談でNDAを急がない'}},
+{title:'ティーザーとIMの違い',body:'<strong>ティーザー</strong>：会社名を伏せた1〜2枚の概要。NDA前に相手の関心確認に使う。<br><br><strong>IM（インフォメーション・メモランダム）</strong>：NDA後に提供する詳細資料（20〜100ページ）。財務・市場・組織などを網羅。'},
+]},
+feedback:{
+A:{type:'good',title:'✓ 段階的接触：信頼関係と守秘を両立する',
+body:'<strong>初回は「買収」を前面に出さず「協業・提携の可能性を探る」という入り口が一般的</strong>です。相手オーナーにとって「突然買収と言われた」よりも「一緒にビジネスを考えましょう」の方が心理的障壁が低く、関係構築がスムーズです。',
+know:{title:'オーナー経営者への接触で注意すること',body:'中小・中堅企業のオーナーにとってM&Aは「会社を売る＝自分の引退」と感じられることが多いです。<br><br><strong>有効なアプローチ：</strong><br>①「売却」より「一緒に成長する」という表現を使う<br>②Broadleafの15,000店舗へのアクセスという価値提案を先行させる<br>③急かさず相手のペースを尊重する'},
+ex:{title:'アプローチのきっかけ作り（実務Tips）',body:'①展示会・業界カンファレンスで名刺交換後に面談設定②共通の取引先・銀行経由の紹介③業界団体を通じたアプローチ…いきなり電話/メールより「接点があった状態」で打診すると成功率が高まります。'},
+unlocks:['teaser','nda']},
+B:{type:'bad',title:'✗ 初回で価格交渉：M&Aにおける最大のタブー',
+body:'<strong>初回面談で「いくらで売るか」を聞くのはM&Aにおける最大のタブーのひとつ</strong>です。相手オーナーに「この会社は数字しか見ていない」という印象を与え、交渉が即終了するリスクがあります。まず相手の事業・ビジョン・課題を理解し、「一緒にやることへの共感」を伝えることが先決です。',
+know:{title:'M&A交渉における感情の重要性',body:'特にオーナー系企業では、<strong>「誰に売るか」は「いくらで売るか」と同等かそれ以上に重要</strong>です。オーナーは自分が育てた会社・社員・顧客を「信頼できる人に引き継いでもらいたい」という気持ちを持っています。'},
+unlocks:['teaser','nda']},
+C:{type:'warn',title:'△ 順序の誤り：NDAは面談後・関心確認後に締結',
+body:'NDAを締結してから面談するという逆順は①相手に「最初から買収ありき」という印象を与える②面談前にNDA交渉という余計な手間が発生するという問題があります。<strong>標準的な順序：面談で関心を確認→関心があればNDAを締結→詳細情報を開示。</strong>',
+know:{title:'NDA締結のタイミング原則',body:'「詳細財務・顧客リスト・技術情報などの開示前」がNDA締結の必須タイミングです。口頭での情報共有でもNDA後が安心。<br><br>NDAを先に求めるのは売り手として正しい行動です。買い手もNDA締結を歓迎すべき理由：<br>①自社の戦略・予算も保護される<br>②正式なプロセスに入ったシグナルになる'},
+unlocks:['nda','teaser']},
+}},
+{num:'SCENE 07',phase:'接触・NDA',stepId:'st4',
+title:'NDA締結 ── 契約内容の確認ポイント',
+learns:['NDA（秘密保持契約）','IM（インフォメーションメモランダム）'],
+narrative:[
+{t:'narr',hl:true,txt:'A社代表との初回面談が成立。「検討の余地あり」との意向を確認できた。'},
+{t:'dlg',av:'target',name:'A社 代表取締役（田中氏）',txt:'詳しい財務情報をお見せするには、まず秘密保持の確認が必要ですね。'},
+{t:'dlg',av:'player',name:'あなた',txt:'もちろんです。NDAを締結しましょう。'},
+{t:'dlg',av:'boss',name:'部長（事前レクチャー）',txt:'相手方のNDA案をそのまま署名するのは危険だ。必ず法務と内容を確認してくれ。'},
+],
+q:'NDA締結時の対応として最も適切なものはどれですか？',
+choices:[
+{k:'A',txt:'「弊社の標準NDAをお送りします。内容をご確認の上で締結しましょう」と自社NDAを提示し、法務部門とも確認しながら進める',correct:true},
+{k:'B',txt:'「NDAは後でいいです。まず財務の概要だけ口頭で教えてください」と先を急ぐ'},
+{k:'C',txt:'「わかりました」とだけ言い、相手が送ってくるNDA案をそのまま署名する'},
+],
+hint:{sections:[
+{title:'NDA（秘密保持契約）の基本内容',body:'M&AにおけるNDAの主な条項：<br><strong>①秘密情報の定義</strong>：何が秘密保持対象か<br><strong>②目的外使用の禁止</strong>：M&A検討以外に使ってはいけない<br><strong>③第三者への開示禁止</strong>：社外への漏洩禁止<br><strong>④有効期間</strong>：通常1〜2年<br><strong>⑤違反時の措置</strong>：差止請求・損害賠償'},
+{title:'要注意：相手方NDA案のチェックポイント',body:'<strong>①一方的な不競合条項</strong>：NDA期間中に同業他社との交渉を禁じる条項がないか<br><strong>②有効期間が長すぎる</strong>：5年超などの過大な義務<br><strong>③情報の定義が広すぎる</strong>：既知情報や公開情報まで秘密扱いにされていないか<br><strong>④損害賠償額</strong>：現実的な金額か'},
+]},
+feedback:{
+A:{type:'good',title:'✓ 自社標準NDAを提示し法務確認を挟む',
+body:'<strong>自社NDAを提示することで①自社に有利な条件設定が可能②法務部門が内容を確認済みの安心感がある</strong>という利点があります。相手方のNDA案に一方的に署名するのは危険です。',
+know:{title:'M&A標準NDAのチェックリスト',body:'<strong>✅ 確認必須項目：</strong><br>□ 秘密情報の定義は明確か<br>□ 目的が「M&A検討のみ」に限定されているか<br>□ 有効期間は適切か（通常1〜2年）<br>□ 相互NDAか（片方だけが義務を負っていないか）<br>□ 例外事項は明記されているか（公知情報・既知情報・法的開示義務）<br>□ 不競合条項が不当に広くないか'},
+ex:{title:'NDA締結後の次ステップ',body:'NDA締結後、売り手（A社）から通常以下の情報が提供されます：<br>①<strong>IM（インフォメーション・メモランダム）</strong>：詳細な会社情報資料<br>②<strong>財務諸表</strong>（3期分以上）<br>③<strong>事業計画</strong><br><br>これらを基に初期バリュエーションを実施します。'},
+unlocks:['nda','im']},
+B:{type:'bad',title:'✗ 口頭情報はNDA保護外：法的グレーゾーン',
+body:'<strong>NDA締結前に口頭で受け取った情報は法的保護が極めて曖昧</strong>です。「NDA前だから関係ない」という水掛け論になりやすい。また相手方も「守秘の枠組みなしで詳細を話した」という後悔リスクを感じます。',
+know:{title:'口頭情報のリスク管理',body:'NDA締結前でも、受け取った情報を競合他社の参考にしたり自社事業に流用したりすれば<strong>不正競争防止法（営業秘密の侵害）</strong>が適用される可能性があります。NDАは双方のリスクを減らす合理的な手続きです。'},
+unlocks:['nda']},
+C:{type:'warn',title:'△ 相手方NDAのまま署名：不利な条項を見落とすリスク',
+body:'相手方（売り手）が作成するNDA案は自然と<strong>「売り手に有利」な内容になりがち</strong>です。不競合条項で他の買い手候補との交渉を制限されるリスクがあります。必ず法務部門に確認させることが重要です。',
+know:{title:'相手方NDAで特に注意すべき条項',body:'<strong>要注意：不競合条項（Non-Compete）</strong><br>「本NDA有効期間中、乙は同業他社との間で類似する取引を行わない」<br>→ 他の候補企業との交渉を制限される可能性がある<br><br><strong>要注意：一方的情報提供義務</strong><br>→ 自社の買収予算・意思決定プロセスを開示させられるリスク'},
+unlocks:['nda','im']},
+}},
+{num:'SCENE 08',phase:'初期情報収集',stepId:'st5',
+title:'IM分析 ── 財務の質を見極める',
+learns:['IM（インフォメーションメモランダム）','EBITDA','EV（企業価値）'],
+narrative:[
+{t:'narr',hl:true,txt:'NDA締結後、A社からIM（インフォメーション・メモランダム）と3期分の財務諸表が届いた。'},
+{t:'narr',hl:false,txt:'財務概要：売上高¥4.2B（前期+12%）/ 営業利益¥0.6B（利益率14.3%）/ EBITDA¥0.8B / 純資産¥2.0B / 自己資本比率60% / 有利子負債¥0.8B / 現金¥0.5B'},
+{t:'dlg',av:'partner',name:'FAコンサルタント',txt:'まずこの数字から「正常収益力」を把握することが重要です。公表数値をそのまま信じるのではなく、一時的な要因を除いた実力値を見極めましょう。'},
+],
+q:'IM・財務諸表を分析する際に、最初に確認すべき最重要ポイントはどれですか？',
+choices:[
+{k:'A',txt:'①売上の継続性（リカーリング収益の比率）②EBITDA正常化（一時費用・オーナー報酬の調整）③顧客集中リスク（Top顧客への依存度）の3点を最優先で確認する',correct:true},
+{k:'B',txt:'純資産（¥2.0B）をベースに会社の価値を算出する'},
+{k:'C',txt:'売上成長率（+12%）が高いので、詳しい分析は後でいい'},
+],
+hint:{sections:[
+{title:'M&A財務分析の3大着眼点',body:'<strong>①売上の質（Quality of Revenue）</strong>：リカーリング収益比率が高いほど将来収益の予測精度が高い。<br><br><strong>②EBITDA正常化</strong>：一時的な費用やオーナー個人的な費用を調整した「実力ベース」の収益力。バリュエーションの基礎。<br><br><strong>③顧客集中リスク</strong>：上位5社で売上50%超→高リスク。'},
+{title:'EBITDAの計算方法',body:'<strong>EBITDA</strong> = 営業利益 + 減価償却費 + 償却費<br><br>A社の例：営業利益¥0.6B + 減価償却費¥0.2B = EBITDA¥0.8B<br><br><strong>なぜEBITDAを使うか：</strong>①資本構成（借入額）の影響を除ける②設備投資方針の影響を除ける③国際的な比較標準',diag:{title:'EBITDAの構成',flow:['売上高','－費用','= 営業利益','＋減価償却','= EBITDA'],note:'EBITDA ÷ 売上高 = EBITDAマージン（A社：19%）'}},
+]},
+feedback:{
+A:{type:'good',title:'✓ 財務の質を見極める3点セット',
+body:'<strong>財務数値の表面だけでなく「質」を見ることが重要</strong>です。A社の場合、①売上¥4.2BのうちどれがリカーリングかAを確認②EBITDA¥0.8Bに一時費用や異常値が含まれていないか③顧客集中はないか、を確認します。',
+know:{title:'Q of E（Quality of Earnings）分析',body:'M&AのDDで必ず行う分析。財務アドバイザーや監査法人が過去3期の財務諸表を詳細分析し、正常化EBITDAを算出します。<br><br><strong>典型的な調整例：</strong><br>・オーナー役員報酬が過大（¥50M→市場水準¥20Mに調整）<br>・一時的なシステム投資費用を除外<br>・関連会社との取引が市場価格でない'},
+ex:{title:'財務DDで発見される典型リスク',body:'・大口顧客1社が売上の40%→その顧客離脱で業績が激変<br>・一時的な大型受注が含まれている→正常値より売上が過大<br>・決算期前後に売上前倒し計上→正常化必要'},
+unlocks:['ebitda','im']},
+B:{type:'bad',title:'✗ 純資産法の限界：継続企業の評価には不適切',
+body:'純資産法は清算価値の算出には有効ですが、<strong>継続企業の価値評価には適切でありません</strong>。A社のような将来の成長性・収益力を持つ企業では、純資産を大幅に上回る「将来の収益力」が企業価値の大部分を占めます。純資産¥2.0Bはあくまで下限値の参考に過ぎません。',
+know:{title:'企業価値評価3手法の使い分け',body:'<strong>①DCF法</strong>：将来FCFを現在価値に割引。継続企業に最適。主要手法。<br><strong>②マルチプル法</strong>：類似上場企業のEV/EBITDA等を参照。市場感の確認に有効。<br><strong>③純資産法</strong>：BS上の資産価値ベース。清算時・持株会社評価に使用。<br><br>M&Aでは①②の併用が標準。③は参考値のみ。'},
+unlocks:['valuation','ebitda']},
+C:{type:'warn',title:'△ 成長率だけで判断：「なぜ成長しているか」が重要',
+body:'<strong>+12%の成長率は魅力的ですが、「なぜ成長しているか」「この成長は持続可能か」を確認しないと意味がありません。</strong>一時的な大型顧客獲得なのか、本質的な競争優位からの成長なのかを判断する必要があります。',
+know:{title:'成長の質を確認する質問例',body:'・顧客数の推移（新規顧客獲得 vs 既存顧客拡大）<br>・チャーン率（既存顧客の解約率）：SaaSなら5%以下が優良<br>・NRR（Net Revenue Retention）：既存顧客からの収益成長率<br>・成長ドライバーの持続可能性（市場拡大 vs 競合からのシェア奪取）'},
+unlocks:['ebitda','im']},
+}},
+{num:'SCENE 09',phase:'初期バリュエーション',stepId:'st6',
+title:'EV/EBITDA法 ── A社はいくらか',
+learns:['企業価値評価（バリュエーション）','EBITDA','EV（企業価値）'],
+narrative:[
+{t:'narr',hl:true,txt:'財務分析の結果、A社の正常化EBITDAは¥0.75B（一部オーナー費用を調整後）と算出された。'},
+{t:'dlg',av:'partner',name:'FAコンサルタント',txt:'類似上場企業（部品流通・自動車関連SaaS）のEV/EBITDAマルチプルは8〜12倍で取引されています。A社の成長性（+12%/年）を考慮すると10倍前後が妥当です。'},
+{t:'dlg',av:'player',name:'あなた',txt:'EV（企業価値）は¥0.75B × 10倍 = ¥7.5Bのレンジですね。ここから株式取得価格はどう計算しますか？'},
+{t:'dlg',av:'partner',name:'FAコンサルタント',txt:'EV≠株式取得価格です。有利子負債と現金を調整する必要があります。'},
+],
+q:'EV¥7.5Bを前提に、株式取得価格を計算する正しい方法はどれですか？',
+choices:[
+{k:'A',txt:'株式価値 ＝ EV（¥7.5B）－ 有利子負債（¥0.8B）＋ 現金（¥0.5B）＝ ¥7.2B。さらに支配権プレミアム20〜30%を考慮して最終的な取得価格レンジを設定する',correct:true},
+{k:'B',txt:'純資産（¥2.0B）にプレミアム50%をかけて¥3.0Bを提示する'},
+{k:'C',txt:'EV（¥7.5B）がそのまま株式取得価格になる'},
+],
+hint:{sections:[
+{title:'EVから株式価値への変換式',body:'<strong>Equity Value（株式価値）＝ EV － 有利子負債 ＋ 現金</strong><br><br>A社の例：<br>EV ¥7.5B <br>－ 有利子負債 ¥0.8B <br>＋ 現金 ¥0.5B <br>＝ 株式価値 <strong>¥7.2B</strong><br><br>さらに支配権プレミアム（通常20〜40%）を上乗せします。',diag:{title:'バリュエーション計算の全体フロー',flow:['EBITDA¥0.75B','×マルチプル10倍','= EV¥7.5B','－負債＋現金','= 株式価値¥7.2B','＋プレミアム20〜30%','= 取得価格¥8.6〜9.4B'],note:'プレミアム＝支配権の価値＋シナジーの前払い分'}},
+{title:'支配権プレミアムとは',body:'上場企業の買収では現在の株価に対して通常<strong>20〜40%上乗せ</strong>します（支配権プレミアム）。<br><br>理由：①経営支配権自体に価値がある②競合する買い手へのオークション効果③シナジー分の前払い<br><br>非上場企業では「類似企業マルチプル＋プレミアム」として計算します。'},
+]},
+feedback:{
+A:{type:'good',title:'✓ EV→株式価値変換の正しい計算',
+body:'「EV＝株式取得価格」は誤りです。<strong>EVには有利子負債が含まれており、株主に支払うのはEVから負債を引いた後の価値</strong>です。プレミアム込みの最終取得価格レンジ：¥7.2B × 1.2〜1.3 = <strong>¥8.6B〜¥9.4B</strong>。',
+know:{title:'バリュエーション計算の完全プロセス',body:'<strong>Step 1</strong>：正常化EBITDA算出：¥0.8B → 調整後 ¥0.75B<br><strong>Step 2</strong>：EV算出：¥0.75B × 10倍 = ¥7.5B<br><strong>Step 3</strong>：Equity Value：¥7.5B - ¥0.8B + ¥0.5B = ¥7.2B<br><strong>Step 4</strong>：取得価格レンジ：¥7.2B × 1.2〜1.3 = <strong>¥8.6〜9.4B</strong><br><br>この価格レンジをLOIに記載します。'},
+ex:{title:'DCF法との照合（クロスチェック）',body:'マルチプル法で算出した価格は必ずDCF法でも検証します。DCFでは将来5〜7年のFCFを予測し、WACCで割り引いて現在価値を算出します。2つの手法の結果が近ければバリュエーションの信頼性が高まります。'},
+unlocks:['valuation','ev','ebitda']},
+B:{type:'bad',title:'✗ 純資産ベースは大幅な過小評価',
+body:'¥3.0Bという価格はA社の真の価値を大幅に過小評価しています。<strong>A社は年間¥0.75BのEBITDAを生み出す収益力を持つ企業</strong>です。相手方FAも適正価格を把握しているため、根拠のない低価格提示は信頼を失います。',
+know:{title:'なぜ継続企業を純資産で評価してはいけないか',body:'継続企業の価値＝<strong>「将来にわたって生み出すキャッシュフローの現在価値」</strong>です。BSに載っている資産は「過去に投下したコスト」であり、将来の収益力とは別物です。純資産はあくまで下限値の参考です。'},
+unlocks:['valuation','ebitda']},
+C:{type:'warn',title:'✗ EV≠株式取得価格：負債の扱いを忘れずに',
+body:'<strong>EVには有利子負債が含まれています。</strong>企業を買収する際、有利子負債も引き継ぐため株主に支払う対価（Equity Value）はEVから負債を差し引いた後の金額です。EVをそのまま取得価格とすると¥0.3B分の二重払いになります。',
+know:{title:'EVとEquity Valueの関係',body:'EV ＝ 有利子負債 ＋ 株式価値（Equity Value）<br><br>したがって：<br>株式価値 ＝ EV － 有利子負債 ＋ 現金<br><br>企業を買収するとき「負債ごと買う」ので、株主へ支払う金額は負債を差し引いた後になります。'},
+unlocks:['valuation','ev','ebitda']},
+}},
+{num:'SCENE 10',phase:'LOI提出判断',stepId:'st7',
+title:'LOI提出 ── 意思を形式化する',
+learns:['LOI（意向表明書）','DD（デュー・デリジェンス）'],
+narrative:[
+{t:'narr',hl:true,txt:'初期バリュエーションが完了した。株式取得価格レンジ：¥8.6B〜¥9.4B。経営会議での承認も得た。次はLOI（意向表明書）の提出だ。'},
+{t:'dlg',av:'boss',name:'部長',txt:'LOIに何を盛り込むか、そして提出後に何が起きるかを整理してくれ。'},
+{t:'dlg',av:'partner',name:'FA',txt:'LOI提出後は通常、独占交渉期間（Exclusivity Period）が設定され、その間にDDが実施されます。LOIの内容がDDの範囲・スケジュールの前提になります。'},
+],
+q:'LOI（意向表明書）に盛り込むべき最重要項目の組み合わせはどれですか？',
+choices:[
+{k:'A',txt:'①取得価格レンジ（¥8.6〜9.4B）②取引スキーム（株式取得100%）③独占交渉期間（60日間）④DD実施の合意⑤LOIの非拘束性の明記',correct:true},
+{k:'B',txt:'取得価格のみを記載し、他の条件はDD後に決める'},
+{k:'C',txt:'具体的な数字は書かず「前向きに検討します」という意向のみを伝える'},
+],
+hint:{sections:[
+{title:'LOIの目的と法的性質',body:'<strong>LOI（Letter of Intent / 意向表明書）</strong>別名：MOU、基本合意書<br><br>目的：①買収意思と大まかな条件を文書化②独占交渉権を確保③DDの前提条件を確認<br><br><strong>法的拘束力</strong>：通常「なし」（Non-binding）。ただし独占交渉義務・守秘義務などの手続き条項は拘束力を持つ場合がある。',diag:{title:'M&AプロセスにおけるLOIの位置づけ',flow:['NDA','→','IM取得','→','初期バリュエーション','→','LOI提出★','→','本格DD','→','最終合意/SPA'],note:'★LOI後は独占交渉期間（通常60〜90日）に入る'}},
+{title:'LOIに必要な5要素',body:'<strong>①価格条件</strong>：取得価格レンジまたは上限価格<br><strong>②取引スキーム</strong>：株式譲渡 or 事業譲渡、取得比率<br><strong>③独占交渉期間</strong>：通常30〜90日間<br><strong>④DD合意</strong>：範囲・スケジュール・アクセス権限<br><strong>⑤非拘束性の明記</strong>：最終契約締結まで法的拘束力なし（守秘・独占条項を除く）'},
+]},
+feedback:{
+A:{type:'good',title:'✓ LOI5要素を全て盛り込んだ完全な内容',
+body:'<strong>5要素を全て含むLOIは交渉の明確な土台を作り、後のトラブルを防ぎます。</strong>特に重要なのは③独占交渉期間です。この期間が設定されることで、BroadleafはDDに集中できます。①の価格は「レンジ」で提示することでDD結果による価格調整の余地を残します。',
+know:{title:'本格DD（デュー・デリジェンス）の主な領域',body:'<strong>①財務DD</strong>：財務諸表の正確性・Q of E・税務リスク（優先度：最高）<br><strong>②法務DD</strong>：契約・訴訟・許認可・知財（優先度：高）<br><strong>③事業DD</strong>：市場・競合・顧客・ビジネスモデルの持続可能性<br><strong>④ITシステムDD</strong>：技術的負債・セキュリティ・統合可能性<br><strong>⑤人事DD</strong>：キーパーソン・組織文化・退職リスク<br><br>通常4〜8週間、専門家チームが並行して実施します。'},
+ex:{title:'LOI後のタイムライン例',body:'Week 1-2：LOI交渉・条件確定<br>Week 3：DDキックオフ・データルーム開設<br>Week 4-8：各領域DD実施<br>Week 9-10：DDレポート作成<br>Week 11-12：価格再交渉<br>Week 13-14：SPA（株式譲渡契約）締結<br>Week 15〜：クロージング・PMI開始'},
+unlocks:['loi','dd']},
+B:{type:'warn',title:'△ 価格のみのLOI：独占交渉権が確保できない',
+body:'価格だけを提示するLOIは①独占交渉期間が明記されないため売り手が他のバイヤーと並行交渉できる②DDの範囲が未確定で非効率③売り手の不安を生む、という問題があります。<strong>LOIは「この条件でDDをやらせてください」という包括的な申し入れ書類として機能させることが重要です。</strong>',
+know:{title:'独占交渉条項（Exclusivity Clause）の重要性',body:'独占交渉条項により買い手はDDに数千万〜数億円のコストをかけても、競合に横取りされるリスクを排除できます。<br><br>独占交渉期間は通常<strong>60〜90日</strong>。延長が必要な場合は合意が必要。'},
+unlocks:['loi','dd']},
+C:{type:'bad',title:'✗ 意向のみのLOIは交渉を前進させない',
+body:'「前向きに検討します」だけのLOIは①売り手に本気度が伝わらない②独占交渉権が取れない③DDのスタートが切れない、という三重の問題があります。<strong>LOIは「これだけの条件を示せます、DDをやらせてください」というコミットメントの表明です。</strong>',
+know:{title:'LOI提出の心構え',body:'LOIを提出する時点で「DD後に最終価格を下げる可能性」は想定内ですが、<strong>大幅な値下げ要求はDDキラー（交渉決裂の原因）</strong>になります。「DDで重大な問題が発見されない限り、LOI記載の価格レンジを尊重する」という姿勢が誠実な交渉として評価されます。'},
+unlocks:['loi','dd']},
+}},
+];
+
+// ═══════════════════════════════
+// STATE
+// ═══════════════════════════════
+let cur = 0;
+let score = 0;
+let answered = 0;
+let hintOpen = false;
+let completedScenes = [];
+let glossaryUnlocked = [];
+
+function loadState() {
+  const saved = Store.getPhase(PHASE_ID);
+  cur = saved.lastScene || 0;
+  score = saved.score || 0;
+  answered = saved.total || 0;
+  completedScenes = saved.completed || [];
+  glossaryUnlocked = saved.glossaryUnlocked || [];
+  // if last scene was completed, start at next
+  if (completedScenes.includes(cur) && cur < SCENES.length - 1) {
+    // already done this one, find first incomplete
+    for (let i = 0; i < SCENES.length; i++) {
+      if (!completedScenes.includes(i)) { cur = i; break; }
+    }
+  }
+}
+
+function saveState() {
+  Store.savePhase(PHASE_ID, {
+    lastScene: cur,
+    score,
+    total: answered,
+    completed: completedScenes,
+    glossaryUnlocked
+  });
+}
+
+// ═══════════════════════════════
+// RENDER
+// ═══════════════════════════════
+function renderScene(idx) {
+  const s = SCENES[idx];
+  hintOpen = false;
+  document.getElementById('hint-arrow').classList.remove('open');
+  document.getElementById('hint-body').classList.remove('open');
+
+  document.getElementById('s-num').textContent = s.num;
+  document.getElementById('s-phase').textContent = s.phase;
+  document.getElementById('s-title').textContent = s.title;
+  document.getElementById('prog-txt').textContent = `${idx+1}/${SCENES.length}`;
+  document.getElementById('prog-fill').style.width = `${((idx+1)/SCENES.length)*100}%`;
+  document.getElementById('hdr-score').textContent = `${score}/${answered}`;
+
+  const lt = document.getElementById('learn-tags');
+  lt.innerHTML = '';
+  s.learns.forEach(l => {
+    const t = document.createElement('span');
+    t.className = 'learn-tag'; t.textContent = l;
+    lt.appendChild(t);
+  });
+
+  const nav = document.getElementById('narrative');
+  nav.innerHTML = '';
+  const em = {boss:'👔',player:'🫵',partner:'💼',target:'🏭'};
+  s.narrative.forEach((b, i) => {
+    setTimeout(() => {
+      const el = document.createElement('div');
+      if (b.t === 'narr') {
+        el.className = 'narr' + (b.hl ? ' hl' : '');
+        el.innerHTML = b.txt.replace(/\n/g, '<br>');
+      } else {
+        el.className = 'dlg';
+        el.innerHTML = `<div class="av ${b.av}">${em[b.av]||'👤'}</div><div class="dlg-inner"><div class="spk">${b.name}</div><div class="bbl${b.av==='player'?' pb':''}">${b.txt}</div></div>`;
+      }
+      nav.appendChild(el);
+      nav.scrollTop = nav.scrollHeight;
+    }, i * 90);
+  });
+
+  buildHint(s.hint);
+
+  document.getElementById('dec-q').textContent = s.q;
+  const cc = document.getElementById('choices');
+  cc.innerHTML = '';
+  s.choices.forEach(c => {
+    const btn = document.createElement('button');
+    btn.className = 'choice';
+    btn.innerHTML = `<span class="ckey">${c.k}</span><span>${c.txt}</span>`;
+    btn.onclick = () => choose(c.k);
+    cc.appendChild(btn);
+  });
+
+  renderSteps(s.stepId);
+  renderGlossary();
+}
+
+function buildHint(hint) {
+  const body = document.getElementById('hint-body');
+  body.innerHTML = '';
+  hint.sections.forEach(sec => {
+    const d = document.createElement('div');
+    d.className = 'hint-sec';
+    let html = `<div class="hint-sec-title">${sec.title}</div><div class="hint-text">${sec.body}</div>`;
+    if (sec.diag) {
+      html += `<div class="diag"><div style="font-size:10px;color:var(--text3);margin-bottom:5px">${sec.diag.title}</div><div class="diag-flow">`;
+      sec.diag.flow.forEach(f => {
+        html += f === '→' || f.startsWith('→') ? `<span class="d-arr">${f}</span>` : `<span class="d-box">${f}</span>`;
+      });
+      html += `</div><div class="diag-note">${sec.diag.note}</div></div>`;
+    }
+    d.innerHTML = html;
+    body.appendChild(d);
+  });
+}
+
+function toggleHint() {
+  hintOpen = !hintOpen;
+  document.getElementById('hint-arrow').classList.toggle('open', hintOpen);
+  document.getElementById('hint-body').classList.toggle('open', hintOpen);
+}
+
+function choose(key) {
+  const s = SCENES[cur];
+  const fb = s.feedback[key];
+  const isCorrect = s.choices.find(c => c.k === key)?.correct || false;
+
+  document.querySelectorAll('.choice').forEach((b, i) => {
+    b.classList.toggle('sel', s.choices[i].k === key);
+    b.disabled = true;
+  });
+
+  answered++;
+  if (isCorrect) score++;
+  document.getElementById('score-num').textContent = score;
+  document.getElementById('score-den').textContent = answered;
+  document.getElementById('hdr-score').textContent = `${score}/${answered}`;
+
+  if (fb.unlocks) {
+    fb.unlocks.forEach(uk => {
+      if (!glossaryUnlocked.includes(uk)) glossaryUnlocked.push(uk);
+    });
+    renderGlossary();
+  }
+
+  if (!completedScenes.includes(cur)) completedScenes.push(cur);
+  saveState();
+  logToNotion(PHASE_ID, score, answered, new Date().toISOString());
+
+  // Build modal
+  document.getElementById('fb-type').textContent = fb.type==='good'?'✓ GREAT DECISION':fb.type==='warn'?'△ LEARNING POINT':'✗ IMPORTANT CORRECTION';
+  document.getElementById('fb-type').className = 'fb-type ' + (fb.type==='good'?'good':fb.type==='warn'?'warn':'bad');
+  document.getElementById('fb-title').textContent = fb.title;
+  document.getElementById('fb-body').innerHTML = fb.body;
+
+  const kw = document.getElementById('fb-know-w');
+  if (fb.know) {
+    kw.style.display = 'block';
+    document.getElementById('fb-know').innerHTML = `<div class="know-box"><div class="know-box-title">📘 ${fb.know.title}</div><div class="know-box-body">${fb.know.body}</div></div>`;
+  } else { kw.style.display = 'none'; }
+
+  const dw = document.getElementById('fb-diag-w');
+  if (fb.diag) {
+    dw.style.display = 'block';
+    let html = `<div class="fb-diag"><div class="fb-diag-title">${fb.diag.title}</div><div class="flow-row">`;
+    fb.diag.flow.forEach(f => { html += f==='→'||f.startsWith('→') ? `<span class="f-arrow">${f}</span>` : `<span class="f-box">${f}</span>`; });
+    html += `</div><div style="font-size:11px;color:var(--text3);margin-top:5px">${fb.diag.note}</div></div>`;
+    document.getElementById('fb-diag').innerHTML = html;
+  } else { dw.style.display = 'none'; }
+
+  const ew = document.getElementById('fb-ex-w');
+  if (fb.ex) {
+    ew.style.display = 'block';
+    document.getElementById('fb-ex').innerHTML = `<div class="ex-box"><div class="ex-box-title">${fb.ex.title}</div><div class="ex-box-body">${fb.ex.body}</div></div>`;
+  } else { ew.style.display = 'none'; }
+
+  const uw = document.getElementById('fb-unlock-w');
+  if (fb.unlocks && fb.unlocks.length > 0) {
+    uw.style.display = 'block';
+    document.getElementById('fb-unlock').innerHTML = fb.unlocks.map(uk =>
+      `<div class="unlock-banner">🔓 用語集解放：<strong>${GLOSSARY_ALL[uk]?.name||uk}</strong></div>`
+    ).join('');
+  } else { uw.style.display = 'none'; }
+
+  document.getElementById('next-btn').textContent = cur === SCENES.length-1 ? '🎉 Phase 1 完了！サマリーへ' : '次のシーンへ →';
+  document.getElementById('overlay').classList.add('show');
+}
+
+function nextScene() {
+  document.getElementById('overlay').classList.remove('show');
+  cur++;
+  if (cur >= SCENES.length) { showSummary(); return; }
+  renderScene(cur);
+  window.scrollTo(0, 0);
+}
+
+function renderSteps(activeId) {
+  const c = document.getElementById('step-list');
+  c.innerHTML = '';
+  STEPS.forEach((st, i) => {
+    const done = completedScenes.some(ci => SCENES[ci]?.stepId === st.id);
+    const active = st.id === activeId && !done;
+    c.innerHTML += `<div class="step-row"><div class="step-dot ${done?'done':active?'active':'todo'}">${done?'✓':i+1}</div><div class="step-lbl ${done?'done':active?'active':''}">${st.label}</div></div>`;
+  });
+}
+
+function renderGlossary() {
+  ['gloss-side','gloss-mob'].forEach(id => {
+    const c = document.getElementById(id);
+    if (!c) return;
+    c.innerHTML = '';
+    Object.entries(GLOSSARY_ALL).forEach(([k, v]) => {
+      const unlocked = glossaryUnlocked.includes(k);
+      const el = document.createElement('div');
+      el.className = 'g-item' + (unlocked ? ' unlocked' : '');
+      el.innerHTML = `<div class="g-head"><span class="g-name">${v.name}</span><span class="g-lock">${unlocked?'📖':'🔒'}</span></div><div class="g-body" id="${id}-gb-${k}">${unlocked ? v.body : '（学習後に解放されます）'}</div>`;
+      el.onclick = () => {
+        const b = document.getElementById(`${id}-gb-${k}`);
+        if (b) b.classList.toggle('show');
+      };
+      c.appendChild(el);
+    });
+  });
+}
+
+function openMobGloss() { document.getElementById('mob-gloss-ov').classList.add('show'); }
+function closeMobGloss() { document.getElementById('mob-gloss-ov').classList.remove('show'); }
+
+function showSummary() {
+  const pct = answered > 0 ? Math.round((score/answered)*100) : 0;
+  const rank = pct>=90?'S：M&A戦略家レベル':pct>=70?'A：実務対応可能':pct>=50?'B：基礎定着中':'C：再学習推奨';
+
+  document.getElementById('s-num').textContent = 'COMPLETE';
+  document.getElementById('s-phase').textContent = 'Phase 1 修了';
+  document.getElementById('s-title').textContent = `スコア ${score}/${answered} ── 習得サマリー`;
+  document.getElementById('learn-tags').innerHTML = '';
+  document.getElementById('hint-panel').style.display = 'none';
+  document.getElementById('decision').style.display = 'none';
+
+  const nav = document.getElementById('narrative');
+  nav.style.maxHeight = 'none';
+  nav.innerHTML = `
+    <div class="narr hl">🎉 Phase 1「案件発掘〜初期検討」完了！<br>スコア：${score}/${answered}（${pct}%）　ランク：${rank}</div>
+    <div class="narr"><strong style="color:var(--accent)">今回体験したプロセス（全7ステップ）</strong><br><br>
+    1️⃣ <strong>M&A目的の明文化</strong>：有機成長ギャップを定量化し、戦略的根拠を確立<br>
+    2️⃣ <strong>バリューチェーン分析</strong>：自社の強み・空白領域を可視化してM&Aテーマを設定<br>
+    3️⃣ <strong>テーマ選定（スコアリング）</strong>：多軸評価でバイアスを排除し優先テーマを決定<br>
+    4️⃣ <strong>案件発掘</strong>：自己開拓メイン＋仲介補完のハイブリッドアプローチ<br>
+    5️⃣ <strong>初期スクリーニング</strong>：3層評価基準でロングリスト→ショートリスト<br>
+    6️⃣ <strong>接触・NDA</strong>：段階的接触→NDA条項確認→IM取得の正しい順序<br>
+    7️⃣ <strong>初期バリュエーション→LOI</strong>：EV/EBITDA法→Equity Value変換→LOI5要素</div>
+    <div class="narr"><strong style="color:var(--accent2)">解放した用語集：${glossaryUnlocked.length}/${Object.keys(GLOSSARY_ALL).length}項目</strong><br><br>
+    サイドパネルまたは📖ボタンから用語集を確認できます。<br><br>
+    <strong>次のフェーズ：Phase 2「DD〜バリュエーション深掘り編」</strong>（準備中）<br>
+    A社への本格DDに入ります。財務諸表の詳細読み方・DCF法・法務リスクが主テーマです。</div>
+    <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;">
+      <a href="index.html" style="background:var(--accent);color:#000;border:none;border-radius:8px;padding:12px 20px;font-size:13px;font-weight:700;text-decoration:none;display:inline-block">← ホームへ戻る</a>
+      <button onclick="resetPhase()" style="background:var(--surface2);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:12px 20px;font-size:13px;cursor:pointer">もう一度挑戦する</button>
+    </div>`;
+
+  saveState();
+}
+
+function resetPhase() {
+  if (confirm('Phase 1の進捗をリセットしますか？')) {
+    Store.reset(PHASE_ID);
+    cur = 0; score = 0; answered = 0;
+    completedScenes = []; glossaryUnlocked = [];
+    document.getElementById('decision').style.display = 'block';
+    document.getElementById('hint-panel').style.display = 'block';
+    document.querySelector('.narrative').style.maxHeight = '';
+    renderScene(0);
+  }
+}
+
+// Init
+loadState();
+renderScene(cur);
+
+// Resume banner
+if (completedScenes.length > 0 && completedScenes.length < SCENES.length) {
+  const banner = document.createElement('div');
+  banner.style.cssText = 'background:rgba(240,165,0,.08);border:1px solid rgba(240,165,0,.2);border-radius:8px;padding:10px 16px;margin:12px 20px 0;font-size:12px;color:var(--accent);display:flex;align-items:center;justify-content:space-between;';
+  banner.innerHTML = `<span>📌 Scene ${completedScenes.length + 1} から再開しています</span><button onclick="this.parentElement.remove()" style="background:transparent;border:none;color:var(--text3);cursor:pointer;font-size:14px">✕</button>`;
+  document.querySelector('.main').insertBefore(banner, document.querySelector('.scene-hdr').nextSibling);
+}
+</script>
+</body>
+</html>

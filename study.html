@@ -1,585 +1,282 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>M&A学習プログラム | Broadleaf</title>
+<title>M&A学習プログラム</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="curriculum.js"></script>
 <style>
-:root {
-  --bg:      #090912;
-  --s1:      #10101c;
-  --s2:      #16162a;
-  --s3:      #1e1e35;
-  --border:  rgba(255,255,255,0.06);
-  --border2: rgba(255,255,255,0.12);
-  --text:    #e2e2f0;
-  --muted:   #64648a;
-  --muted2:  #9494b8;
-  --accent:  #7c6ff7;
-  --acl:     #a89ff8;
-  --green:   #4fc88e;
-  --amber:   #f4c06a;
-  --coral:   #f07a5a;
-  --r:       12px;
+:root{
+  --bg:#090912;--s1:#10101c;--s2:#16162a;
+  --border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.12);
+  --text:#e2e2f0;--muted:#64648a;--muted2:#9494b8;
+  --accent:#7c6ff7;--acl:#a89ff8;--green:#4fc88e;--amber:#f4c06a;--coral:#f07a5a;
+  --r:12px;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-html{scroll-behavior:smooth;}
-body{
-  background:var(--bg);
-  color:var(--text);
-  font-family:'Noto Sans JP',sans-serif;
-  min-height:100vh;
-  font-size:14px;
-  line-height:1.75;
-  padding-bottom:100px;
-}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans JP',sans-serif;min-height:100vh;font-size:14px;line-height:1.75;padding-bottom:100px;}
 
-/* ── HEADER ── */
-.hd{
-  background:linear-gradient(160deg,#12103a 0%,#0d1830 55%,#090912 100%);
-  padding:36px 20px 28px;
-  position:relative;
-  overflow:hidden;
-}
-.hd::before{
-  content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse 70% 90% at 95% 10%,rgba(124,111,247,.22) 0%,transparent 65%);
-  pointer-events:none;
-}
-.hd-eyebrow{
-  font-family:'IBM Plex Mono',monospace;
-  font-size:10px;letter-spacing:.14em;color:var(--muted2);
-  text-transform:uppercase;margin-bottom:8px;
-}
-.hd-badge{
-  display:inline-flex;align-items:center;gap:6px;
-  background:rgba(124,111,247,.14);border:1px solid rgba(124,111,247,.28);
-  color:var(--acl);font-size:10px;font-family:'IBM Plex Mono',monospace;
-  padding:3px 10px;border-radius:20px;margin-bottom:14px;
-}
+/* HEADER */
+.hd{background:linear-gradient(160deg,#12103a 0%,#0d1830 55%,#090912 100%);padding:36px 20px 28px;position:relative;overflow:hidden;}
+.hd::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 90% at 95% 10%,rgba(124,111,247,.22) 0%,transparent 65%);pointer-events:none;}
+.hd-ey{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;color:var(--muted2);text-transform:uppercase;margin-bottom:8px;}
+.hd-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(124,111,247,.14);border:1px solid rgba(124,111,247,.28);color:var(--acl);font-size:10px;font-family:'IBM Plex Mono',monospace;padding:3px 10px;border-radius:20px;margin-bottom:14px;}
 .hd-badge::before{content:'●';font-size:6px;color:var(--green);animation:pulse 2s infinite;}
 @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
-.hd-title{
-  font-size:22px;font-weight:700;letter-spacing:-.3px;
-  line-height:1.3;margin-bottom:6px;
-}
+.hd-title{font-size:22px;font-weight:700;line-height:1.3;margin-bottom:6px;}
 .hd-title span{color:var(--acl);}
-.hd-date{
-  font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);
-  margin-top:8px;
-}
-.hd-progress{margin-top:18px;}
-.hd-progress-row{
-  display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;
-}
-.hd-progress-label{font-size:11px;color:var(--muted2);}
-.hd-progress-val{
-  font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--acl);font-weight:500;
-}
-.hd-bar{
-  height:4px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;
-}
-.hd-bar-fill{
-  height:4px;border-radius:4px;
-  background:linear-gradient(90deg,var(--accent),var(--green));
-  transition:width .6s ease;
-}
+.hd-date{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);margin-top:8px;}
+.hd-bar-wrap{margin-top:18px;}
+.hd-bar-row{display:flex;justify-content:space-between;margin-bottom:6px;}
+.hd-bar-label{font-size:11px;color:var(--muted2);}
+.hd-bar-val{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--acl);}
+.hd-bar{height:4px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;}
+.hd-bar-fill{height:4px;border-radius:4px;background:linear-gradient(90deg,var(--accent),var(--green));}
 
-/* ── CONTENT ── */
+/* CONTENT */
 .content{padding:0 16px;margin-top:20px;}
-
-/* ── CARD BASE ── */
-.card{
-  background:var(--s1);border:1px solid var(--border);
-  border-radius:var(--r);padding:18px;margin-bottom:12px;
-  animation:fadeUp .4s ease both;
-}
+.card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:12px;animation:fadeUp .4s ease both;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
 
-/* ── GOAL CARD ── */
-.goal-card{
-  background:linear-gradient(135deg,rgba(124,111,247,.12) 0%,rgba(79,200,142,.08) 100%);
-  border-color:rgba(124,111,247,.25);
-  animation-delay:.05s;
-}
-.goal-label{
-  font-family:'IBM Plex Mono',monospace;font-size:10px;
-  letter-spacing:.1em;color:var(--acl);text-transform:uppercase;margin-bottom:8px;
-}
-.goal-text{font-size:15px;font-weight:500;line-height:1.6;color:var(--text);}
+/* GOAL */
+.goal-card{background:linear-gradient(135deg,rgba(124,111,247,.12) 0%,rgba(79,200,142,.08) 100%);border-color:rgba(124,111,247,.25);}
+.goal-label{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--acl);text-transform:uppercase;margin-bottom:8px;}
+.goal-text{font-size:15px;font-weight:500;line-height:1.6;}
 
-/* ── SECTION HEADER ── */
-.sec-header{
-  display:flex;align-items:center;gap:8px;
-  margin:20px 0 10px;
-}
-.sec-icon{
-  width:28px;height:28px;border-radius:8px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:14px;flex-shrink:0;
-}
-.sec-icon.morning{background:rgba(244,192,106,.12);}
-.sec-icon.evening{background:rgba(124,111,247,.12);}
-.sec-icon.timer{background:rgba(79,200,142,.12);}
-.sec-icon.check{background:rgba(244,122,90,.12);}
-.sec-title{font-size:13px;font-weight:500;color:var(--muted2);letter-spacing:.03em;}
+/* SEC HEADER */
+.sec-hd{display:flex;align-items:center;gap:8px;margin:20px 0 10px;}
+.sec-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.si-morning{background:rgba(244,192,106,.12);}
+.si-check{background:rgba(244,122,90,.12);}
+.si-notion{background:rgba(124,111,247,.12);}
+.sec-title{font-size:13px;font-weight:500;color:var(--muted2);}
 
-/* ── TASK CARD ── */
-.task-card{animation-delay:.1s;}
-.task-row{
-  display:flex;gap:10px;align-items:flex-start;
-  padding:10px 0;border-bottom:1px solid var(--border);
-}
-.task-row:last-child{border-bottom:none;padding-bottom:0;}
-.task-icon{font-size:14px;margin-top:2px;flex-shrink:0;}
-.task-body{}
-.task-label{font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace;letter-spacing:.06em;margin-bottom:2px;}
-.task-text{font-size:14px;color:var(--text);line-height:1.65;}
-.task-focus{font-size:12px;color:var(--muted2);margin-top:4px;}
-.task-focus span{color:var(--amber);}
+/* READING BADGE */
+.rbadge{display:inline-flex;align-items:center;gap:5px;background:rgba(79,200,142,.1);border:1px solid rgba(79,200,142,.2);color:var(--green);font-size:11px;font-family:'IBM Plex Mono',monospace;padding:3px 10px;border-radius:20px;margin-bottom:16px;}
 
-/* ── TIMER ── */
-.timer-card{animation-delay:.15s;}
-.timer-wrap{
-  display:flex;align-items:center;justify-content:space-between;gap:12px;
-  flex-wrap:wrap;
-}
-.timer-display{
-  font-family:'IBM Plex Mono',monospace;
-  font-size:38px;font-weight:500;
-  color:var(--text);letter-spacing:-.02em;
-  min-width:110px;
-}
-.timer-display.running{color:var(--green);}
-.timer-display.done{color:var(--acl);}
-.timer-btn{
-  flex:1;min-width:120px;
-  background:rgba(79,200,142,.12);border:1px solid rgba(79,200,142,.25);
-  color:var(--green);font-family:'Noto Sans JP',sans-serif;
-  font-size:13px;font-weight:500;padding:10px 16px;
-  border-radius:8px;cursor:pointer;transition:all .2s;
-}
-.timer-btn:hover{background:rgba(79,200,142,.2);}
-.timer-btn.running{
-  background:rgba(240,122,90,.1);border-color:rgba(240,122,90,.25);color:var(--coral);
-}
-.timer-presets{display:flex;gap:6px;margin-top:10px;}
-.preset-btn{
-  flex:1;background:var(--s2);border:1px solid var(--border2);
-  color:var(--muted2);font-size:11px;font-family:'IBM Plex Mono',monospace;
-  padding:6px;border-radius:6px;cursor:pointer;transition:all .18s;
-}
-.preset-btn:hover,.preset-btn.active{
-  background:rgba(124,111,247,.12);border-color:rgba(124,111,247,.3);color:var(--acl);
-}
+/* LEARN SECTIONS */
+.lsec{margin-bottom:22px;padding-bottom:22px;border-bottom:1px solid var(--border);}
+.lsec:last-of-type{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+.lsec-title{font-size:12px;font-weight:700;color:var(--amber);font-family:'IBM Plex Mono',monospace;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;}
+.ltext{font-size:14px;color:var(--text);line-height:1.85;}
+.ltext p{margin-bottom:10px;}
+.ltext p:last-child{margin-bottom:0;}
 
-/* ── CHECKLIST ── */
-.check-card{animation-delay:.2s;}
-.check-item{
-  display:flex;align-items:flex-start;gap:10px;
-  padding:10px 12px;border-radius:8px;margin-bottom:6px;
-  background:var(--s2);border:1px solid var(--border);
-  cursor:pointer;transition:all .18s;user-select:none;
-}
-.check-item:last-child{margin-bottom:0;}
-.check-item:hover{border-color:var(--border2);}
-.check-item.done{
-  background:rgba(79,200,142,.07);
-  border-color:rgba(79,200,142,.2);
-}
-.check-circle{
-  width:18px;height:18px;border-radius:50%;flex-shrink:0;margin-top:2px;
-  border:2px solid var(--muted);transition:all .18s;
-  display:flex;align-items:center;justify-content:center;
-}
-.check-item.done .check-circle{
-  background:var(--green);border-color:var(--green);
-}
-.check-item.done .check-circle::after{content:'✓';font-size:10px;color:#fff;}
-.check-text{font-size:13px;line-height:1.6;transition:color .18s;}
-.check-item.done .check-text{color:var(--muted2);text-decoration:line-through;}
+/* POINT BOX */
+.pbox{background:rgba(79,200,142,.06);border:1px solid rgba(79,200,142,.15);border-radius:8px;padding:14px;margin:10px 0;}
+.pbox-label{font-size:10px;color:var(--green);font-family:'IBM Plex Mono',monospace;letter-spacing:.06em;margin-bottom:8px;}
+.pitem{display:flex;gap:8px;margin-bottom:6px;font-size:13px;line-height:1.6;}
+.pitem:last-child{margin-bottom:0;}
+.pdot{color:var(--green);flex-shrink:0;}
 
-/* ── NOTION LINK ── */
-.notion-card{
-  display:flex;align-items:center;gap:12px;
-  text-decoration:none;color:inherit;
-  animation-delay:.25s;
-  transition:border-color .18s;
-}
+/* ANALOGY */
+.analogy{background:rgba(244,192,106,.06);border:1px solid rgba(244,192,106,.15);border-radius:8px;padding:14px;margin:12px 0;}
+.analogy-label{font-size:10px;color:var(--amber);font-family:'IBM Plex Mono',monospace;letter-spacing:.06em;margin-bottom:6px;}
+.analogy-text{font-size:13px;color:var(--text);line-height:1.7;white-space:pre-line;}
+
+/* SOURCE */
+.src-box{background:var(--s2);border:1px solid var(--border2);border-radius:8px;padding:10px 14px;margin-top:14px;}
+.src-label{font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace;letter-spacing:.06em;margin-bottom:6px;}
+.src-item{font-size:11px;color:var(--muted2);line-height:1.8;}
+
+/* TONIGHT */
+.tonight-card{background:rgba(124,111,247,.06);border:1px solid rgba(124,111,247,.15);border-radius:var(--r);padding:16px;margin-bottom:12px;animation-delay:.22s;}
+.tonight-label{font-size:10px;color:var(--acl);font-family:'IBM Plex Mono',monospace;letter-spacing:.06em;margin-bottom:8px;}
+.tonight-text{font-size:13px;color:var(--muted2);line-height:1.7;}
+
+/* CHECKLIST */
+.chk{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:8px;margin-bottom:6px;background:var(--s2);border:1px solid var(--border);cursor:pointer;transition:all .18s;user-select:none;}
+.chk:last-child{margin-bottom:0;}
+.chk:hover{border-color:var(--border2);}
+.chk.done{background:rgba(79,200,142,.07);border-color:rgba(79,200,142,.2);}
+.chk-circle{width:18px;height:18px;border-radius:50%;flex-shrink:0;margin-top:2px;border:2px solid var(--muted);transition:all .18s;display:flex;align-items:center;justify-content:center;}
+.chk.done .chk-circle{background:var(--green);border-color:var(--green);}
+.chk.done .chk-circle::after{content:'✓';font-size:10px;color:#fff;}
+.chk-text{font-size:13px;line-height:1.6;}
+.chk.done .chk-text{color:var(--muted2);text-decoration:line-through;}
+
+/* NOTION */
+.notion-card{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;transition:border-color .18s;}
 .notion-card:hover{border-color:var(--border2);}
-.notion-logo{
-  width:36px;height:36px;border-radius:8px;
-  background:rgba(255,255,255,.06);
-  display:flex;align-items:center;justify-content:center;
-  font-size:18px;flex-shrink:0;
-}
+.notion-logo{width:36px;height:36px;border-radius:8px;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
 .notion-body{flex:1;}
 .notion-label{font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace;letter-spacing:.06em;}
 .notion-title{font-size:13px;font-weight:500;color:var(--text);margin-top:2px;}
 .notion-arr{color:var(--muted);font-size:18px;}
 
-/* ── TAGS ── */
-.tags-wrap{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
-.tag{
-  background:var(--s2);border:1px solid var(--border2);
-  color:var(--muted2);font-size:10px;
-  font-family:'IBM Plex Mono',monospace;
-  padding:3px 8px;border-radius:20px;letter-spacing:.04em;
-}
-
-/* ── COMPLETE BTN ── */
-.complete-wrap{
-  position:fixed;bottom:0;left:0;right:0;
-  padding:12px 16px 20px;
-  background:linear-gradient(to top,var(--bg) 60%,transparent 100%);
-}
-.complete-btn{
-  width:100%;padding:15px;
-  background:linear-gradient(135deg,var(--accent),#5b4fd4);
-  border:none;border-radius:10px;
-  color:#fff;font-family:'Noto Sans JP',sans-serif;
-  font-size:15px;font-weight:700;cursor:pointer;
-  transition:opacity .2s,transform .1s;
-  box-shadow:0 4px 20px rgba(124,111,247,.35);
-}
+/* COMPLETE */
+.complete-wrap{position:fixed;bottom:0;left:0;right:0;padding:12px 16px 20px;background:linear-gradient(to top,var(--bg) 60%,transparent 100%);}
+.complete-btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--accent),#5b4fd4);border:none;border-radius:10px;color:#fff;font-family:'Noto Sans JP',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:opacity .2s,transform .1s;box-shadow:0 4px 20px rgba(124,111,247,.35);}
 .complete-btn:active{transform:scale(.98);opacity:.9;}
-.complete-btn:disabled{
-  background:var(--s3);color:var(--muted);
-  box-shadow:none;cursor:not-allowed;
-}
 
-/* ── DONE OVERLAY ── */
-.done-overlay{
-  position:fixed;inset:0;background:rgba(9,9,18,.9);
-  display:flex;align-items:center;justify-content:center;
-  opacity:0;pointer-events:none;transition:opacity .3s;z-index:100;
-  padding:20px;
-}
+/* DONE OVERLAY */
+.done-overlay{position:fixed;inset:0;background:rgba(9,9,18,.9);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;z-index:100;padding:20px;}
 .done-overlay.show{opacity:1;pointer-events:auto;}
-.done-box{
-  background:var(--s2);border:1px solid var(--border2);
-  border-radius:16px;padding:32px 24px;text-align:center;
-  max-width:320px;width:100%;
-  animation:popIn .35s cubic-bezier(.34,1.56,.64,1) both;
-}
+.done-box{background:var(--s2);border:1px solid var(--border2);border-radius:16px;padding:32px 24px;text-align:center;max-width:320px;width:100%;animation:popIn .35s cubic-bezier(.34,1.56,.64,1) both;}
 @keyframes popIn{from{transform:scale(.85);opacity:0;}to{transform:scale(1);opacity:1;}}
 .done-emoji{font-size:52px;margin-bottom:12px;}
 .done-title{font-size:20px;font-weight:700;margin-bottom:8px;}
 .done-body{font-size:13px;color:var(--muted2);line-height:1.7;margin-bottom:20px;}
-.done-close{
-  background:var(--accent);border:none;border-radius:8px;
-  color:#fff;font-family:'Noto Sans JP',sans-serif;
-  font-size:14px;font-weight:500;padding:12px 28px;cursor:pointer;
-}
+.done-close{background:var(--accent);border:none;border-radius:8px;color:#fff;font-family:'Noto Sans JP',sans-serif;font-size:14px;font-weight:500;padding:12px 28px;cursor:pointer;}
 
-/* ── NO-DAY SCREEN ── */
-.no-day{
-  padding:60px 20px;text-align:center;
-}
-.no-day-emoji{font-size:48px;margin-bottom:16px;}
-.no-day-title{font-size:18px;font-weight:700;margin-bottom:8px;}
-.no-day-body{font-size:13px;color:var(--muted2);line-height:1.7;}
+/* HOME */
+.home-row{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--s1);border:1px solid var(--border);border-radius:10px;margin-bottom:7px;text-decoration:none;color:inherit;transition:border-color .18s;}
+.home-row:hover{border-color:var(--border2);}
+.home-day{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);min-width:42px;}
+.home-theme{flex:1;font-size:13px;}
+.home-phase{font-size:10px;font-family:'IBM Plex Mono',monospace;padding:2px 7px;border-radius:12px;}
+.hp1{background:rgba(124,111,247,.12);color:var(--acl);}
+.hp2{background:rgba(79,200,142,.1);color:var(--green);}
+.hp3{background:rgba(244,192,106,.1);color:var(--amber);}
+.week-sep{font-size:11px;color:var(--muted);font-family:'IBM Plex Mono',monospace;letter-spacing:.06em;padding:8px 4px 4px;margin-top:4px;}
 </style>
 </head>
 <body>
 
 <div id="app"></div>
 
-<!-- DONE OVERLAY -->
 <div class="done-overlay" id="done-overlay">
   <div class="done-box">
-    <div class="done-emoji">🎉</div>
-    <div class="done-title">お疲れさまでした！</div>
-    <div class="done-body" id="done-body"></div>
+    <div class="done-emoji">☀️</div>
+    <div class="done-title">朝のインプット完了！</div>
+    <div class="done-body" id="done-msg"></div>
     <button class="done-close" onclick="document.getElementById('done-overlay').classList.remove('show')">閉じる</button>
   </div>
 </div>
 
 <script>
-// ═══════════════════════════════════════
-// CURRICULUM DATA  (Phase 0 — 20日)
-// ═══════════════════════════════════════
-const CURRICULUM = [
-  {day:1,week:1,theme:"M&A全体像",
-   goal:"M&Aのプロセス全体像を5ステップで説明できる",
-   task:"M&Aの概要（戦略策定→候補選定→DD→交渉→PMI）を読む",
-   focus:"戦略的M&A vs 財務的M&Aの違いを意識する",
-   checks:["M&Aの定義を自分の言葉でNotionに書く","M&Aプロセス5ステップを箇条書きで整理する","気になった用語を1つ調べてメモする"],
-   tags:["M&Aの目的","プロセス5ステップ","戦略的M&A","財務的M&A"],
-   ref:"https://ma-cp.com/column/"},
-
-  {day:2,week:1,theme:"財務諸表の基礎①",
-   goal:"BS・PL・CFの連動関係を図で説明できる",
-   task:"財務3表の相互関係を図示しながら復習する",
-   focus:"PL→BS・CF→BSの連動箇所を追う",
-   checks:["財務3表の関係図をノートに描いてNotionにアップ","当期純利益がどこへ流れるか説明する","運転資本の変動がCFに与える影響をメモする"],
-   tags:["貸借対照表","損益計算書","キャッシュフロー計算書","財務3表連動"],
-   ref:"https://fundbook.co.jp/column/"},
-
-  {day:3,week:1,theme:"財務諸表の基礎②",
-   goal:"EBITDAを自分で計算できる",
-   task:"EBITDAの定義と計算方法（PL→EBITDA）を整理する",
-   focus:"EBITDAとフリーCFの違い・なぜM&Aで使われるか",
-   checks:["仮想PLからEBITDAを計算してNotionに記録する","EBITDA・EBIT・純利益の違いを表にまとめる","フリーCFとの関係を1文で説明する"],
-   tags:["EBITDA","減価償却","事業価値","フリーCF"],
-   ref:"https://nihon-ma.co.jp/column/"},
-
-  {day:4,week:1,theme:"M&Aプロセス概観",
-   goal:"LOI〜クロージングまでの流れを説明できる",
-   task:"M&Aフェーズ別概要（戦略策定→IM→LOI→DD→SPA→クロージング）を読む",
-   focus:"各フェーズの目的と主要成果物",
-   checks:["プロセスフロー図をNotionに作成する（簡易版OK）","DDフェーズで何を確認するか3つ挙げる","IM（情報提供書）の役割をメモする"],
-   tags:["LOI","デューデリジェンス","SPA","クロージング","IM"],
-   ref:"https://ma-cp.com/column/"},
-
-  {day:5,week:1,theme:"Week 1 復習",
-   goal:"Week1の内容を口頭で説明できる",
-   task:"Week1のNotionノートを通し読みする（15分）",
-   focus:"曖昧だった点・もう一度確認したい箇所を探す",
-   checks:["Phase 0 KPIチェックリストの進捗を確認する","疑問点リストをNotionに記録する","週次振り返りを日次ログに書く"],
-   tags:["復習","KPI確認","定着確認","疑問点整理"],
-   ref:"https://shogokagotani-web.github.io/ma-study/"},
-
-  {day:6,week:2,theme:"バリュエーション①",
-   goal:"DCF法の基本構造を説明できる",
-   task:"DCF法の概要（FCF予測→割引率→ターミナルバリュー）を読む",
-   focus:"WACCの構成要素（Kd・Ke・税効果）",
-   checks:["DCFの計算フローをNotionに図示する","WACCの計算式を書いて説明できるか確認する","ターミナルバリューの計算方法を2つメモする"],
-   tags:["DCF","WACC","ターミナルバリュー","FCF","割引率"],
-   ref:"https://fundbook.co.jp/column/"},
-
-  {day:7,week:2,theme:"バリュエーション②",
-   goal:"EV/EBITDAマルチプルを使った評価ができる",
-   task:"類似企業比較法（マルチプル法）の基礎を読む",
-   focus:"EV・株式価値・純有利子負債の関係",
-   checks:["日本の上場企業1社のEV/EBITDAを計算してNotionに記録する","EV算出のための調整項目リストを作る","DCF法との使い分けをメモする"],
-   tags:["マルチプル法","EV","EV/EBITDA","類似企業","株式価値"],
-   ref:"https://nihon-ma.co.jp/column/"},
-
-  {day:8,week:2,theme:"法務基礎①",
-   goal:"主要契約書の種類と役割を列挙できる",
-   task:"NDA・MOU・LOI・SPAの概要と役割を整理する",
-   focus:"各契約書の締結タイミング",
-   checks:["4つの契約書の締結タイミング表をNotionに作る","NDAで必ず入れるべき条項3つをメモする","SPAとLOIの法的拘束力の違いを書く"],
-   tags:["NDA","MOU","LOI","SPA","契約書"],
-   ref:"https://ma-cp.com/column/"},
-
-  {day:9,week:2,theme:"法務基礎②",
-   goal:"表明保証とインデムニティの違いを説明できる",
-   task:"表明保証・誓約事項・補償条項（インデムニティ）の基礎を読む",
-   focus:"買主保護の観点で重要な条項",
-   checks:["重要条項リストをNotionの法務ノートに追加する","表明保証違反が起きた場合の流れを書いてみる","インデムニティの上限設定（Cap）の意味をメモする"],
-   tags:["表明保証","インデムニティ","誓約事項","クロージング条件"],
-   ref:"https://nihon-ma.co.jp/column/"},
-
-  {day:10,week:2,theme:"Week 2 復習",
-   goal:"Week2の内容を口頭で説明できる",
-   task:"Week2のNotionノートを見直す（財務＋法務）",
-   focus:"バリュエーションと法務の定着確認",
-   checks:["疑問点リストを更新する","週次振り返りをNotionに記録する","DCFとマルチプルの違いを3行で書く"],
-   tags:["復習","疑問点整理","定着確認"],
-   ref:"https://shogokagotani-web.github.io/ma-study/"},
-
-  {day:11,week:3,theme:"戦略・DD準備①",
-   goal:"M&Aの戦略的動機を4類型で説明できる",
-   task:"M&A戦略の動機（水平統合・垂直統合・多角化・機能補完）を読む",
-   focus:"各タイプでのシナジー仮説の立て方",
-   checks:["4類型の定義と事例をNotionにまとめる","Broadleafにとって有効なM&A類型を考えてみる","シナジー仮説の具体例を1つ書く"],
-   tags:["水平統合","垂直統合","多角化","シナジー","戦略DD"],
-   ref:"https://fundbook.co.jp/column/"},
-
-  {day:12,week:3,theme:"戦略・DD準備②",
-   goal:"ビジネスDDの主要チェック項目を説明できる",
-   task:"ビジネスDD（事業調査）の主要確認項目を読む",
-   focus:"市場・競合・顧客・ビジネスモデルの4軸",
-   checks:["ビジネスDDチェックリストをNotionに保存する","業界分析で使えるフレームワークを2つメモする","自動車アフターマーケットでのDD上の注意点を考える"],
-   tags:["ビジネスDD","市場調査","競合分析","ビジネスモデル"],
-   ref:"https://ma-cp.com/column/"},
-
-  {day:13,week:3,theme:"財務DD入門",
-   goal:"財務DDで確認する主要項目を説明できる",
-   task:"財務DDの基礎（QoE・正常化EBITDA・運転資本）を読む",
-   focus:"なぜQuality of Earningsが重要か",
-   checks:["QoEの概念をNotionにまとめる","正常化EBITDAの調整項目リストを作る","運転資本（NWC）の定義と計算方法をメモする"],
-   tags:["財務DD","QoE","正常化EBITDA","運転資本","NWC"],
-   ref:"https://nihon-ma.co.jp/column/"},
-
-  {day:14,week:3,theme:"交渉基礎",
-   goal:"M&A交渉の主要論点を説明できる",
-   task:"M&A交渉の基本構造と主要論点を読む",
-   focus:"買主vs売主の利害対立ポイント",
-   checks:["交渉論点マップをNotionに作成する","エスクロー・アーンアウトの概念をメモする","価格調整メカニズム（ロックボックス vs クロージング調整）を整理する"],
-   tags:["交渉","エスクロー","アーンアウト","価格調整","クロージング条件"],
-   ref:"https://masouken.com/"},
-
-  {day:15,week:3,theme:"Week 3 復習",
-   goal:"Week3の内容を口頭で説明できる",
-   task:"Week3のNotionノートを見直す（戦略・DD・交渉）",
-   focus:"3週間の全体像を俯瞰して整理する",
-   checks:["疑問点リストを更新する","週次振り返りをNotionに記録する","Phase 0 KPI中間確認を行う"],
-   tags:["復習","疑問点整理","KPI中間確認"],
-   ref:"https://shogokagotani-web.github.io/ma-study/"},
-
-  {day:16,week:4,theme:"PMI概要",
-   goal:"PMIの3領域（経営・業務・文化）を説明できる",
-   task:"PMI（Post Merger Integration）の概要と3つの統合領域を読む",
-   focus:"Day 1プランとは何か・なぜ重要か",
-   checks:["PMI 3領域の定義をNotionにまとめる","Day 1プランに含める項目を5つ挙げる","PMI失敗要因のTop3をメモする"],
-   tags:["PMI","統合計画","Day1プラン","文化統合"],
-   ref:"https://fundbook.co.jp/column/"},
-
-  {day:17,week:4,theme:"PMI計画立案",
-   goal:"統合計画のフレームワークを説明できる",
-   task:"統合計画の作り方（IMO・ワークストリーム・KPI）を読む",
-   focus:"IMO（統合管理室）の役割",
-   checks:["IMOの役割と組成メンバーをNotionにまとめる","ワークストリームの代表的な切り口を5つ書く","統合KPIの例を3つメモする"],
-   tags:["IMO","ワークストリーム","統合KPI","PMI計画"],
-   ref:"https://nihon-ma.co.jp/column/"},
-
-  {day:18,week:4,theme:"ケーススタディ",
-   goal:"実在のM&A事例を3つの視点で分析できる",
-   task:"日本企業の代表的M&A事例を1つ選んで読み込む",
-   focus:"価格根拠・シナジー仮説・統合プロセスの3点",
-   checks:["選んだ事例の概要をNotionにまとめる（取引金額・買収目的）","シナジー仮説を自分の言葉で整理する","事後評価（成否の観点）を3行で書く"],
-   tags:["ケーススタディ","シナジー","事例分析","PMI評価"],
-   ref:"https://ma-cp.com/column/"},
-
-  {day:19,week:4,theme:"Phase 0 総復習",
-   goal:"Phase 0全体の内容を体系的にまとめられる",
-   task:"Phase 0の全Notionノートを通し読みする（15分）",
-   focus:"4週間の学習内容の全体像を把握する",
-   checks:["Phase 0 KPIチェックリストを最終確認する","疑問点リストを全て整理する（未解決は残してOK）","Phase 1への準備メモをNotionに書く"],
-   tags:["総復習","Phase0完了","KPI最終確認"],
-   ref:"https://shogokagotani-web.github.io/ma-study/"},
-
-  {day:20,week:4,theme:"Phase 0 修了テスト",
-   goal:"Phase 0全20テーマの知識定着を確認できる",
-   task:"20の学習テーマに対してキーワードを3つずつ書き出す",
-   focus:"答えられなかったテーマを次フェーズの優先課題にする",
-   checks:["自己採点リストをNotionに作成する","Phase 0 修了宣言をNotion日次ログに書く","Phase 1スケジュールを確認・調整する"],
-   tags:["修了テスト","自己採点","Phase1準備"],
-   ref:"https://shogokagotani-web.github.io/ma-study/"}
-];
-
-const NOTION_URL = "https://www.notion.so/M-A-Learning-Hub";
-
-// ═══════════════════════════════════════
-// ROUTER & STATE
-// ═══════════════════════════════════════
-const params  = new URLSearchParams(location.search);
+// ── ROUTER ──────────────────────────────────────────────
+const params = new URLSearchParams(location.search);
 const dayParam = parseInt(params.get('d') || '0', 10);
-const timerState = { interval:null, remaining:0, running:false, preset:15 };
 
-function getToday(){
-  return new Date().toLocaleDateString('ja-JP',{year:'numeric',month:'long',day:'numeric',weekday:'short'});
+function todayStr(){
+  const w=['日','月','火','水','木','金','土'];
+  const d=new Date();
+  return d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日（'+w[d.getDay()]+'）';
 }
 
-// ═══════════════════════════════════════
-// RENDER
-// ═══════════════════════════════════════
-function render(){
-  const app = document.getElementById('app');
+// ── HOME ─────────────────────────────────────────────────
+function renderHome(){
+  let lastWeek = 0;
+  const rows = C.map(c=>{
+    let sep = '';
+    if(c.week !== lastWeek){
+      lastWeek = c.week;
+      const phaseLabel = c.phase==='Phase 1'?'財務・バリュエーション':c.phase==='Phase 2'?'法務・契約・DD':'戦略・PMI';
+      sep = `<div class="week-sep">Week ${c.week} — ${phaseLabel}</div>`;
+    }
+    const phaseClass = c.phase==='Phase 1'?'hp1':c.phase==='Phase 2'?'hp2':'hp3';
+    return sep + `<a class="home-row" href="?d=${c.day}">
+      <div class="home-day">D${String(c.day).padStart(2,'0')}</div>
+      <div class="home-theme">${c.theme}</div>
+      <div class="home-phase ${phaseClass}">${c.domain}</div>
+    </a>`;
+  }).join('');
 
-  if(!dayParam || dayParam < 1 || dayParam > 20){
-    app.innerHTML = renderHome();
-    return;
-  }
-
-  const c = CURRICULUM[dayParam - 1];
-  const pct = Math.round((dayParam / 20) * 100);
-  const fill = Math.max(pct, 3);
-
-  app.innerHTML = `
+  document.getElementById('app').innerHTML = `
     <div class="hd">
-      <div class="hd-eyebrow">M&A アライアンス スキル習得プログラム</div>
-      <div class="hd-badge">Phase 0 · Week ${c.week} · Day ${c.day}</div>
+      <div class="hd-ey">M&A アライアンス スキル習得プログラム</div>
+      <div class="hd-badge">全40日 · 朝インプット特化</div>
+      <div class="hd-title">学習カリキュラム<br><span>Day一覧</span></div>
+      <div class="hd-date">${todayStr()}</div>
+    </div>
+    <div class="content">
+      <div style="font-size:12px;color:var(--muted2);margin-bottom:16px;line-height:1.7;">
+        メールのリンクから直接各日のページが開きます。以下から手動でも選択できます。
+      </div>
+      ${rows}
+    </div>`;
+}
+
+// ── DAY PAGE ─────────────────────────────────────────────
+function renderDay(){
+  const c = C[dayParam - 1];
+  const pct = Math.round((dayParam / C.length) * 100);
+
+  // Build sections HTML
+  let sectionsHtml = '';
+  c.sections.forEach(s => {
+    let body = `<div class="ltext">${s.b.replace(/\n\n/g,'</p><p>').replace(/^/,'<p>').replace(/$/,'</p>')}</div>`;
+    let pts = '';
+    if(s.pts){
+      pts = `<div class="pbox"><div class="pbox-label">✅ ポイント</div>${s.pts.map(p=>`<div class="pitem"><span class="pdot">▸</span><span>${p}</span></div>`).join('')}</div>`;
+    }
+    let analogy = '';
+    if(s.analogy){
+      analogy = `<div class="analogy"><div class="analogy-label">${s.analogy.label}</div><div class="analogy-text">${s.analogy.text}</div></div>`;
+    }
+    sectionsHtml += `<div class="lsec">
+      <div class="lsec-title">${s.t}</div>
+      ${body}${analogy}${pts}
+    </div>`;
+  });
+
+  const sourcesHtml = c.sources.map(s=>`・${s}`).join('<br>');
+  const checksHtml = c.checks.map((ch,i)=>`
+    <div class="chk" id="ci${i}" onclick="toggleCheck(${i})">
+      <div class="chk-circle"></div>
+      <div class="chk-text">${ch}</div>
+    </div>`).join('');
+
+  const phaseColor = c.phase==='Phase 1'?'var(--acl)':c.phase==='Phase 2'?'var(--green)':'var(--amber)';
+
+  document.getElementById('app').innerHTML = `
+    <div class="hd">
+      <div class="hd-ey">M&A アライアンス スキル習得プログラム</div>
+      <div class="hd-badge">${c.phase} · Week ${c.week} · Day ${c.day}</div>
       <div class="hd-title">Day ${c.day}<br><span>${c.theme}</span></div>
-      <div class="hd-date">${getToday()}</div>
-      <div class="hd-progress">
-        <div class="hd-progress-row">
-          <span class="hd-progress-label">Phase 0 進捗</span>
-          <span class="hd-progress-val">${dayParam} / 20 日 (${pct}%)</span>
+      <div class="hd-date">${todayStr()}</div>
+      <div class="hd-bar-wrap">
+        <div class="hd-bar-row">
+          <span class="hd-bar-label">${c.phase} 進捗</span>
+          <span class="hd-bar-val">${dayParam} / 40日 (${pct}%)</span>
         </div>
-        <div class="hd-bar"><div class="hd-bar-fill" style="width:${fill}%"></div></div>
+        <div class="hd-bar"><div class="hd-bar-fill" style="width:${Math.max(pct,2)}%"></div></div>
       </div>
     </div>
 
     <div class="content">
 
-      <!-- GOAL -->
       <div class="card goal-card">
         <div class="goal-label">🎯 今日のゴール</div>
         <div class="goal-text">${c.goal}</div>
       </div>
 
-      <!-- TASK -->
-      <div class="sec-header">
-        <div class="sec-icon morning">☀️</div>
-        <div class="sec-title">インプット（15分）</div>
-      </div>
-      <div class="card task-card">
-        <div class="task-row">
-          <div class="task-icon">📖</div>
-          <div class="task-body">
-            <div class="task-label">タスク</div>
-            <div class="task-text">${c.task}</div>
-          </div>
-        </div>
-        <div class="task-row">
-          <div class="task-icon">👁️</div>
-          <div class="task-body">
-            <div class="task-label">注目点</div>
-            <div class="task-text">${c.focus}</div>
-          </div>
-        </div>
-        <div class="task-row">
-          <div class="task-icon">🔗</div>
-          <div class="task-body">
-            <div class="task-label">参考リンク</div>
-            <div class="task-text"><a href="${c.ref}" target="_blank" style="color:var(--acl);">${c.ref.replace('https://','')}</a></div>
-          </div>
-        </div>
-        <div class="tags-wrap">${c.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+      <div class="sec-hd">
+        <div class="sec-icon si-morning">☀️</div>
+        <div class="sec-title">朝のインプット — 読むだけでOK（目安15分）</div>
       </div>
 
-      <!-- TIMER -->
-      <div class="sec-header">
-        <div class="sec-icon timer">⏱️</div>
-        <div class="sec-title">タイマー</div>
-      </div>
-      <div class="card timer-card">
-        <div class="timer-wrap">
-          <div class="timer-display" id="timer-disp">15:00</div>
-          <button class="timer-btn" id="timer-btn" onclick="toggleTimer()">▶ スタート</button>
-        </div>
-        <div class="timer-presets">
-          <button class="preset-btn active" id="p15" onclick="setPreset(15)">15分</button>
-          <button class="preset-btn" id="p20" onclick="setPreset(20)">20分</button>
-          <button class="preset-btn" id="p30" onclick="setPreset(30)">30分</button>
+      <div class="card" style="animation-delay:.06s;">
+        <div class="rbadge">📖 読み物形式 · 計算なし · 寝ながらOK</div>
+        ${sectionsHtml}
+        <div class="src-box">
+          <div class="src-label">📚 出典・参考資料</div>
+          <div class="src-item">${sourcesHtml}</div>
         </div>
       </div>
 
-      <!-- CHECKLIST -->
-      <div class="sec-header">
-        <div class="sec-icon check">✅</div>
-        <div class="sec-title">アウトプットチェックリスト</div>
-      </div>
-      <div class="card check-card" id="check-card">
-        ${c.checks.map((ch,i)=>`
-        <div class="check-item" id="ci${i}" onclick="toggleCheck(${i})">
-          <div class="check-circle"></div>
-          <div class="check-text">${ch}</div>
-        </div>`).join('')}
+      <div class="tonight-card card">
+        <div class="tonight-label">🌙 今夜やること（予告）</div>
+        <div class="tonight-text">${c.tonight}</div>
       </div>
 
-      <!-- NOTION -->
-      <div class="sec-header">
-        <div class="sec-icon evening">📓</div>
+      <div class="sec-hd">
+        <div class="sec-icon si-check">✅</div>
+        <div class="sec-title">理解チェック（読み終わったら確認）</div>
+      </div>
+      <div class="card" style="animation-delay:.18s;">
+        ${checksHtml}
+      </div>
+
+      <div class="sec-hd">
+        <div class="sec-icon si-notion">📓</div>
         <div class="sec-title">Notionに記録する</div>
       </div>
-      <a class="card notion-card" href="${NOTION_URL}" target="_blank">
+      <a class="card notion-card" href="https://www.notion.so/M-A-Learning-Hub" target="_blank" style="animation-delay:.22s;">
         <div class="notion-logo">📝</div>
         <div class="notion-body">
           <div class="notion-label">OPEN IN NOTION</div>
@@ -588,138 +285,34 @@ function render(){
         <div class="notion-arr">›</div>
       </a>
 
-    </div><!-- /content -->
+    </div>
 
     <div class="complete-wrap">
-      <button class="complete-btn" id="complete-btn" onclick="completeDay()">今日の学習を完了する</button>
-    </div>
-  `;
-
-  timerState.remaining = 15 * 60;
-  updateTimerDisp();
-  updateCompleteBtn();
-}
-
-function renderHome(){
-  const rows = CURRICULUM.map(c=>`
-    <a href="?d=${c.day}" style="display:flex;align-items:center;gap:12px;padding:12px 16px;
-       background:var(--s1);border:1px solid var(--border);border-radius:10px;
-       margin-bottom:8px;text-decoration:none;color:inherit;transition:border-color .18s;"
-       onmouseover="this.style.borderColor='var(--border2)'"
-       onmouseout="this.style.borderColor='var(--border)'">
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);
-           min-width:36px;">W${c.week}D${c.day}</div>
-      <div style="flex:1;font-size:13px;">${c.theme}</div>
-      <div style="font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace;">${c.day}/20</div>
-    </a>`).join('');
-
-  return `
-    <div class="hd">
-      <div class="hd-eyebrow">M&A アライアンス スキル習得プログラム</div>
-      <div class="hd-badge">Phase 0 — 全20日</div>
-      <div class="hd-title">学習カリキュラム<br><span>Day一覧</span></div>
-      <div class="hd-date">${getToday()}</div>
-    </div>
-    <div class="content">
-      <div style="font-size:12px;color:var(--muted2);margin-bottom:16px;">
-        メールのリンクから直接各日のページが開きます。以下から手動でも選択できます。
-      </div>
-      ${rows}
+      <button class="complete-btn" onclick="completeFn()">朝のインプットを完了する</button>
     </div>`;
 }
 
-// ═══════════════════════════════════════
-// TIMER
-// ═══════════════════════════════════════
-function setPreset(min){
-  if(timerState.running) return;
-  timerState.preset = min;
-  timerState.remaining = min * 60;
-  ['p15','p20','p30'].forEach(id=>{
-    document.getElementById(id)?.classList.remove('active');
-  });
-  document.getElementById('p'+min)?.classList.add('active');
-  updateTimerDisp();
-}
-
-function toggleTimer(){
-  if(timerState.running){
-    clearInterval(timerState.interval);
-    timerState.running = false;
-    document.getElementById('timer-btn').textContent = '▶ 再開';
-    document.getElementById('timer-disp').classList.remove('running');
-  } else {
-    if(timerState.remaining <= 0){
-      timerState.remaining = timerState.preset * 60;
-    }
-    timerState.running = true;
-    document.getElementById('timer-btn').textContent = '⏹ 停止';
-    document.getElementById('timer-btn').classList.add('running');
-    document.getElementById('timer-disp').classList.add('running');
-    timerState.interval = setInterval(()=>{
-      timerState.remaining--;
-      updateTimerDisp();
-      if(timerState.remaining <= 0){
-        clearInterval(timerState.interval);
-        timerState.running = false;
-        const d = document.getElementById('timer-disp');
-        const b = document.getElementById('timer-btn');
-        d.textContent = '完了!';
-        d.classList.remove('running');
-        d.classList.add('done');
-        b.textContent = '▶ もう一度';
-        b.classList.remove('running');
-      }
-    }, 1000);
-  }
-}
-
-function updateTimerDisp(){
-  const r = timerState.remaining;
-  const m = String(Math.floor(r / 60)).padStart(2,'0');
-  const s = String(r % 60).padStart(2,'0');
-  const d = document.getElementById('timer-disp');
-  if(d && !d.classList.contains('done')) d.textContent = `${m}:${s}`;
-}
-
-// ═══════════════════════════════════════
-// CHECKLIST
-// ═══════════════════════════════════════
+// ── CHECKLIST ────────────────────────────────────────────
 function toggleCheck(i){
   document.getElementById('ci'+i)?.classList.toggle('done');
-  updateCompleteBtn();
 }
 
-function updateCompleteBtn(){
-  const all   = document.querySelectorAll('.check-item').length;
-  const done  = document.querySelectorAll('.check-item.done').length;
-  const btn   = document.getElementById('complete-btn');
-  if(!btn) return;
-  if(done === all && all > 0){
-    btn.textContent = '今日の学習を完了する ✓';
-    btn.disabled = false;
-  } else {
-    btn.textContent = `今日の学習を完了する（${done}/${all}完了）`;
-    btn.disabled = false;
-  }
-}
-
-// ═══════════════════════════════════════
-// COMPLETE
-// ═══════════════════════════════════════
-function completeDay(){
-  const c = CURRICULUM[dayParam - 1];
-  const done = document.querySelectorAll('.check-item.done').length;
-  const all  = document.querySelectorAll('.check-item').length;
-  document.getElementById('done-body').innerHTML =
-    `<strong>Day ${c.day} — ${c.theme}</strong><br>チェックリスト ${done}/${all} 完了<br><br>Notionの日次ログに学びを記録しましょう 📝`;
+// ── COMPLETE ─────────────────────────────────────────────
+function completeFn(){
+  const c = C[dayParam - 1];
+  const done = document.querySelectorAll('.chk.done').length;
+  const all  = document.querySelectorAll('.chk').length;
+  document.getElementById('done-msg').innerHTML =
+    `<strong>Day ${c.day} — ${c.theme}</strong><br>理解チェック ${done}/${all} 完了<br><br>今夜のアウトプットも楽しみにしています 🌙`;
   document.getElementById('done-overlay').classList.add('show');
 }
 
-// ═══════════════════════════════════════
-// INIT
-// ═══════════════════════════════════════
-render();
+// ── INIT ─────────────────────────────────────────────────
+if(dayParam < 1 || dayParam > C.length){
+  renderHome();
+} else {
+  renderDay();
+}
 </script>
 </body>
 </html>
